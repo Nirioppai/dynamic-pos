@@ -1,1 +1,1 @@
-export { default } from './Stores';
+export { default } from './AdminStores';

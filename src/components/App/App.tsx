@@ -1,6 +1,6 @@
 import { createRef } from 'react';
 
-import { IconButton } from '@mui/material';
+import { CssBaseline, IconButton, ThemeProvider } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Close as CloseIcon } from 'mdi-material-ui';
@@ -10,7 +10,10 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { BrowserRouter } from 'react-router-dom';
 
+import { theme } from './theme';
+
 import { APP_NAME } from '~/constants';
+import { AuthContextProvider } from '~/contexts';
 import { AppRoutes } from '~/routes';
 
 const queryClient = new QueryClient({
@@ -34,26 +37,37 @@ const onClickDismiss = (key: any) => () => {
 // TODO: Add AppRoutes
 const App = () => {
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <HelmetProvider>
-        <Helmet titleTemplate={`%s - ${APP_NAME}`} defaultTitle={APP_NAME} />
-        <SnackbarProvider
-          ref={notistackRef}
-          action={(key) => (
-            <IconButton onClick={onClickDismiss(key)} sx={{ color: 'white' }}>
-              <CloseIcon />
-            </IconButton>
-          )}
-        >
-          <QueryClientProvider client={queryClient}>
-            <BrowserRouter>
-              <AppRoutes />
-            </BrowserRouter>
-            <ReactQueryDevtools />
-          </QueryClientProvider>
-        </SnackbarProvider>
-      </HelmetProvider>
-    </LocalizationProvider>
+    <ThemeProvider theme={theme}>
+      <AuthContextProvider>
+        <CssBaseline />
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <HelmetProvider>
+            <Helmet
+              titleTemplate={`%s - ${APP_NAME}`}
+              defaultTitle={APP_NAME}
+            />
+            <SnackbarProvider
+              ref={notistackRef}
+              action={(key) => (
+                <IconButton
+                  onClick={onClickDismiss(key)}
+                  sx={{ color: 'white' }}
+                >
+                  <CloseIcon />
+                </IconButton>
+              )}
+            >
+              <QueryClientProvider client={queryClient}>
+                <BrowserRouter>
+                  <AppRoutes />
+                </BrowserRouter>
+                <ReactQueryDevtools />
+              </QueryClientProvider>
+            </SnackbarProvider>
+          </HelmetProvider>
+        </LocalizationProvider>
+      </AuthContextProvider>
+    </ThemeProvider>
   );
 };
 

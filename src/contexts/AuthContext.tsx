@@ -8,8 +8,10 @@ import {
   signInWithPopup,
   signOut,
 } from 'firebase/auth';
+import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
 
-import { auth } from '~/configs';
+import { auth, db } from '~/configs';
+import { KEYS } from '~/constants';
 
 // @ts-ignore
 const UserContext = createContext();
@@ -26,12 +28,34 @@ export const AuthContextProvider = ({ children }) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  const googleSignIn = () => {
-    const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider);
+  const googleSignIn = async (userType: string) => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
 
-    // use this when on devices with smaller screens
-    // signInWithRedirect(auth,provider)
+      const docRef = doc(db, KEYS.users, user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) {
+        await setDoc(docRef, {
+          name: user.displayName,
+          email: user.email,
+          userType: userType,
+          timestamp: serverTimestamp(),
+        });
+      }
+
+      const userDetails = {
+        id: user,
+      };
+      return {
+        ...user,
+        userDetails,
+      };
+    } catch (err: any) {
+      throw new Error(err?.message || err);
+    }
   };
 
   const logout = () => {
@@ -41,7 +65,16 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       // @ts-ignore
-      setUser(currentUser);
+      const deleteRef = doc(db, 'users', currentUser?.uid);
+
+      getDoc(deleteRef).then((snapshot) => {
+        const snapshotData = snapshot.data();
+        const snapshotId = snapshot.id;
+
+        const currentUserCopy = { ...currentUser, snapshotData, snapshotId };
+
+        setUser(currentUserCopy);
+      });
     });
     return () => {
       unsubscribe();

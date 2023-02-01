@@ -1,15 +1,27 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoadingButton } from '@mui/lab';
-import { Typography } from '@mui/material';
-// import { useSnackbar } from 'notistack';
+import {
+  Divider,
+  Grid,
+  IconButton,
+  InputAdornment,
+  //  Typography
+} from '@mui/material';
+import {
+  Eye as EyeIcon,
+  EyeOff as EyeOffIcon,
+  Google as GoogleIcon,
+} from 'mdi-material-ui';
+import { useSnackbar } from 'notistack';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { TextFieldElement } from 'react-hook-form-mui';
-// import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { AuthBase, FormContainer } from '~/components';
+import { UserAuth } from '~/contexts';
 import { LoginSchema, loginSchema } from '~/schemas';
 
 interface LoginProps {
@@ -20,12 +32,17 @@ interface LoginProps {
 }
 
 const Login: FC<LoginProps> = ({ userType }) => {
-  // const navigate = useNavigate();
-  // const { enqueueSnackbar } = useSnackbar();
+  // @ts-ignore
+  const { googleSignIn } = UserAuth();
+
+  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const formContext = useForm({
     defaultValues: {
-      accountNumber: '',
+      email: '',
       password: '',
     },
     resolver: zodResolver(loginSchema),
@@ -36,8 +53,10 @@ const Login: FC<LoginProps> = ({ userType }) => {
     formState: { isSubmitting },
   } = formContext;
 
+  // @ts-ignore
   const onSubmit = async (values: LoginSchema) => {
     console.log(values);
+
     // TODO: LOGIN SERVICE
     // try {
     //   // pag yung current route is pang supervisor tapos yung usertype faculty, throw error
@@ -55,34 +74,107 @@ const Login: FC<LoginProps> = ({ userType }) => {
     // }
   };
 
+  async function onGoogleClick() {
+    try {
+      await googleSignIn(userType.value);
+      navigate('/businessOwner/stores');
+    } catch (error) {
+      enqueueSnackbar('Could not authorize with Google.', { variant: 'error' });
+    }
+  }
+
   return (
     <AuthBase>
       <Helmet title={`${userType.label} Login`} />
-      <Typography sx={{ textAlign: 'center', mb: 4 }}>
+      {/* <Typography sx={{ textAlign: 'center', mb: 4 }}>
         Sign in to start your session!
-      </Typography>
+      </Typography> */}
+
+      {location.pathname === '/login/businessOwner' && (
+        <>
+          <LoadingButton
+            onClick={onGoogleClick}
+            startIcon={<GoogleIcon />}
+            type='button'
+            fullWidth
+          >
+            Sign in with Google
+          </LoadingButton>
+          <Divider sx={{ mt: 2, mb: 2 }} orientation='horizontal'>
+            or
+          </Divider>
+        </>
+      )}
+
       <FormContainer
         formContext={formContext}
+        // @ts-ignore
         handleSubmit={handleSubmit(onSubmit)}
       >
-        <TextFieldElement
-          name='accountNumber'
-          label='User ID or Webmail'
-          required
-        />
+        <TextFieldElement name='email' label='Email' required />
         <TextFieldElement
           name='password'
           label='Password'
-          type='password'
+          type={showPassword ? 'text' : 'password'}
           required
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position='end'>
+                <IconButton
+                  aria-label='toggle password visibility'
+                  onClick={() => setShowPassword((v) => !v)}
+                  onMouseDown={(e) => e.preventDefault()}
+                  edge='end'
+                >
+                  {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
 
-        <LoadingButton type='submit' fullWidth loading={isSubmitting}>
-          Sign in
-        </LoadingButton>
+        <CreateAccountGrid>
+          <LoadingButton
+            type='submit'
+            loading={isSubmitting}
+            fullWidth={
+              location.pathname === '/login/businessOwner' ? false : true
+            }
+          >
+            Sign in
+          </LoadingButton>
+        </CreateAccountGrid>
       </FormContainer>
     </AuthBase>
   );
 };
+
+function CreateAccountGrid({ children }: any) {
+  const location = useLocation();
+  return (
+    <>
+      {location.pathname === '/login/businessOwner' ? (
+        <>
+          <Grid
+            container
+            rowSpacing={1}
+            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+          >
+            <Grid item xs={6}>
+              <LoadingButton variant='outlined' type='button'>
+                Create account
+              </LoadingButton>
+            </Grid>
+            <Grid container item xs={6} justifyContent='flex-end'>
+              {children}
+            </Grid>
+          </Grid>
+        </>
+      ) : (
+        <>{children}</>
+      )}
+    </>
+  );
+}
 
 export default Login;

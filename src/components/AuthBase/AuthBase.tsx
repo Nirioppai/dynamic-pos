@@ -2,8 +2,8 @@ import { FC, PropsWithChildren } from 'react';
 
 import { Box, Grid, Typography, alpha } from '@mui/material';
 
-import bg from '~/assets/images/auth-bg.jpg';
-import logo from '~/assets/images/logo.png';
+import bg from '~/assets/auth-bg.jpg';
+import logo from '~/assets/logo.png';
 import { APP_NAME } from '~/constants';
 
 const AuthBase: FC<PropsWithChildren<unknown>> = ({ children }) => (
@@ -22,10 +22,10 @@ const AuthBase: FC<PropsWithChildren<unknown>> = ({ children }) => (
         xs={12}
         lg={6}
         sx={(theme) => ({
-          backgroundColor: alpha(theme.palette.background.default, 1),
-          backdropFilter: 'blur(10px)',
+          backgroundColor: alpha(theme.palette.background.default, 0.9),
+          backdropFilter: 'blur(9px)',
           maxWidth: {
-            lg: 480,
+            lg: 500,
           },
           mr: 'auto',
         })}
@@ -60,7 +60,7 @@ const AuthBase: FC<PropsWithChildren<unknown>> = ({ children }) => (
               variant='h2'
               component='div'
               gutterBottom
-              sx={{ textAlign: 'center' }}
+              sx={{ textAlign: 'center', mb: 2 }}
             >
               {APP_NAME}
             </Typography>

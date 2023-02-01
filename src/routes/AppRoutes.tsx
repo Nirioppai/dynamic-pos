@@ -8,10 +8,12 @@ import {
   // NotFound,
   // ResetPassword,
 } from '~/pages';
+import { BusinessOwnerRoutes } from '~/routes';
 function AppRoutes() {
   return (
     <>
       <Routes>
+        {/* AUTH */}
         <Route path='/' element={<LoginSelect />} />
         <Route path='/login' element={<Navigate replace to='/' />} />
         {USER_TYPES.map((userType) => (
@@ -21,6 +23,8 @@ function AppRoutes() {
             element={<Login userType={userType} />}
           />
         ))}
+        {/* USER TYPES */}
+        <Route path='/businessOwner/*' element={<BusinessOwnerRoutes />} />
       </Routes>
     </>
   );
