@@ -4,10 +4,9 @@ export const KEYS = {
   businessOwners: 'businessOwners',
   cashiers: 'cashiers',
   storeInstances: 'storeInstances',
-  products: 'products',
-  services: 'services',
+  products: 'ownerProducts',
+  services: 'ownerServices',
   productCategories: 'productCategories',
   serviceCategories: 'serviceCategories',
   invoices: 'invoices',
-  listings: 'listings',
 };
