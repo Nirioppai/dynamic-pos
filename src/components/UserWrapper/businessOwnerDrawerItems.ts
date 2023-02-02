@@ -1,16 +1,40 @@
-import { Toolbox as ToolboxIcon } from 'mdi-material-ui';
+import {
+  Shape as CategoryIcon,
+  FormatListBulleted as ProductIcon,
+  CashMultiple as SalesIcon,
+  Wrench as ServiceIcon,
+  Store as StoreIcon,
+} from 'mdi-material-ui';
 
 export const businessOwnerDrawerItems = [
   {
     label: 'Stores',
-    Icon: ToolboxIcon,
+    Icon: StoreIcon,
     path: 'stores',
+    hasDivider: true,
+  },
+  {
+    label: 'Categories',
+    Icon: CategoryIcon,
+    path: 'categories',
     hasDivider: false,
   },
   {
-    label: 'Stores2',
-    Icon: ToolboxIcon,
-    path: 'wewewew',
+    label: 'Products',
+    Icon: ProductIcon,
+    path: 'products',
+    hasDivider: false,
+  },
+  {
+    label: 'Services',
+    Icon: ServiceIcon,
+    path: 'services',
+    hasDivider: true,
+  },
+  {
+    label: 'Sales',
+    Icon: SalesIcon,
+    path: 'sales',
     hasDivider: false,
   },
 ];

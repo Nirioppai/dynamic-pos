@@ -56,7 +56,6 @@ const Login: FC<LoginProps> = ({ userType }) => {
   // @ts-ignore
   const onSubmit = async (values: LoginSchema) => {
     console.log(values);
-
     // TODO: LOGIN SERVICE
     // try {
     //   // pag yung current route is pang supervisor tapos yung usertype faculty, throw error

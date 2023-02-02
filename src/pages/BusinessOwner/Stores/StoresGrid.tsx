@@ -7,7 +7,7 @@ import { AddStoreModal, EditStoreModal } from './modals';
 import { DynamicAgGrid } from '~/components';
 import { auth } from '~/configs';
 import { KEYS } from '~/constants';
-// import { useArchiveMutation } from '~/hooks';
+import { useArchiveMutation } from '~/hooks';
 import { storesService } from '~/services';
 
 const StoresGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
@@ -30,12 +30,10 @@ const StoresGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
 
   // MUTATIONS
 
-  console.log(stores);
-
-  // const { mutateAsync: archiveEntry } = useArchiveMutation({
-  //   queryKey: KEYS.storeInstances,
-  //   mutationFn: storesService.archiveOne,
-  // });
+  const { mutateAsync: archiveEntry } = useArchiveMutation({
+    queryKey: KEYS.storeInstances,
+    mutationFn: storesService.archiveOne,
+  });
 
   return (
     <>
@@ -63,7 +61,7 @@ const StoresGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
           edit: !disableWrite,
           archive: !disableWrite,
         }}
-        // onArchive={async (row) => await archiveEntry(row)}
+        onArchive={async (row) => await archiveEntry(row._id)}
         AddModal={AddStoreModal}
         EditModal={EditStoreModal}
       />

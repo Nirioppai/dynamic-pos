@@ -63,10 +63,9 @@ export const useMutationBase = <TData, TVariables>({
     },
     onError: (err: any) => {
       if (!disableErrorSnackbar)
-        enqueueSnackbar(
-          err?.response?.data?.message || 'Something went wrong.',
-          { variant: 'error' }
-        );
+        enqueueSnackbar(err?.message || 'Something went wrong.', {
+          variant: 'error',
+        });
       onError?.(err);
     },
     ...rest,

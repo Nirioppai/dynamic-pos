@@ -25,7 +25,7 @@ const AddStoreModal: FC<DialogProps> = ({ onClose, ...rest }) => {
       defaultValues={{
         name: '',
         address: '',
-        userId: auth?.currentUser?.uid,
+        ownerId: auth?.currentUser?.uid,
       }}
       schema={storeSchema}
       onFormSubmit={onSubmit}

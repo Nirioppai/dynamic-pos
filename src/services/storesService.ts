@@ -1,15 +1,16 @@
 import {
   addDoc,
   collection,
-  // doc,
+  deleteDoc,
+  doc,
   getDocs,
-  orderBy,
+  // orderBy,
   query,
   // updateDoc,
   where,
 } from 'firebase/firestore';
 
-import { auth, db } from '~/configs';
+import { db } from '~/configs';
 import { KEYS } from '~/constants';
 import { StoreSchema } from '~/schemas';
 import { createGenericService } from '~/utils';
@@ -29,21 +30,19 @@ export const storesService2 = createGenericService<StoreSchema>(
 
 export const storesService = {
   // GET STORES WHERE USERREF = CURRENTLY LOGGED IN USER
-  getStores: async (userId: string): Promise<any> => {
+  getStores: async (ownerId: string): Promise<any> => {
     const q = query(
       storeInstanceRef,
-      where('userId', '==', userId)
+      where('ownerId', '==', ownerId)
       // orderBy('timestamp', 'desc')
     );
-
-    console.log(userId);
 
     const data = await getDocs(q);
     return mapData(data);
   },
   postOne: async (store: StoreSchema): Promise<any> => {
     const data = await addDoc(storeInstanceRef, store);
-    console.log(data.id);
+
     return {
       // @ts-ignore
       _id: data.id,
@@ -51,23 +50,15 @@ export const storesService = {
     };
     // check if user has store instance credits available
     // check if store name is already taken
-    // if not, create store
-    // initialize empty products object too
-    // return store
+    // if not, create empty products object too
+    // return stor store
+    // initializee
   },
-  putOne: async (userId: string, store: StoreSchema): Promise<any> => {
-    console.log(userId);
-    console.log(store);
-  },
+  archiveOne: async (storeId: string): Promise<any> => {
+    const data = await deleteDoc(doc(db, KEYS.storeInstances, storeId));
 
-  archiveOne: async (): Promise<any> => {
-    const q = query(
-      storeInstanceRef,
-      where('userRef', '==', auth?.currentUser?.uid),
-      orderBy('timestamp', 'desc')
-    );
+    // throw new Error('WEW');
 
-    const querySnap = await getDocs(q);
-    return mapData(querySnap);
+    return data;
   },
 };
