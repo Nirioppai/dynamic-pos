@@ -3,6 +3,7 @@ import { FC, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoadingButton } from '@mui/lab';
 import {
+  Button,
   Divider,
   Grid,
   IconButton,
@@ -18,7 +19,7 @@ import { useSnackbar } from 'notistack';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { TextFieldElement } from 'react-hook-form-mui';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { AuthBase, FormContainer } from '~/components';
 import { UserAuth } from '~/contexts';
@@ -33,7 +34,7 @@ interface LoginProps {
 
 const Login: FC<LoginProps> = ({ userType }) => {
   // @ts-ignore
-  const { googleSignIn } = UserAuth();
+  const { googleSignIn, signIn } = UserAuth();
 
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -55,6 +56,14 @@ const Login: FC<LoginProps> = ({ userType }) => {
 
   // @ts-ignore
   const onSubmit = async (values: LoginSchema) => {
+    try {
+      await signIn(values.email, values.password);
+      navigate('/businessOwner/stores');
+    } catch (e) {
+      enqueueSnackbar('Something went wrong.', { variant: 'error' });
+      console.error(e.message);
+    }
+
     console.log(values);
     // TODO: LOGIN SERVICE
     // try {
@@ -160,9 +169,13 @@ function CreateAccountGrid({ children }: any) {
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           >
             <Grid item xs={6}>
-              <LoadingButton variant='outlined' type='button'>
-                Create account
-              </LoadingButton>
+              <Button
+                variant='outlined'
+                component={Link}
+                to={'/register/businessOwner'}
+              >
+                Create Account
+              </Button>
             </Grid>
             <Grid container item xs={6} justifyContent='flex-end'>
               {children}

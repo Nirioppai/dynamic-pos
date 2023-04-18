@@ -8,6 +8,14 @@ export const productSchema = z.object({
   description: z.string().optional(),
   availability: z.enum(['Available', 'Unavailable']),
   category: z.string().optional(),
+  // Inventory Levels
+  // Manufacturer / Supplier
+  // Dimensions
+  // Weight
+  // Image
+  // Add ons
+  // Combinations
+  // Tax
 });
 
 export type ProductSchema = BaseSchema & z.infer<typeof productSchema>;
