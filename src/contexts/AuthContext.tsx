@@ -20,8 +20,42 @@ const UserContext = createContext();
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState({});
 
-  const createUser = (email: string, password: string) => {
-    return createUserWithEmailAndPassword(auth, email, password);
+  const createUser = async (
+    email: string,
+    name: string,
+    password: string,
+    userType: string
+  ) => {
+    try {
+      const result = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = result.user;
+
+      const docRef = doc(db, KEYS.users, user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) {
+        await setDoc(docRef, {
+          name: name,
+          email: user.email,
+          userType: userType,
+          timestamp: serverTimestamp(),
+        });
+      }
+
+      const userDetails = {
+        id: user,
+      };
+      return {
+        ...user,
+        userDetails,
+      };
+    } catch (err: any) {
+      throw new Error(err?.message || err);
+    }
   };
 
   const signIn = (email: string, password: string) => {

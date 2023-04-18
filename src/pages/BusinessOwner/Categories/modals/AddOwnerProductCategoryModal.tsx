@@ -5,6 +5,7 @@ import type { DialogProps } from '@mui/material';
 import BusinessOwnerProductCategoryModalForm from './BusinessOwnerProductCategoryModalForm';
 
 import { FormDialog } from '~/components';
+import { auth } from '~/configs';
 import { KEYS } from '~/constants';
 import { usePostMutation } from '~/hooks';
 import { ProductCategorySchema, productCategorySchema } from '~/schemas';
@@ -26,6 +27,7 @@ const AddOwnerProductCategoryModal: FC<DialogProps> = ({
     <FormDialog
       title='Add Category'
       defaultValues={{
+        ownerId: auth?.currentUser?.uid,
         name: '',
       }}
       schema={productCategorySchema}

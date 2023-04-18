@@ -28,7 +28,7 @@ const EditOwnerServiceModal: FC<
 
   return (
     <FormDialog
-      title='Edit Equipment'
+      title='Edit Service'
       subtitle={data.name}
       defaultValues={defaultValues}
       schema={serviceSchema}

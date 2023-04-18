@@ -2,6 +2,7 @@ import { BaseSchema } from 'schemas';
 import { z } from 'zod';
 
 export const productCategorySchema = z.object({
+  ownerId: z.string(),
   name: z.string(),
 });
 

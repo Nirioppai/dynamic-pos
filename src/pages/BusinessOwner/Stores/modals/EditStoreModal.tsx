@@ -28,7 +28,7 @@ const EditEquipmentModal: FC<
 
   return (
     <FormDialog
-      title='Edit Equipment'
+      title='Edit Store'
       subtitle={data.name}
       defaultValues={defaultValues}
       schema={storeSchema}

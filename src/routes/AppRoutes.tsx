@@ -5,6 +5,7 @@ import {
   // ForgotPassword,
   Login,
   LoginSelect,
+  Register,
   // NotFound,
   // ResetPassword,
 } from '~/pages';
@@ -16,6 +17,7 @@ function AppRoutes() {
         {/* AUTH */}
         <Route path='/' element={<LoginSelect />} />
         <Route path='/login' element={<Navigate replace to='/' />} />
+        <Route path='/register/businessOwner' element={<Register />} />
         {USER_TYPES.map((userType) => (
           <Route
             key={userType.value}

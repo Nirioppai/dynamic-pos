@@ -2,6 +2,7 @@
 export * from './baseSchema';
 export * from './userSchema';
 export * from './loginSchema';
+export * from './registerSchema';
 
 // nested
 export * from './storeSchema';

@@ -15,3 +15,4 @@ export { default as TimePickerElement } from './TimePickerElement';
 
 export * from './TabWithContent';
 export * from './Dialogs';
+export * from './FormContainerComponent';
