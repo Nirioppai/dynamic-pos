@@ -4,3 +4,4 @@ export { default as BusinessOwnerProducts } from './Products/BusinessOwnerProduc
 
 export { default as BusinessOwnerServices } from './Services/BusinessOwnerServices';
 export { default as BusinessOwnerCategories } from './Categories/BusinessOwnerCategories';
+export { default as BusinessOwnerCashiers } from './Cashiers/BusinessOwnerCashiers';

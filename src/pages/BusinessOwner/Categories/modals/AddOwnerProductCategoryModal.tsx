@@ -25,7 +25,7 @@ const AddOwnerProductCategoryModal: FC<DialogProps> = ({
 
   return (
     <FormDialog
-      title='Add Category'
+      title='Add Product Category'
       defaultValues={{
         ownerId: auth?.currentUser?.uid,
         name: '',

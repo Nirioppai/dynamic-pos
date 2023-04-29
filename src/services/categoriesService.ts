@@ -6,6 +6,7 @@ import {
   getDocs,
   // orderBy,
   query,
+  where,
   // updateDoc,
 } from 'firebase/firestore';
 
@@ -33,14 +34,22 @@ export const categoriesService3 = createGenericService<ServiceCategorySchema>(
 );
 
 export const categoriesService = {
-  getProductCategories: async (): Promise<any> => {
-    const q = query(productCategoryRef);
+  getProductCategories: async (ownerId: string): Promise<any> => {
+    const q = query(
+      productCategoryRef,
+      where('ownerId', '==', ownerId)
+      // orderBy('timestamp', 'desc')
+    );
 
     const data = await getDocs(q);
     return mapData(data);
   },
-  getServiceCategories: async (): Promise<any> => {
-    const q = query(serviceCategoryRef);
+  getServiceCategories: async (ownerId: string): Promise<any> => {
+    const q = query(
+      serviceCategoryRef,
+      where('ownerId', '==', ownerId)
+      // orderBy('timestamp', 'desc')
+    );
 
     const data = await getDocs(q);
     return mapData(data);

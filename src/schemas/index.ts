@@ -13,3 +13,4 @@ export * from './productSchema';
 export * from './invoiceSchema';
 export * from './serviceSaleSchema';
 export * from './productSaleSchema';
+export * from './cashierSchema';

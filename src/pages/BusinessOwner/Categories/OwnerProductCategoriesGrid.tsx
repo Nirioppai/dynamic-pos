@@ -8,6 +8,7 @@ import {
   EditOwnerProductCategoryModal,
 } from './modals';
 import { DynamicAgGrid } from '~/components';
+import { auth } from '~/configs';
 import { KEYS } from '~/constants';
 import { useArchiveMutation } from '~/hooks';
 import { categoriesService } from '~/services';
@@ -20,7 +21,8 @@ const OwnerProductCategoriesGrid: FC<
   const queries = useQueries([
     {
       queryKey: KEYS.productCategories,
-      queryFn: () => categoriesService.getProductCategories(),
+      queryFn: () =>
+        categoriesService.getProductCategories(auth?.currentUser?.uid || ''),
     },
   ]);
 

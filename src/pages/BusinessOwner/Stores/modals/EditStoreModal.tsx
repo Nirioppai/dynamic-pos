@@ -2,9 +2,19 @@ import { FC } from 'react';
 
 import type { DialogProps } from '@mui/material';
 
-import BusinessOwnerStoreModalForm from './BusinessOwnerStoreModalForm';
+import {
+  StoreCashierGrid,
+  StoreCategoryGrid,
+  StoreOverviewGrid,
+  StoreProductsGrid,
+  StoreServicesGrid,
+} from './index';
 
-import { FormDialog } from '~/components';
+import {
+  // FormDialog,
+  FullScreenDialog,
+  TabWithContent,
+} from '~/components';
 import { KEYS } from '~/constants';
 import { usePutMutation } from '~/hooks';
 import { BaseSchema, StoreSchema, storeSchema } from '~/schemas';
@@ -27,18 +37,44 @@ const EditEquipmentModal: FC<
     await mutateAsync({ id: _id, item: { ...defaultValues, ...values } });
 
   return (
-    <FormDialog
-      title='Edit Store'
-      subtitle={data.name}
-      defaultValues={defaultValues}
-      schema={storeSchema}
-      onFormSubmit={onSubmit}
-      submitText='Update'
-      onClose={onClose}
-      {...rest}
-    >
-      <BusinessOwnerStoreModalForm />
-    </FormDialog>
+    <>
+      <FullScreenDialog
+        onClose={onClose}
+        title={'Editing Store ' + data.name}
+        {...rest}
+      >
+        <TabWithContent
+          tabItems={[
+            {
+              name: 'Overview',
+              content: (
+                <StoreOverviewGrid
+                  defaultValues={defaultValues}
+                  schema={storeSchema}
+                  onSubmit={onSubmit}
+                />
+              ),
+            },
+            {
+              name: 'Products',
+              content: <StoreProductsGrid storeId={data._id} />,
+            },
+            {
+              name: 'Services',
+              content: <StoreServicesGrid storeId={data._id} />,
+            },
+            {
+              name: 'Categories',
+              content: <StoreCategoryGrid storeId={data._id} />,
+            },
+            {
+              name: 'Cashiers',
+              content: <StoreCashierGrid storeId={data._id} />,
+            },
+          ]}
+        />
+      </FullScreenDialog>
+    </>
   );
 };
 

@@ -3,26 +3,26 @@ import { FC, PropsWithChildren } from 'react';
 import { useQueries } from 'react-query';
 
 // eslint-disable-next-line import/order
-import { AddStoreModal, EditStoreModal } from './modals';
+import { AddOwnerCashierModal, EditOwnerCashierModal } from './modals';
 import { DynamicAgGrid } from '~/components';
 import { auth } from '~/configs';
 import { KEYS } from '~/constants';
 import { useArchiveMutation } from '~/hooks';
-import { storesService } from '~/services';
+import { cashiersService } from '~/services';
 
-const StoresGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
+const OwnerCashiersGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
   disableWrite,
 }) => {
   // @ts-ignore
 
   const queries = useQueries([
     {
-      queryKey: KEYS.storeInstances,
-      queryFn: () => storesService.getStores(auth?.currentUser?.uid || ''),
+      queryKey: KEYS.cashiers,
+      queryFn: () => cashiersService.getCashiers(auth?.currentUser?.uid || ''),
     },
   ]);
 
-  const stores = queries[0].data || [];
+  const cashiers = queries[0].data || [];
 
   const isLoading = queries.some((q) => q.isLoading);
   // const isSuccess = queries.every((q) => q.isSuccess);
@@ -31,14 +31,14 @@ const StoresGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
   // MUTATIONS
 
   const { mutateAsync: archiveEntry } = useArchiveMutation({
-    queryKey: KEYS.storeInstances,
-    mutationFn: storesService.archiveOne,
+    queryKey: KEYS.cashiers,
+    mutationFn: cashiersService.archiveOne,
   });
 
   return (
     <>
       <DynamicAgGrid
-        rowData={stores}
+        rowData={cashiers}
         columnDefs={[
           {
             field: 'name',
@@ -46,36 +46,6 @@ const StoresGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
             sort: 'asc',
             minWidth: 200,
             cellStyle: { fontWeight: 500 },
-          },
-          {
-            field: 'address',
-            headerName: 'Address',
-
-            minWidth: 200,
-          },
-          {
-            field: 'name',
-            headerName: 'Products',
-
-            minWidth: 100,
-          },
-          {
-            field: 'name',
-            headerName: 'Services',
-
-            minWidth: 100,
-          },
-          {
-            field: 'name',
-            headerName: 'Categories',
-
-            minWidth: 100,
-          },
-          {
-            field: 'name',
-            headerName: 'Cashiers',
-
-            minWidth: 100,
           },
         ]}
         isLoading={isLoading}
@@ -86,11 +56,11 @@ const StoresGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
           archive: !disableWrite,
         }}
         onArchive={async (row) => await archiveEntry(row._id)}
-        AddModal={AddStoreModal}
-        EditModal={EditStoreModal}
+        AddModal={AddOwnerCashierModal}
+        EditModal={EditOwnerCashierModal}
       />
     </>
   );
 };
 
-export default StoresGrid;
+export default OwnerCashiersGrid;

@@ -8,6 +8,7 @@ export { default as DynamicAgGrid } from './DynamicAgGrid';
 export { default as ContainedSearchbar } from './ContainedSearchbar';
 export { default as ErrorAlert } from './ErrorAlert';
 export { default as LoadingIndicator } from './LoadingIndicator';
+export { default as Section } from './Section';
 
 export { default as DatePickerElement } from './DatePickerElement';
 export { default as NumberFieldElement } from './NumberFieldElement';

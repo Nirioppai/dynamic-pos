@@ -1,10 +1,13 @@
 import {
+  CashRegister as CashierIcon,
   Shape as CategoryIcon,
   FormatListBulleted as ProductIcon,
   CashMultiple as SalesIcon,
   Wrench as ServiceIcon,
   Store as StoreIcon,
 } from 'mdi-material-ui';
+
+// https://pictogrammers.com/library/mdi/?welcome
 
 export const businessOwnerDrawerItems = [
   {
@@ -29,10 +32,16 @@ export const businessOwnerDrawerItems = [
     label: 'Services',
     Icon: ServiceIcon,
     path: 'services',
+    hasDivider: false,
+  },
+  {
+    label: 'Cashiers',
+    Icon: CashierIcon,
+    path: 'cashiers',
     hasDivider: true,
   },
   {
-    label: 'Sales',
+    label: 'Overall Sales',
     Icon: SalesIcon,
     path: 'sales',
     hasDivider: false,
