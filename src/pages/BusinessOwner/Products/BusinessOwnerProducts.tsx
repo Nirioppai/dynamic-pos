@@ -13,14 +13,6 @@ const BusinessOwnerProducts: FC<
 > = ({ disableWrite }) => {
   return (
     <PageContentWrapper title='Products'>
-      {/* <TabWithContent
-        tabItems={[
-          {
-            name: 'Overview',
-            content: <OwnerProductsGrid disableWrite={disableWrite} />,
-          },
-        ]}
-      /> */}
       <OwnerProductsGrid disableWrite={disableWrite} />
     </PageContentWrapper>
   );
