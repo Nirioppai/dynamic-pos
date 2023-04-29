@@ -13,8 +13,6 @@ import { productsService } from '~/services';
 const OwnerProductsGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
   disableWrite,
 }) => {
-  // @ts-ignore
-
   const queries = useQueries([
     {
       queryKey: KEYS.products,
@@ -46,6 +44,12 @@ const OwnerProductsGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
             sort: 'asc',
             minWidth: 200,
             cellStyle: { fontWeight: 500 },
+          },
+          {
+            field: '_id',
+            headerName: 'ID',
+
+            minWidth: 250,
           },
           {
             field: 'price',

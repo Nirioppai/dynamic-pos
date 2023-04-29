@@ -54,27 +54,23 @@ const StoresGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
             minWidth: 200,
           },
           {
-            field: 'name',
             headerName: 'Products',
-
+            valueGetter: ({ data }) => data.products.length || '',
             minWidth: 100,
           },
           {
-            field: 'name',
             headerName: 'Services',
-
+            valueGetter: ({ data }) => data.services.length || '',
             minWidth: 100,
           },
           {
-            field: 'name',
             headerName: 'Categories',
-
+            valueGetter: ({ data }) => data.categories.length || '',
             minWidth: 100,
           },
           {
-            field: 'name',
             headerName: 'Cashiers',
-
+            valueGetter: ({ data }) => data.cashiers.length || '',
             minWidth: 100,
           },
         ]}

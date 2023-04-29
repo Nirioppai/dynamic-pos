@@ -3,6 +3,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   // orderBy,
   query,
@@ -16,6 +17,8 @@ import { ProductSchema } from '~/schemas';
 import { createGenericService } from '~/utils';
 
 const productInstanceRef = collection(db, KEYS.products);
+
+const storeInstanceKey = KEYS.storeInstances;
 
 const mapData = (data: any) =>
   //@ts-ignore
@@ -40,6 +43,18 @@ export const productsService = {
     const data = await getDocs(q);
     return mapData(data);
   },
+
+  getProductsInsideStore: async (
+    // ownerId: string,
+    storeId: string
+  ): Promise<any> => {
+    const docRef = doc(db, storeInstanceKey, storeId);
+    const docSnap = await getDoc(docRef);
+    const docData = docSnap.data() || '';
+
+    return docData;
+  },
+
   postOne: async (product: ProductSchema): Promise<any> => {
     const data = await addDoc(productInstanceRef, product);
 
@@ -48,11 +63,15 @@ export const productsService = {
       _id: data.id,
       ...product,
     };
-    // check if user has product instance credits available
-    // check if product name is already taken
-    // if not, create empty products object too
-    // return stor product
-    // initializee
+  },
+  postOneInsideStore: async (product: ProductSchema): Promise<any> => {
+    const data = await addDoc(productInstanceRef, product);
+
+    return {
+      // @ts-ignore
+      _id: data.id,
+      ...product,
+    };
   },
   archiveOne: async (storeId: string): Promise<any> => {
     const data = await deleteDoc(doc(db, KEYS.products, storeId));

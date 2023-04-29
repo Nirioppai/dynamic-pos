@@ -20,12 +20,19 @@ import { usePutMutation } from '~/hooks';
 import { BaseSchema, StoreSchema, storeSchema } from '~/schemas';
 import { storesService2 } from '~/services';
 
-const EditEquipmentModal: FC<
-  DialogProps & {
-    data: BaseSchema & StoreSchema;
-    setData: (data: BaseSchema & StoreSchema) => void;
-  }
-> = ({ data, setData, onClose, ...rest }) => {
+type CombinedProps = DialogProps & {
+  data: BaseSchema & StoreSchema;
+  setData: (data: BaseSchema & StoreSchema) => void;
+  disableWrite?: boolean;
+};
+
+const EditEquipmentModal: FC<CombinedProps> = ({
+  data,
+  setData,
+  onClose,
+  disableWrite,
+  ...rest
+}) => {
   const { mutateAsync } = usePutMutation({
     queryKey: KEYS.storeInstances,
     mutationFn: storesService2.putOne,
@@ -57,7 +64,12 @@ const EditEquipmentModal: FC<
             },
             {
               name: 'Products',
-              content: <StoreProductsGrid storeId={data._id} />,
+              content: (
+                <StoreProductsGrid
+                  storeId={data._id}
+                  disableWrite={disableWrite}
+                />
+              ),
             },
             {
               name: 'Services',

@@ -48,6 +48,12 @@ const OwnerServicesGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
             cellStyle: { fontWeight: 500 },
           },
           {
+            field: '_id',
+            headerName: 'ID',
+
+            minWidth: 250,
+          },
+          {
             field: 'price',
             headerName: 'Price',
 
