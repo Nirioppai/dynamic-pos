@@ -1,21 +1,24 @@
 import {
   addDoc,
+  arrayUnion,
   collection,
   deleteDoc,
   doc,
   getDocs,
   // orderBy,
   query,
-  // updateDoc,
+  updateDoc,
   where,
 } from 'firebase/firestore';
 
 import { db } from '~/configs';
 import { KEYS } from '~/constants';
-import { ProductSchema } from '~/schemas';
+import { ServiceSchema } from '~/schemas';
 import { createGenericService } from '~/utils';
 
 const serviceInstanceRef = collection(db, KEYS.services);
+
+const storeInstanceKey = KEYS.storeInstances;
 
 const mapData = (data: any) =>
   //@ts-ignore
@@ -24,7 +27,7 @@ const mapData = (data: any) =>
     ...doc.data(),
   }));
 
-export const serviceService2 = createGenericService<ProductSchema>(
+export const serviceService2 = createGenericService<ServiceSchema>(
   KEYS.services
 );
 
@@ -40,7 +43,7 @@ export const servicesService = {
     const data = await getDocs(q);
     return mapData(data);
   },
-  postOne: async (service: ProductSchema): Promise<any> => {
+  postOne: async (service: ServiceSchema): Promise<any> => {
     const data = await addDoc(serviceInstanceRef, service);
 
     return {
@@ -53,6 +56,19 @@ export const servicesService = {
     // if not, create empty services object too
     // return stor service
     // initializee
+  },
+  postOneInsideStore: async (service: ServiceSchema): Promise<any> => {
+    const data = await addDoc(serviceInstanceRef, service);
+    const storeId = service.storeId;
+    // @ts-ignore
+    const docRef = doc(db, storeInstanceKey, storeId);
+    // Update service stores array and insert ID of newly created service
+    await updateDoc(docRef, { services: arrayUnion(data.id) });
+    return {
+      // @ts-ignore
+      _id: data.id,
+      ...service,
+    };
   },
   archiveOne: async (storeId: string): Promise<any> => {
     const data = await deleteDoc(doc(db, KEYS.services, storeId));

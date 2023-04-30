@@ -21,7 +21,7 @@ const StoreProductsGrid: FC<StoreProductsGridProps> = ({
   const queries = useQueries([
     {
       queryKey: KEYS.storeInstances,
-      queryFn: () => storesService.getProductsInsideStore(storeId),
+      queryFn: () => storesService.getEntitiesInsideStore(storeId),
     },
     {
       queryKey: KEYS.products,

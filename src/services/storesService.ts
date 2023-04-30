@@ -41,7 +41,7 @@ export const storesService = {
     const data = await getDocs(q);
     return mapData(data);
   },
-  getProductsInsideStore: async (
+  getEntitiesInsideStore: async (
     // ownerId: string,
     storeId: string
   ): Promise<any> => {

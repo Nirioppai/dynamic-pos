@@ -10,6 +10,7 @@ export const serviceSchema = z.object({
   category: z.string(),
   // Tax
   availability: z.enum(['Available', 'Unavailable']),
+  storeId: z.string().optional(),
   // Add ons
   // Combinations
   // Restrictions
