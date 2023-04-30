@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import type { DialogProps } from '@mui/material';
+import { setRecoil } from 'recoil-nexus';
 
 import {
   StoreCashierGrid,
@@ -15,6 +16,7 @@ import {
   FullScreenDialog,
   TabWithContent,
 } from '~/components';
+import { selectedStore } from '~/configs';
 import { KEYS } from '~/constants';
 import { usePutMutation } from '~/hooks';
 import { BaseSchema, StoreSchema, storeSchema } from '~/schemas';
@@ -42,6 +44,8 @@ const EditEquipmentModal: FC<CombinedProps> = ({
 
   const onSubmit = async (values: StoreSchema) =>
     await mutateAsync({ id: _id, item: { ...defaultValues, ...values } });
+
+  setRecoil(selectedStore, data._id);
 
   return (
     <>

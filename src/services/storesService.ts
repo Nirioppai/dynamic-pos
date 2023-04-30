@@ -3,6 +3,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   // orderBy,
   query,
@@ -16,7 +17,7 @@ import { StoreSchema } from '~/schemas';
 import { createGenericService } from '~/utils';
 
 const storeInstanceRef = collection(db, KEYS.storeInstances);
-
+const storeInstanceKey = KEYS.storeInstances;
 const mapData = (data: any) =>
   //@ts-ignore
   data.docs.map((doc) => ({
@@ -39,6 +40,16 @@ export const storesService = {
 
     const data = await getDocs(q);
     return mapData(data);
+  },
+  getProductsInsideStore: async (
+    // ownerId: string,
+    storeId: string
+  ): Promise<any> => {
+    const docRef = doc(db, storeInstanceKey, storeId);
+    const docSnap = await getDoc(docRef);
+    const docData = docSnap.data() || '';
+
+    return docData;
   },
   postOne: async (store: StoreSchema): Promise<any> => {
     const data = await addDoc(storeInstanceRef, store);

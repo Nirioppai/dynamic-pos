@@ -1,13 +1,13 @@
 import {
   addDoc,
+  arrayUnion,
   collection,
   deleteDoc,
   doc,
-  getDoc,
   getDocs,
   // orderBy,
   query,
-  // updateDoc,
+  updateDoc,
   where,
 } from 'firebase/firestore';
 
@@ -44,18 +44,7 @@ export const productsService = {
     return mapData(data);
   },
 
-  getProductsInsideStore: async (
-    // ownerId: string,
-    storeId: string
-  ): Promise<any> => {
-    const docRef = doc(db, storeInstanceKey, storeId);
-    const docSnap = await getDoc(docRef);
-    const docData = docSnap.data() || '';
-
-    return docData;
-  },
-
-  postOne: async (product: ProductSchema): Promise<any> => {
+  postOne: async (product: Omit<ProductSchema, 'storeId'>): Promise<any> => {
     const data = await addDoc(productInstanceRef, product);
 
     return {
@@ -66,7 +55,11 @@ export const productsService = {
   },
   postOneInsideStore: async (product: ProductSchema): Promise<any> => {
     const data = await addDoc(productInstanceRef, product);
-
+    const storeId = product.storeId;
+    // @ts-ignore
+    const docRef = doc(db, storeInstanceKey, storeId);
+    // Update product stores array and insert ID of newly created product
+    await updateDoc(docRef, { products: arrayUnion(data.id) });
     return {
       // @ts-ignore
       _id: data.id,

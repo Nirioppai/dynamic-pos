@@ -8,6 +8,7 @@ export const productSchema = z.object({
   description: z.string().optional(),
   availability: z.enum(['Available', 'Unavailable']),
   category: z.string().optional(),
+  storeId: z.string().optional(),
   // Inventory Levels
   // Manufacturer / Supplier
   // Dimensions

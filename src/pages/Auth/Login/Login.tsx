@@ -64,7 +64,6 @@ const Login: FC<LoginProps> = ({ userType }) => {
       console.error(e.message);
     }
 
-    console.log(values);
     // TODO: LOGIN SERVICE
     // try {
     //   // pag yung current route is pang supervisor tapos yung usertype faculty, throw error

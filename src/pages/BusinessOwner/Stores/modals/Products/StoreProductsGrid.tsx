@@ -2,10 +2,12 @@ import { FC } from 'react';
 
 import { useQueries } from 'react-query';
 
+import { AddOwnerProductModal } from './modals';
+
 import { DynamicAgGrid } from '~/components';
 import { auth } from '~/configs';
 import { KEYS } from '~/constants';
-import { productsService } from '~/services';
+import { productsService, storesService } from '~/services';
 
 type StoreProductsGridProps = {
   disableWrite?: boolean;
@@ -19,7 +21,7 @@ const StoreProductsGrid: FC<StoreProductsGridProps> = ({
   const queries = useQueries([
     {
       queryKey: KEYS.storeInstances,
-      queryFn: () => productsService.getProductsInsideStore(storeId),
+      queryFn: () => storesService.getProductsInsideStore(storeId),
     },
     {
       queryKey: KEYS.products,
@@ -30,23 +32,32 @@ const StoreProductsGrid: FC<StoreProductsGridProps> = ({
   const storeProducts = queries[0].data || [];
   const products = queries[1].data || [];
 
-  console.log('products: ', products);
-  // @ts-ignore
-  const productIds = [];
-  storeProducts.map((product: any) => {
-    productIds.push(product.products);
+  const productIdsFilter = products.map((item: any) => item._id);
+
+  const updatedStoreProducts = storeProducts.map((storeProduct: any) => {
+    return {
+      ...storeProduct,
+      products: productIdsFilter,
+    };
   });
+
+  console.log('storeProducts', storeProducts);
+  console.log('products', products);
+
+  // @ts-ignore
+  const productIds = updatedStoreProducts.map(
+    (product: any) => product.products
+  );
 
   const filteredProducts = products.filter((product: any) => {
     const id = product._id;
-    // @ts-ignore
     return productIds[0].includes(id);
   });
 
-  console.log(filteredProducts);
-
+  // @ts-ignore
   const isLoading = queries.some((q) => q.isLoading);
-  // const isSuccess = queries.every((q) => q.isSuccess);
+
+  // @ts-ignore
   const isError = queries.some((q) => q.isError);
 
   return (
@@ -78,12 +89,12 @@ const StoreProductsGrid: FC<StoreProductsGridProps> = ({
         isLoading={isLoading}
         isError={isError}
         actions={{
-          add: disableWrite,
+          add: !disableWrite,
           edit: disableWrite,
           archive: disableWrite,
         }}
         // onArchive={async (row) => await archiveEntry(row._id)}
-        // AddModal={AddOwnerProductModal}
+        AddModal={AddOwnerProductModal}
         // EditModal={EditOwnerProductModal}
       />
     </>

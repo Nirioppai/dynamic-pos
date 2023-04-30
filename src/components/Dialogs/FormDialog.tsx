@@ -66,6 +66,8 @@ export const FormDialog = <S, Z extends ZodSchema<any, any>>({
     formContext.reset(defaultValues);
   }, [defaultValues, formContext]);
 
+  // console.log('open: ', open);
+
   return (
     <Dialog
       open={open}

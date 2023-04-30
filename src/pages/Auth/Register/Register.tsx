@@ -27,8 +27,6 @@ function Register() {
         variant: 'error',
       });
     }
-
-    await console.log(values);
   };
 
   return (
