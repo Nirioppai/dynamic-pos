@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 
 import { useQueries } from 'react-query';
 
@@ -7,7 +7,7 @@ import { AddOwnerProductModal } from './modals';
 import { DynamicAgGrid } from '~/components';
 import { auth } from '~/configs';
 import { KEYS } from '~/constants';
-import { productsService, storesService } from '~/services';
+import { productsService } from '~/services';
 
 type StoreProductsGridProps = {
   disableWrite?: boolean;
@@ -18,41 +18,46 @@ const StoreProductsGrid: FC<StoreProductsGridProps> = ({
   disableWrite,
   storeId,
 }) => {
+  console.log('current Store ID: ', storeId);
+
   const queries = useQueries([
-    {
-      queryKey: KEYS.storeInstances,
-      queryFn: () => storesService.getEntitiesInsideStore(storeId),
-    },
     {
       queryKey: KEYS.products,
       queryFn: () => productsService.getProducts(auth?.currentUser?.uid || ''),
     },
   ]);
 
-  const storeProducts = queries[0].data || [];
-  const products = queries[1].data || [];
+  const products = useMemo(() => queries[0].data || [], [queries]);
 
-  const productIdsFilter = products.map((item: any) => item._id);
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
-  const updatedStoreProducts = storeProducts.map((storeProduct: any) => {
-    return {
-      ...storeProduct,
-      products: productIdsFilter,
+  useEffect(() => {
+    const fetchData = async () => {
+      // @ts-ignore
+      const filteredProducts = products.filter((product) => {
+        return (
+          product.storesAssigned && product.storesAssigned.includes(storeId)
+        );
+      });
+      setFilteredProducts(filteredProducts);
     };
-  });
 
-  console.log('storeProducts', storeProducts);
-  console.log('products', products);
+    fetchData();
+  }, [products, storeId]);
+
+  // console.log(tryData);
 
   // @ts-ignore
-  const productIds = updatedStoreProducts.map(
-    (product: any) => product.products
-  );
+  // const storeIds = storeProducts.map((product: any) => product.products);
 
-  const filteredProducts = products.filter((product: any) => {
-    const id = product._id;
-    return productIds[0].includes(id);
-  });
+  // const filteredProducts = products.filter((product: any) => {
+  //   const id = product._id;
+  //   return storeIds[0].includes(id);
+  // });
+
+  console.log('products', products);
+
+  console.log('filteredProducts: ', filteredProducts);
 
   // @ts-ignore
   const isLoading = queries.some((q) => q.isLoading);
@@ -62,7 +67,6 @@ const StoreProductsGrid: FC<StoreProductsGridProps> = ({
 
   return (
     <>
-      {' '}
       <DynamicAgGrid
         rowData={filteredProducts}
         columnDefs={[

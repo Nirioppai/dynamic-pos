@@ -17,7 +17,7 @@ import { ProductSchema } from '~/schemas';
 import { createGenericService } from '~/utils';
 
 const productInstanceRef = collection(db, KEYS.products);
-
+const productInstanceKey = KEYS.products;
 const storeInstanceKey = KEYS.storeInstances;
 
 const mapData = (data: any) =>
@@ -57,9 +57,12 @@ export const productsService = {
     const data = await addDoc(productInstanceRef, product);
     const storeId = product.storeId;
     // @ts-ignore
-    const docRef = doc(db, storeInstanceKey, storeId);
+
+    const storeRef = doc(db, storeInstanceKey, storeId);
+    const productRef = doc(db, productInstanceKey, data.id);
     // Update product stores array and insert ID of newly created product
-    await updateDoc(docRef, { products: arrayUnion(data.id) });
+    await updateDoc(storeRef, { products: arrayUnion(data.id) });
+    await updateDoc(productRef, { storesAssigned: arrayUnion(storeId) });
     return {
       // @ts-ignore
       _id: data.id,

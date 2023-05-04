@@ -41,10 +41,7 @@ export const storesService = {
     const data = await getDocs(q);
     return mapData(data);
   },
-  getEntitiesInsideStore: async (
-    // ownerId: string,
-    storeId: string
-  ): Promise<any> => {
+  getEntitiesInsideStore: async (storeId: string): Promise<any> => {
     const docRef = doc(db, storeInstanceKey, storeId);
     const docSnap = await getDoc(docRef);
     const docData = docSnap.data() || '';
