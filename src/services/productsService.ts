@@ -43,6 +43,16 @@ export const productsService = {
     const data = await getDocs(q);
     return mapData(data);
   },
+  getProductsInStore: async (storeId: string): Promise<any> => {
+    const q = query(
+      productInstanceRef,
+      where('storesAssigned', 'array-contains', storeId)
+      // orderBy('timestamp', 'desc')
+    );
+
+    const data = await getDocs(q);
+    return mapData(data);
+  },
 
   postOne: async (product: Omit<ProductSchema, 'storeId'>): Promise<any> => {
     const data = await addDoc(productInstanceRef, product);
