@@ -82,8 +82,6 @@ export const productsService = {
   archiveOne: async (storeId: string): Promise<any> => {
     const data = await deleteDoc(doc(db, KEYS.products, storeId));
 
-    // throw new Error('WEW');
-
     return data;
   },
 };

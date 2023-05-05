@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from 'react';
+import { FC, PropsWithChildren, useEffect } from 'react';
 
 import { useQueries } from 'react-query';
 
@@ -27,6 +27,11 @@ const StoresGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
   const isLoading = queries.some((q) => q.isLoading);
   // const isSuccess = queries.every((q) => q.isSuccess);
   const isError = queries.some((q) => q.isError);
+
+  useEffect(() => {
+    queries.forEach((q) => q.refetch());
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // MUTATIONS
 

@@ -1,8 +1,11 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
+
+import { useQueries } from 'react-query';
 
 import { AddOwnerProductModal } from './modals';
 
 import { DynamicAgGrid } from '~/components';
+import { KEYS } from '~/constants';
 import { productsService } from '~/services';
 
 type StoreProductsGridProps = {
@@ -14,24 +17,34 @@ const StoreProductsGrid: FC<StoreProductsGridProps> = ({
   disableWrite,
   storeId,
 }) => {
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  console.log('current Store ID: ', storeId);
+
+  const queries = useQueries([
+    {
+      queryKey: KEYS.products,
+      queryFn: () => productsService.getProductsInStore(storeId || ''),
+    },
+  ]);
+
+  const products = queries[0].data || [];
+
+  // @ts-ignore
+  const isLoading = queries.some((q) => q.isLoading);
+
+  console.log('products: ', products);
+
+  // @ts-ignore
+  const isError = queries.some((q) => q.isError);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const currentProducts = await productsService.getProductsInStore(
-        storeId || ''
-      );
-
-      setFilteredProducts(currentProducts);
-    };
-
-    fetchData();
-  }, [storeId]);
+    queries.forEach((q) => q.refetch());
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
       <DynamicAgGrid
-        rowData={filteredProducts}
+        rowData={products}
         columnDefs={[
           {
             field: 'name',
@@ -53,6 +66,8 @@ const StoreProductsGrid: FC<StoreProductsGridProps> = ({
             minWidth: 250,
           },
         ]}
+        isLoading={isLoading}
+        isError={isError}
         actions={{
           add: !disableWrite,
           edit: disableWrite,
