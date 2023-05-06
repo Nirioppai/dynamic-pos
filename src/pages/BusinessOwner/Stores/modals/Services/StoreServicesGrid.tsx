@@ -5,9 +5,8 @@ import { useQueries } from 'react-query';
 import { AddOwnerServiceModal } from './modals';
 
 import { DynamicAgGrid } from '~/components';
-import { auth } from '~/configs';
 import { KEYS } from '~/constants';
-import { servicesService, storesService } from '~/services';
+import { servicesService } from '~/services';
 
 type StoreServicesGridProps = {
   disableWrite?: boolean;
@@ -18,44 +17,21 @@ const StoreServicesGrid: FC<StoreServicesGridProps> = ({
   disableWrite,
   storeId,
 }) => {
+  console.log('current Store ID: ', storeId);
+
   const queries = useQueries([
     {
-      queryKey: KEYS.storeInstances,
-      queryFn: () => storesService.getEntitiesInsideStore(storeId),
-    },
-    {
       queryKey: KEYS.services,
-      queryFn: () => servicesService.getServices(auth?.currentUser?.uid || ''),
+      queryFn: () => servicesService.getServicesInStore(storeId || ''),
     },
   ]);
 
-  const storeServices = queries[0].data || [];
-  const services = queries[1].data || [];
-
-  const serviceIdsFilter = services.map((item: any) => item._id);
-
-  const updatedStoreServices = storeServices.map((storeService: any) => {
-    return {
-      ...storeService,
-      services: serviceIdsFilter,
-    };
-  });
-
-  console.log('storeServices', storeServices);
-  console.log('services', services);
-
-  // @ts-ignore
-  const serviceIds = updatedStoreServices.map(
-    (service: any) => service.services
-  );
-
-  const filteredServices = services.filter((service: any) => {
-    const id = service._id;
-    return serviceIds[0].includes(id);
-  });
+  const services = queries[0].data || [];
 
   // @ts-ignore
   const isLoading = queries.some((q) => q.isLoading);
+
+  console.log('services: ', services);
 
   // @ts-ignore
   const isError = queries.some((q) => q.isError);
@@ -67,9 +43,8 @@ const StoreServicesGrid: FC<StoreServicesGridProps> = ({
 
   return (
     <>
-      {' '}
       <DynamicAgGrid
-        rowData={filteredServices}
+        rowData={services}
         columnDefs={[
           {
             field: 'name',

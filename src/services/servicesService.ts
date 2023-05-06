@@ -17,7 +17,7 @@ import { ServiceSchema } from '~/schemas';
 import { createGenericService } from '~/utils';
 
 const serviceInstanceRef = collection(db, KEYS.services);
-
+const serviceInstanceKey = KEYS.services;
 const storeInstanceKey = KEYS.storeInstances;
 
 const mapData = (data: any) =>
@@ -43,6 +43,16 @@ export const servicesService = {
     const data = await getDocs(q);
     return mapData(data);
   },
+  getServicesInStore: async (storeId: string): Promise<any> => {
+    const q = query(
+      serviceInstanceRef,
+      where('storesAssigned', 'array-contains', storeId)
+      // orderBy('timestamp', 'desc')
+    );
+
+    const data = await getDocs(q);
+    return mapData(data);
+  },
   postOne: async (service: ServiceSchema): Promise<any> => {
     const data = await addDoc(serviceInstanceRef, service);
 
@@ -61,9 +71,11 @@ export const servicesService = {
     const data = await addDoc(serviceInstanceRef, service);
     const storeId = service.storeId;
     // @ts-ignore
-    const docRef = doc(db, storeInstanceKey, storeId);
+    const storeRef = doc(db, storeInstanceKey, storeId);
+    const serviceRef = doc(db, serviceInstanceKey, data.id);
     // Update service stores array and insert ID of newly created service
-    await updateDoc(docRef, { services: arrayUnion(data.id) });
+    await updateDoc(storeRef, { services: arrayUnion(data.id) });
+    await updateDoc(serviceRef, { storesAssigned: arrayUnion(storeId) });
     return {
       // @ts-ignore
       _id: data.id,
