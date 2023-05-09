@@ -72,8 +72,8 @@ const StoresGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
           },
           {
             field: 'name',
-            headerName: 'Categories',
-            valueGetter: ({ data }) => data?.categories?.length || '0',
+            headerName: 'Product Categories',
+            valueGetter: ({ data }) => data?.productCategories?.length || '0',
             minWidth: 100,
           },
           {

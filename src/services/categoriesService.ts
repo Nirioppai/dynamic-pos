@@ -99,7 +99,7 @@ export const categoriesService = {
     const storeRef = doc(db, storeInstanceKey, storeId);
     const productCategoryRef = doc(db, productCategoryInstanceKey, data.id);
     // Update productCategory stores array and insert ID of newly created productCategory
-    await updateDoc(storeRef, { productCategorys: arrayUnion(data.id) });
+    await updateDoc(storeRef, { productCategories: arrayUnion(data.id) });
     await updateDoc(productCategoryRef, {
       storesAssigned: arrayUnion(storeId),
     });

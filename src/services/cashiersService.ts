@@ -1,12 +1,13 @@
 import {
   addDoc,
+  arrayUnion,
   collection,
   deleteDoc,
   doc,
   getDocs,
   // orderBy,
   query,
-  // updateDoc,
+  updateDoc,
   where,
 } from 'firebase/firestore';
 
@@ -16,6 +17,9 @@ import { CashierSchema } from '~/schemas';
 import { createGenericService } from '~/utils';
 
 const cashierInstanceRef = collection(db, KEYS.cashiers);
+const cashierInstanceKey = KEYS.cashiers;
+
+const storeInstanceKey = KEYS.storeInstances;
 
 const mapData = (data: any) =>
   //@ts-ignore
@@ -40,6 +44,16 @@ export const cashiersService = {
     const data = await getDocs(q);
     return mapData(data);
   },
+  getCashiersInStore: async (storeId: string): Promise<any> => {
+    const q = query(
+      cashierInstanceRef,
+      where('storesAssigned', 'array-contains', storeId)
+      // orderBy('timestamp', 'desc')
+    );
+
+    const data = await getDocs(q);
+    return mapData(data);
+  },
   postOne: async (cashier: CashierSchema): Promise<any> => {
     const data = await addDoc(cashierInstanceRef, cashier);
 
@@ -53,6 +67,23 @@ export const cashiersService = {
     // if not, create empty cashiers object too
     // return stor cashier
     // initializee
+  },
+  postOneCashierInsideStore: async (cashier: CashierSchema): Promise<any> => {
+    const data = await addDoc(cashierInstanceRef, cashier);
+    const storeId = cashier.storeId;
+    // @ts-ignore
+    const storeRef = doc(db, storeInstanceKey, storeId);
+    const cashierRef = doc(db, cashierInstanceKey, data.id);
+    // Update cashier stores array and insert ID of newly created cashier
+    await updateDoc(storeRef, { cashiers: arrayUnion(data.id) });
+    await updateDoc(cashierRef, {
+      storesAssigned: arrayUnion(storeId),
+    });
+    return {
+      // @ts-ignore
+      _id: data.id,
+      ...cashier,
+    };
   },
   archiveOne: async (storeId: string): Promise<any> => {
     const data = await deleteDoc(doc(db, KEYS.cashiers, storeId));
