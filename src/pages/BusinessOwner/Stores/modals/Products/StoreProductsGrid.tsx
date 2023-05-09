@@ -66,11 +66,15 @@ const StoreProductsGrid: FC<StoreProductsGridProps> = ({
         isError={isError}
         actions={{
           add: !disableWrite,
+          addAnother: !disableWrite,
           edit: disableWrite,
           archive: disableWrite,
         }}
+        addText='Add New Product'
+        addAnotherText='Add From Existing Products'
         // onArchive={async (row) => await archiveEntry(row._id)}
         AddModal={AddOwnerProductModal}
+        AddAnotherModal={AddOwnerProductModal}
         // EditModal={EditOwnerProductModal}
       />
     </>

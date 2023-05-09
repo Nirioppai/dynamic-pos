@@ -38,6 +38,11 @@ interface AddModalProps {
   [key: string]: any;
 }
 
+interface AddAnotherModalProps<T> extends AddModalProps {
+  data: T;
+  setData?: Dispatch<SetStateAction<T | null>>;
+}
+
 interface EditModalProps<T> extends AddModalProps {
   data: T;
   setData?: Dispatch<SetStateAction<T | null>>;
@@ -55,12 +60,16 @@ interface DynamicAgGridProps<T> extends AgGridReactProps {
   // CRUD
   actions?: {
     add?: boolean;
+    addAnother?: boolean;
     edit?: boolean;
     view?: boolean;
     archive?: boolean;
   };
+  addText?: string;
+  addAnotherText?: string;
   actionsProps?: {
     add?: ButtonProps;
+    addAnother: ButtonProps;
     edit?: IconButtonProps;
     view?: IconButtonProps;
     archive?: IconButtonProps;
@@ -69,9 +78,11 @@ interface DynamicAgGridProps<T> extends AgGridReactProps {
   onArchive?: (row: T) => any | Promise<any>;
   selectedItemNameGetter?: (row: T) => string;
   AddModal?: FC<any>;
+  AddAnotherModal?: FC<any>;
   EditModal?: FC<any>;
   ViewModal?: FC<any>;
   AddModalProps?: Partial<AddModalProps>;
+  AddAnotherModalProps?: Partial<AddAnotherModalProps<T>>;
   EditModalProps?: Partial<EditModalProps<T>>;
   ViewModalProps?: Partial<ViewModalProps<T>>;
   // AG Grid
@@ -93,9 +104,13 @@ const DynamicAgGrid = <T extends { _id: string }>({
   isError,
   // CRUD
   actions,
+  addText = 'Add',
+  addAnotherText = 'Add',
   actionsProps,
   AddModal,
   AddModalProps,
+  AddAnotherModal,
+  AddAnotherModalProps,
   EditModal,
   EditModalProps,
   ViewModal,
@@ -115,6 +130,11 @@ const DynamicAgGrid = <T extends { _id: string }>({
   const [addModalOpen, setAddModalOpen] = useState(false);
   const openAddModal = () => setAddModalOpen(true);
   const closeAddModal = () => setAddModalOpen(false);
+
+  // add another modal
+  const [addAnotherModalOpen, setAddAnotherModalOpen] = useState(false);
+  const openAddAnotherModal = () => setAddAnotherModalOpen(true);
+  const closeAddAnotherModal = () => setAddAnotherModalOpen(false);
 
   // edit modal
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -253,7 +273,20 @@ const DynamicAgGrid = <T extends { _id: string }>({
                 // disabled={!canModify}
                 {...actionsProps?.add}
               >
-                Add
+                {addText}
+              </Button>
+            </Grid>
+          )}
+          {actions?.addAnother && (
+            <Grid item sm='auto'>
+              <Button
+                variant='contained'
+                startIcon={<PlusIcon />}
+                onClick={openAddAnotherModal}
+                // disabled={!canModify}
+                {...actionsProps?.addAnother}
+              >
+                {addAnotherText}
               </Button>
             </Grid>
           )}
@@ -288,6 +321,13 @@ const DynamicAgGrid = <T extends { _id: string }>({
           open={addModalOpen}
           onClose={closeAddModal}
           {...AddModalProps}
+        />
+      )}
+      {AddAnotherModal && actions?.addAnother && (
+        <AddAnotherModal
+          open={addAnotherModalOpen}
+          onClose={closeAddAnotherModal}
+          {...AddAnotherModalProps}
         />
       )}
       {selectedRow && (

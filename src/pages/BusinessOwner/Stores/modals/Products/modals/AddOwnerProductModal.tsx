@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import type { DialogProps } from '@mui/material';
+import { useQueries } from 'react-query';
 import { getRecoil } from 'recoil-nexus';
 
 import BusinessOwnerProductModalForm from './BusinessOwnerProductModalForm';
@@ -15,6 +16,41 @@ import { productsService } from '~/services';
 const AddOwnerProductModal: FC<DialogProps> = ({ onClose, ...rest }) => {
   const storeId = getRecoil(selectedStore);
 
+  const queries = useQueries([
+    {
+      queryKey: 'allProducts',
+      queryFn: () => productsService.getProducts(auth?.currentUser?.uid || ''),
+    },
+    {
+      queryKey: 'storeProducts',
+      queryFn: () => productsService.getProductsInStore(storeId || ''),
+    },
+  ]);
+
+  const allProducts = queries[0].data || [];
+  const storeProducts = queries[1].data || [];
+
+  function getUnassignedProducts(
+    storeProducts: ProductSchema,
+    allProducts: ProductSchema
+  ) {
+    // @ts-ignore
+    const unassignedProducts = allProducts.filter((product: ProductSchema) => {
+      // @ts-ignore
+      return !storeProducts.some(
+        // @ts-ignore
+        (storeProduct) => storeProduct._id === product._id
+      );
+    });
+    return unassignedProducts;
+  }
+
+  console.log('all products under user: ', allProducts);
+  console.log('products inside store: ', storeProducts);
+
+  const unassignedProducts = getUnassignedProducts(storeProducts, allProducts);
+
+  console.log('unassignedProducts: ', unassignedProducts);
   const { mutateAsync } = usePostMutation({
     queryKey: KEYS.products,
     mutationFn: productsService.postOneInsideStore,

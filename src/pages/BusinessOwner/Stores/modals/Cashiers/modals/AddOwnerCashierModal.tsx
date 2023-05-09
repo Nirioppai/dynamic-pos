@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import type { DialogProps } from '@mui/material';
+import { Grid } from '@mui/material';
 import { getRecoil } from 'recoil-nexus';
 
 import BusinessOwnerCashierModalForm from './BusinessOwnerCashierModalForm';
@@ -24,6 +25,7 @@ const AddOwnerCashierModal: FC<DialogProps> = ({ onClose, ...rest }) => {
   return (
     <FormDialog
       title='Add Cashier'
+      maxWidth={'md'}
       defaultValues={{
         name: '',
         ownerId: auth?.currentUser?.uid,
@@ -35,7 +37,14 @@ const AddOwnerCashierModal: FC<DialogProps> = ({ onClose, ...rest }) => {
       onClose={onClose}
       {...rest}
     >
-      <BusinessOwnerCashierModalForm />
+      <Grid container spacing={2} columns={16}>
+        <Grid item xs={8}>
+          <BusinessOwnerCashierModalForm />
+        </Grid>
+        <Grid item xs={8}>
+          OR
+        </Grid>
+      </Grid>
     </FormDialog>
   );
 };

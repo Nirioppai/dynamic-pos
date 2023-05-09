@@ -40,6 +40,7 @@ export const FormDialog = <S, Z extends ZodSchema<any, any>>({
   schema,
   onFormSubmit,
   submitText = 'Submit',
+  maxWidth = 'xs',
   onClose,
   children,
   open,
@@ -70,6 +71,7 @@ export const FormDialog = <S, Z extends ZodSchema<any, any>>({
 
   return (
     <Dialog
+      maxWidth={maxWidth}
       open={open}
       onClose={handleClose}
       disableEscapeKeyDown={isSubmitting}

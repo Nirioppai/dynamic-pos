@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import type { DialogProps } from '@mui/material';
+import { Grid } from '@mui/material';
 import { getRecoil } from 'recoil-nexus';
 
 import BusinessOwnerProductCategoryModalForm from './BusinessOwnerProductCategoryModalForm';
@@ -29,6 +30,7 @@ const AddOwnerProductCategoryModal: FC<DialogProps> = ({
   return (
     <FormDialog
       title='Add Product Category'
+      maxWidth={'md'}
       defaultValues={{
         ownerId: auth?.currentUser?.uid,
         name: '',
@@ -41,7 +43,14 @@ const AddOwnerProductCategoryModal: FC<DialogProps> = ({
       onClose={onClose}
       {...rest}
     >
-      <BusinessOwnerProductCategoryModalForm />
+      <Grid container spacing={2} columns={16}>
+        <Grid item xs={8}>
+          <BusinessOwnerProductCategoryModalForm />
+        </Grid>
+        <Grid item xs={8}>
+          OR
+        </Grid>
+      </Grid>
     </FormDialog>
   );
 };

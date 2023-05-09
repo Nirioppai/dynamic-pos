@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import type { DialogProps } from '@mui/material';
+import { Grid } from '@mui/material';
 import { getRecoil } from 'recoil-nexus';
 
 import BusinessOwnerServiceModalForm from './BusinessOwnerServiceModalForm';
@@ -25,6 +26,7 @@ const AddOwnerServiceModal: FC<DialogProps> = ({ onClose, ...rest }) => {
   return (
     <FormDialog
       title='Add Service'
+      maxWidth={'md'}
       defaultValues={{
         ownerId: auth?.currentUser?.uid,
         name: '',
@@ -41,7 +43,14 @@ const AddOwnerServiceModal: FC<DialogProps> = ({ onClose, ...rest }) => {
       onClose={onClose}
       {...rest}
     >
-      <BusinessOwnerServiceModalForm />
+      <Grid container spacing={2} columns={16}>
+        <Grid item xs={8}>
+          <BusinessOwnerServiceModalForm />
+        </Grid>
+        <Grid item xs={8}>
+          OR
+        </Grid>
+      </Grid>
     </FormDialog>
   );
 };
