@@ -17,8 +17,6 @@ const StoreCashierGrid: FC<StoreCashiersGridProps> = ({
   disableWrite,
   storeId,
 }) => {
-  console.log('current Store ID: ', storeId);
-
   const queries = useQueries([
     {
       queryKey: KEYS.cashiers,
@@ -30,8 +28,6 @@ const StoreCashierGrid: FC<StoreCashiersGridProps> = ({
 
   // @ts-ignore
   const isLoading = queries.some((q) => q.isLoading);
-
-  console.log('cashiers: ', cashiers);
 
   // @ts-ignore
   const isError = queries.some((q) => q.isError);
@@ -56,12 +52,6 @@ const StoreCashierGrid: FC<StoreCashiersGridProps> = ({
           {
             field: '_id',
             headerName: 'ID',
-
-            minWidth: 250,
-          },
-          {
-            field: 'price',
-            headerName: 'Price',
 
             minWidth: 250,
           },

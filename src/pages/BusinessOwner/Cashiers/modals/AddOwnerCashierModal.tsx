@@ -26,7 +26,7 @@ const AddOwnerCashierModal: FC<DialogProps> = ({ onClose, ...rest }) => {
         name: '',
         ownerId: auth?.currentUser?.uid,
       }}
-      schema={cashierSchema}
+      schema={cashierSchema.omit({ email: true })}
       onFormSubmit={onSubmit}
       submitText='Add'
       onClose={onClose}

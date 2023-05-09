@@ -17,8 +17,6 @@ const StoreServicesGrid: FC<StoreServicesGridProps> = ({
   disableWrite,
   storeId,
 }) => {
-  console.log('current Store ID: ', storeId);
-
   const queries = useQueries([
     {
       queryKey: KEYS.services,
@@ -30,8 +28,6 @@ const StoreServicesGrid: FC<StoreServicesGridProps> = ({
 
   // @ts-ignore
   const isLoading = queries.some((q) => q.isLoading);
-
-  console.log('services: ', services);
 
   // @ts-ignore
   const isError = queries.some((q) => q.isError);

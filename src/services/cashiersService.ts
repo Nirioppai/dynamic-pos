@@ -1,17 +1,21 @@
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import {
   addDoc,
   arrayUnion,
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   // orderBy,
   query,
+  serverTimestamp,
+  setDoc,
   updateDoc,
   where,
 } from 'firebase/firestore';
 
-import { db } from '~/configs';
+import { auth, db } from '~/configs';
 import { KEYS } from '~/constants';
 import { CashierSchema } from '~/schemas';
 import { createGenericService } from '~/utils';
@@ -32,8 +36,80 @@ export const cashiersService2 = createGenericService<CashierSchema>(
   KEYS.cashiers
 );
 
+function getFirstWord(sentence: string) {
+  const index = sentence.indexOf(' '); // Find the index of the first space
+  if (index === -1) {
+    return sentence; // If there is no space, return the entire sentence
+  } else {
+    return sentence.substr(0, index); // Otherwise, return the substring before the first space
+  }
+}
+
+const createUser = async (
+  email: string,
+  name: string,
+  password: string,
+  userType: string
+) => {
+  try {
+    const result = await createUserWithEmailAndPassword(auth, email, password);
+    const user = result.user;
+
+    const docRef = doc(db, KEYS.users, user.uid);
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) {
+      await setDoc(docRef, {
+        name: name,
+        email: user.email,
+        userType: userType,
+        timestamp: serverTimestamp(),
+      });
+    }
+
+    const userDetails = {
+      id: user,
+    };
+    return {
+      ...user,
+      userDetails,
+    };
+  } catch (err: any) {
+    throw new Error(err?.message || err);
+  }
+};
+
+async function createCashier(
+  storeId: string,
+  cashierName: string,
+  cashierPassword: string
+) {
+  // @ts-ignore
+  try {
+    const docRef = doc(db, storeInstanceKey, storeId);
+    const docSnap = await getDoc(docRef);
+    const docData = docSnap.data() || '';
+
+    console.log('cashier password: ', cashierPassword);
+
+    await createUser(
+      // @ts-ignore
+      `${docData.name.split(' ').join('')}${getFirstWord(
+        cashierName
+      )}@gmail.com`,
+      cashierName,
+      cashierPassword,
+      'cashier'
+    );
+  } catch (e) {
+    console.error(e);
+    throw new Error(e);
+  }
+}
+
 export const cashiersService = {
   // GET STORES WHERE USERREF = CURRENTLY LOGGED IN USER
+
   getCashiers: async (ownerId: string): Promise<any> => {
     const q = query(
       cashierInstanceRef,
@@ -55,7 +131,26 @@ export const cashiersService = {
     return mapData(data);
   },
   postOne: async (cashier: CashierSchema): Promise<any> => {
-    const data = await addDoc(cashierInstanceRef, cashier);
+    // @ts-ignore
+    const docRef = doc(db, storeInstanceKey, cashier.storeId);
+    const docSnap = await getDoc(docRef);
+    const docData = docSnap.data() || '';
+
+    const newCashier = {
+      name: cashier.name,
+      ownerId: cashier.ownerId,
+      // @ts-ignore
+      email: `${docData.name.split(' ').join('')}${getFirstWord(
+        cashier.name
+      )}@gmail.com`,
+      password: cashier.password,
+      storeId: cashier.storeId,
+    };
+
+    const data = await addDoc(cashierInstanceRef, newCashier);
+
+    // @ts-ignore
+    createCashier(cashier.storeId, cashier.name, cashier.password);
 
     return {
       // @ts-ignore
@@ -79,6 +174,10 @@ export const cashiersService = {
     await updateDoc(cashierRef, {
       storesAssigned: arrayUnion(storeId),
     });
+
+    // @ts-ignore
+    createCashier(storeId, cashier.name, cashier.password);
+
     return {
       // @ts-ignore
       _id: data.id,

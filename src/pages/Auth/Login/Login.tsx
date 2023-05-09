@@ -58,9 +58,10 @@ const Login: FC<LoginProps> = ({ userType }) => {
   const onSubmit = async (values: LoginSchema) => {
     try {
       await signIn(values.email, values.password);
-      navigate('/businessOwner/stores');
+      navigate(`/${userType.value}`);
     } catch (e) {
       enqueueSnackbar('Something went wrong.', { variant: 'error' });
+      // @ts-ignore
       console.error(e.message);
     }
 

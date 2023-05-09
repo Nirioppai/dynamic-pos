@@ -17,8 +17,6 @@ const StoreProductCategoriesGrid: FC<StoreProductCategoriesGridProps> = ({
   disableWrite,
   storeId,
 }) => {
-  console.log('current Store ID: ', storeId);
-
   const queries = useQueries([
     {
       queryKey: KEYS.productCategories,
@@ -31,8 +29,6 @@ const StoreProductCategoriesGrid: FC<StoreProductCategoriesGridProps> = ({
 
   // @ts-ignore
   const isLoading = queries.some((q) => q.isLoading);
-
-  console.log('productCategories: ', productCategories);
 
   // @ts-ignore
   const isError = queries.some((q) => q.isError);
@@ -57,12 +53,6 @@ const StoreProductCategoriesGrid: FC<StoreProductCategoriesGridProps> = ({
           {
             field: '_id',
             headerName: 'ID',
-
-            minWidth: 250,
-          },
-          {
-            field: 'price',
-            headerName: 'Price',
 
             minWidth: 250,
           },
