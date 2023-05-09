@@ -4,6 +4,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   // orderBy,
   query,
@@ -66,6 +67,7 @@ export const productsService = {
   postOneInsideStore: async (product: ProductSchema): Promise<any> => {
     const data = await addDoc(productInstanceRef, product);
     const storeId = product.storeId;
+
     // @ts-ignore
 
     const storeRef = doc(db, storeInstanceKey, storeId);
@@ -80,6 +82,40 @@ export const productsService = {
     };
   },
   // gawa ng bagong post para sa adding from existing
+  postOneExistingProductInsideStore: async (
+    product: ProductSchema
+  ): Promise<any> => {
+    console.log(product);
+    const storeId = product.storeId;
+
+    const docRef = doc(db, productInstanceKey, product.name);
+    const docSnap = await getDoc(docRef);
+    const docData = docSnap.data() || '';
+
+    console.log('docData: ', docData);
+
+    // @ts-ignore
+    const storeRef = doc(db, storeInstanceKey, storeId);
+    const productRef = doc(db, productInstanceKey, product.name);
+
+    await updateDoc(storeRef, { products: arrayUnion(product.name) });
+    await updateDoc(productRef, { storesAssigned: arrayUnion(storeId) });
+
+    return {
+      // @ts-ignore
+      _id: product.name,
+      // @ts-ignore
+      category: docData.category,
+      // @ts-ignore
+      price: docData.price,
+      // @ts-ignore
+      name: docData.name,
+      // @ts-ignore
+      description: docData.description,
+      // @ts-ignore
+      ownerId: docData.ownerId,
+    };
+  },
   archiveOne: async (storeId: string): Promise<any> => {
     const data = await deleteDoc(doc(db, KEYS.products, storeId));
 

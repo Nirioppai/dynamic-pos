@@ -1,10 +1,9 @@
 import { FC } from 'react';
 
 import type { DialogProps } from '@mui/material';
+import { SelectElement } from 'react-hook-form-mui';
 import { useQueries } from 'react-query';
 import { getRecoil } from 'recoil-nexus';
-
-import BusinessOwnerProductModalForm from './BusinessOwnerProductModalForm';
 
 import { FormDialog } from '~/components';
 import { auth, selectedStore } from '~/configs';
@@ -13,7 +12,7 @@ import { usePostMutation } from '~/hooks';
 import { ProductSchema, productSchema } from '~/schemas';
 import { productsService } from '~/services';
 
-const AddOwnerProductModal: FC<DialogProps> = ({ onClose, ...rest }) => {
+const AddExistingProductModal: FC<DialogProps> = ({ onClose, ...rest }) => {
   const storeId = getRecoil(selectedStore);
 
   const queries = useQueries([
@@ -47,10 +46,9 @@ const AddOwnerProductModal: FC<DialogProps> = ({ onClose, ...rest }) => {
 
   const unassignedProducts = getUnassignedProducts(storeProducts, allProducts);
 
-  console.log('unassignedProducts: ', unassignedProducts);
   const { mutateAsync } = usePostMutation({
     queryKey: KEYS.products,
-    mutationFn: productsService.postOneInsideStore,
+    mutationFn: productsService.postOneExistingProductInsideStore,
   });
 
   const onSubmit = async (values: ProductSchema) => {
@@ -59,7 +57,7 @@ const AddOwnerProductModal: FC<DialogProps> = ({ onClose, ...rest }) => {
 
   return (
     <FormDialog
-      title='Add New Product'
+      title='Add From Existing Products'
       defaultValues={{
         ownerId: auth?.currentUser?.uid,
         name: '',
@@ -76,9 +74,16 @@ const AddOwnerProductModal: FC<DialogProps> = ({ onClose, ...rest }) => {
       onClose={onClose}
       {...rest}
     >
-      <BusinessOwnerProductModalForm />
+      <SelectElement
+        name='name'
+        label='Product Name'
+        valueKey='_id'
+        labelKey='name'
+        options={unassignedProducts}
+        required
+      />
     </FormDialog>
   );
 };
 
-export default AddOwnerProductModal;
+export default AddExistingProductModal;

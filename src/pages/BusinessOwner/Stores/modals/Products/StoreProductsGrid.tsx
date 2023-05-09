@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react';
 
 import { useQueries } from 'react-query';
 
-import { AddOwnerProductModal } from './modals';
+import { AddExistingProductModal, AddOwnerProductModal } from './modals';
 
 import { DynamicAgGrid } from '~/components';
 import { KEYS } from '~/constants';
@@ -74,7 +74,7 @@ const StoreProductsGrid: FC<StoreProductsGridProps> = ({
         addAnotherText='Add From Existing Products'
         // onArchive={async (row) => await archiveEntry(row._id)}
         AddModal={AddOwnerProductModal}
-        AddAnotherModal={AddOwnerProductModal}
+        AddAnotherModal={AddExistingProductModal}
         // EditModal={EditOwnerProductModal}
       />
     </>

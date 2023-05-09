@@ -90,8 +90,6 @@ async function createCashier(
     const docSnap = await getDoc(docRef);
     const docData = docSnap.data() || '';
 
-    console.log('cashier password: ', cashierPassword);
-
     await createUser(
       // @ts-ignore
       `${docData.name.split(' ').join('')}${getFirstWord(
