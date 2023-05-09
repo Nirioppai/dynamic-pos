@@ -79,6 +79,7 @@ export const productsService = {
       ...product,
     };
   },
+  // gawa ng bagong post para sa adding from existing
   archiveOne: async (storeId: string): Promise<any> => {
     const data = await deleteDoc(doc(db, KEYS.products, storeId));
 
