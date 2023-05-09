@@ -132,6 +132,9 @@ export const cashiersService = {
   },
   postOne: async (cashier: CashierSchema): Promise<any> => {
     // @ts-ignore
+    createCashier(cashier.storeId, cashier.name, cashier.password);
+
+    // @ts-ignore
     const docRef = doc(db, storeInstanceKey, cashier.storeId);
     const docSnap = await getDoc(docRef);
     const docData = docSnap.data() || '';
@@ -149,9 +152,6 @@ export const cashiersService = {
 
     const data = await addDoc(cashierInstanceRef, newCashier);
 
-    // @ts-ignore
-    createCashier(cashier.storeId, cashier.name, cashier.password);
-
     return {
       // @ts-ignore
       _id: data.id,
@@ -164,8 +164,13 @@ export const cashiersService = {
     // initializee
   },
   postOneCashierInsideStore: async (cashier: CashierSchema): Promise<any> => {
-    const data = await addDoc(cashierInstanceRef, cashier);
     const storeId = cashier.storeId;
+
+    // @ts-ignore
+    createCashier(storeId, cashier.name, cashier.password);
+
+    const data = await addDoc(cashierInstanceRef, cashier);
+
     // @ts-ignore
     const storeRef = doc(db, storeInstanceKey, storeId);
     const cashierRef = doc(db, cashierInstanceKey, data.id);
@@ -174,9 +179,6 @@ export const cashiersService = {
     await updateDoc(cashierRef, {
       storesAssigned: arrayUnion(storeId),
     });
-
-    // @ts-ignore
-    createCashier(storeId, cashier.name, cashier.password);
 
     return {
       // @ts-ignore
