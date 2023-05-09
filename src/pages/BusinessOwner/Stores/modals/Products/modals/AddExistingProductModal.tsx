@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 
 import type { DialogProps } from '@mui/material';
 import { SelectElement } from 'react-hook-form-mui';
@@ -28,6 +28,11 @@ const AddExistingProductModal: FC<DialogProps> = ({ onClose, ...rest }) => {
 
   const allProducts = queries[0].data || [];
   const storeProducts = queries[1].data || [];
+
+  useEffect(() => {
+    queries.forEach((q) => q.refetch());
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function getUnassignedProducts(
     storeProducts: ProductSchema,
@@ -79,7 +84,11 @@ const AddExistingProductModal: FC<DialogProps> = ({ onClose, ...rest }) => {
         label='Product Name'
         valueKey='_id'
         labelKey='name'
-        options={unassignedProducts}
+        options={
+          unassignedProducts.length !== 0
+            ? unassignedProducts
+            : [{ name: 'No Options' }]
+        }
         required
       />
     </FormDialog>

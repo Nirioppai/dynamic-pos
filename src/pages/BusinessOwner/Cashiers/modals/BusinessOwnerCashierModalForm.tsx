@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { SelectElement, TextFieldElement } from 'react-hook-form-mui';
 import { useQueries } from 'react-query';
 
@@ -13,6 +15,11 @@ const BusinessOwnerCashierModalForm = () => {
   ]);
 
   const stores = queries[0].data || [];
+
+  useEffect(() => {
+    queries.forEach((q) => q.refetch());
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <>
       <TextFieldElement name='name' label='Cashier Name' required />

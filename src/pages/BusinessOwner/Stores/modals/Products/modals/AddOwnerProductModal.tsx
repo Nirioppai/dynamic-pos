@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 
 import type { DialogProps } from '@mui/material';
 import { useQueries } from 'react-query';
@@ -29,6 +29,11 @@ const AddOwnerProductModal: FC<DialogProps> = ({ onClose, ...rest }) => {
 
   const allProducts = queries[0].data || [];
   const storeProducts = queries[1].data || [];
+
+  useEffect(() => {
+    queries.forEach((q) => q.refetch());
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function getUnassignedProducts(
     storeProducts: ProductSchema,
