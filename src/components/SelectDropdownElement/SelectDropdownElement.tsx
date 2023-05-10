@@ -16,6 +16,7 @@ type NumberFieldElementProps = Omit<TextFieldProps, 'name'> & {
   valueKey?: string;
   labelKey?: string;
   type?: 'string' | 'number';
+  margin?: 'none' | 'normal' | 'dense';
   objectOnChange?: boolean;
   onChange?: (value: any) => void;
   control?: Control<any>;
@@ -35,6 +36,7 @@ const SelectDropdownElement = ({
   onChange,
   required,
   control,
+  margin,
   ...rest
 }: NumberFieldElementProps) => {
   if (required) {
@@ -54,6 +56,7 @@ const SelectDropdownElement = ({
       objectOnChange={objectOnChange}
       onChange={onChange}
       required={required}
+      margin={margin}
       {...rest}
     />
   );
