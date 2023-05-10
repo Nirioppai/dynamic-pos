@@ -1,6 +1,7 @@
 export { default as App } from './App';
 export { Spinner } from './Spinner';
 export { default as AuthBase } from './AuthBase';
+export { default as SelectDropdownElement } from './SelectDropdownElement';
 export { default as FormContainer } from './FormContainer';
 export { default as UserWrapper } from './UserWrapper';
 export { default as PageContentWrapper } from './PageContentWrapper';

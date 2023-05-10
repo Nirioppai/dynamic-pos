@@ -1,11 +1,10 @@
 import { FC, useEffect } from 'react';
 
 import type { DialogProps } from '@mui/material';
-import { SelectElement } from 'react-hook-form-mui';
 import { useQueries } from 'react-query';
 import { getRecoil } from 'recoil-nexus';
 
-import { FormDialog } from '~/components';
+import { FormDialog, SelectDropdownElement } from '~/components';
 import { auth, selectedStore } from '~/configs';
 import { KEYS } from '~/constants';
 import { usePostMutation } from '~/hooks';
@@ -79,16 +78,12 @@ const AddExistingProductModal: FC<DialogProps> = ({ onClose, ...rest }) => {
       onClose={onClose}
       {...rest}
     >
-      <SelectElement
+      <SelectDropdownElement
         name='name'
         label='Product Name'
         valueKey='_id'
         labelKey='name'
-        options={
-          unassignedProducts.length !== 0
-            ? unassignedProducts
-            : [{ name: 'No Options' }]
-        }
+        options={unassignedProducts}
         required
       />
     </FormDialog>

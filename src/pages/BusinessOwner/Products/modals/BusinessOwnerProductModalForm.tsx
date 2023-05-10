@@ -1,13 +1,13 @@
-import { SelectElement, TextFieldElement } from 'react-hook-form-mui';
+import { TextFieldElement } from 'react-hook-form-mui';
 
-import { NumberFieldElement } from '~/components';
+import { NumberFieldElement, SelectDropdownElement } from '~/components';
 
 const BusinessOwnerProductModalForm = () => (
   <>
     <TextFieldElement name='name' label='Product Name' required />
     <NumberFieldElement name='price' label='Price' required />
     <TextFieldElement name='description' label='Description' />
-    <SelectElement
+    <SelectDropdownElement
       name='availability'
       label='Availability'
       labelKey='id'
