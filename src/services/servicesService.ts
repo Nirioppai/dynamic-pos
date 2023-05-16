@@ -4,6 +4,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   // orderBy,
   query,
@@ -80,6 +81,40 @@ export const servicesService = {
       // @ts-ignore
       _id: data.id,
       ...service,
+    };
+  },
+  postOneExistingServiceInsideStore: async (
+    service: ServiceSchema
+  ): Promise<any> => {
+    console.log(service);
+    const storeId = service.storeId;
+
+    const docRef = doc(db, serviceInstanceKey, service.name);
+    const docSnap = await getDoc(docRef);
+    const docData = docSnap.data() || '';
+
+    console.log('docData: ', docData);
+
+    // @ts-ignore
+    const storeRef = doc(db, storeInstanceKey, storeId);
+    const serviceRef = doc(db, serviceInstanceKey, service.name);
+
+    await updateDoc(storeRef, { services: arrayUnion(service.name) });
+    await updateDoc(serviceRef, { storesAssigned: arrayUnion(storeId) });
+
+    return {
+      // @ts-ignore
+      _id: service.name,
+      // @ts-ignore
+      category: docData.category,
+      // @ts-ignore
+      price: docData.price,
+      // @ts-ignore
+      name: docData.name,
+      // @ts-ignore
+      description: docData.description,
+      // @ts-ignore
+      ownerId: docData.ownerId,
     };
   },
   archiveOne: async (storeId: string): Promise<any> => {

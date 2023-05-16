@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react';
 
 import { useQueries } from 'react-query';
 
-import { AddOwnerServiceModal } from './modals';
+import { AddExistingServiceModal, AddOwnerServiceModal } from './modals';
 
 import { DynamicAgGrid } from '~/components';
 import { KEYS } from '~/constants';
@@ -66,11 +66,15 @@ const StoreServicesGrid: FC<StoreServicesGridProps> = ({
         isError={isError}
         actions={{
           add: !disableWrite,
+          addAnother: !disableWrite,
           edit: disableWrite,
           archive: disableWrite,
         }}
+        addText='Add New Service'
+        addAnotherText='Add From Existing Services'
         // onArchive={async (row) => await archiveEntry(row._id)}
         AddModal={AddOwnerServiceModal}
+        AddAnotherModal={AddExistingServiceModal}
         // EditModal={EditOwnerServiceModal}
       />
     </>
