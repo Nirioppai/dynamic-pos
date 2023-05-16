@@ -184,6 +184,40 @@ export const cashiersService = {
       ...cashier,
     };
   },
+  postOneExistingCashierInsideStore: async (
+    cashier: CashierSchema
+  ): Promise<any> => {
+    console.log(cashier);
+    const storeId = cashier.storeId;
+
+    const docRef = doc(db, cashierInstanceKey, cashier.name);
+    const docSnap = await getDoc(docRef);
+    const docData = docSnap.data() || '';
+
+    console.log('docData: ', docData);
+
+    // @ts-ignore
+    const storeRef = doc(db, storeInstanceKey, storeId);
+    const cashierRef = doc(db, cashierInstanceKey, cashier.name);
+
+    await updateDoc(storeRef, { cashiers: arrayUnion(cashier.name) });
+    await updateDoc(cashierRef, { storesAssigned: arrayUnion(storeId) });
+
+    return {
+      // @ts-ignore
+      _id: cashier.name,
+      // @ts-ignore
+      category: docData.category,
+      // @ts-ignore
+      price: docData.price,
+      // @ts-ignore
+      name: docData.name,
+      // @ts-ignore
+      description: docData.description,
+      // @ts-ignore
+      ownerId: docData.ownerId,
+    };
+  },
   archiveOne: async (storeId: string): Promise<any> => {
     const data = await deleteDoc(doc(db, KEYS.cashiers, storeId));
 
