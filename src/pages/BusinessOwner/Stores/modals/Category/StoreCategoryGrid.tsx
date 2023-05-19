@@ -50,12 +50,6 @@ const StoreProductCategoriesGrid: FC<StoreProductCategoriesGridProps> = ({
             minWidth: 200,
             cellStyle: { fontWeight: 500 },
           },
-          {
-            field: '_id',
-            headerName: 'ID',
-
-            minWidth: 250,
-          },
         ]}
         isLoading={isLoading}
         isError={isError}

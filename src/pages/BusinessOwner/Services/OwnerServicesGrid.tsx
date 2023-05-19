@@ -52,15 +52,29 @@ const OwnerServicesGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
             minWidth: 200,
             cellStyle: { fontWeight: 500 },
           },
+
           {
-            field: '_id',
-            headerName: 'ID',
+            field: 'price',
+            headerName: 'Price',
+
+            minWidth: 100,
+          },
+
+          {
+            field: 'category',
+            headerName: 'Category',
+
+            minWidth: 150,
+          },
+          {
+            field: 'description',
+            headerName: 'Description',
 
             minWidth: 250,
           },
           {
-            field: 'price',
-            headerName: 'Price',
+            field: 'availability',
+            headerName: 'Availability',
 
             minWidth: 250,
           },
