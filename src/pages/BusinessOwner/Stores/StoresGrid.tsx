@@ -24,6 +24,8 @@ const StoresGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
 
   const stores = queries[0].data || [];
 
+  console.log('stores: ', stores);
+
   const isLoading = queries.some((q) => q.isLoading);
   // const isSuccess = queries.every((q) => q.isSuccess);
   const isError = queries.some((q) => q.isError);

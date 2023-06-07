@@ -5,6 +5,7 @@ import type { InputBaseProps } from '@mui/material';
 import { Close as CloseIcon, Magnify as MagnifyIcon } from 'mdi-material-ui';
 
 interface ContainedSearchbarProps extends InputBaseProps {
+  maxWidth?: number | string;
   clearable?: boolean;
   onClear?: () => void;
 }
@@ -13,6 +14,7 @@ const ContainedSearchbar: FC<ContainedSearchbarProps> = ({
   value,
   placeholder = 'Search',
   clearable = true,
+  maxWidth = 400,
   onClear,
   ...rest
 }) => {
@@ -24,7 +26,7 @@ const ContainedSearchbar: FC<ContainedSearchbarProps> = ({
     <Paper
       sx={(theme) => ({
         position: 'relative',
-        maxWidth: 400,
+        maxWidth: { maxWidth },
         px: 2,
         py: 0.75,
         '&:focus-within': {

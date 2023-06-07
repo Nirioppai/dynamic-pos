@@ -39,6 +39,7 @@ interface UserWrapperProps {
 }
 
 import { businessOwnerDrawerItems } from './businessOwnerDrawerItems';
+import { cashierDrawerItems } from './cashierDrawerItems';
 import { systemAdministratorDrawerItems } from './systemAdministratorDrawerItems';
 
 import { APP_NAME } from '~/constants';
@@ -161,7 +162,7 @@ const UserWrapper: FC<PropsWithChildren<UserWrapperProps>> = ({
   const drawerItems =
     {
       systemAdministrator: systemAdministratorDrawerItems,
-
+      cashier: cashierDrawerItems,
       businessOwner: businessOwnerDrawerItems,
     }[userType] || [];
 

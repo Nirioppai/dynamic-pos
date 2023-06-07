@@ -52,6 +52,16 @@ const OwnerCashiersGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
             minWidth: 200,
             cellStyle: { fontWeight: 500 },
           },
+          {
+            field: 'email',
+            headerName: 'Email',
+            minWidth: 200,
+          },
+          {
+            field: 'password',
+            headerName: 'Password',
+            minWidth: 200,
+          },
         ]}
         isLoading={isLoading}
         isError={isError}

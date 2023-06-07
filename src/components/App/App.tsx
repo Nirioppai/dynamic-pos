@@ -13,7 +13,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { theme } from './theme';
 
 import { APP_NAME } from '~/constants';
-import { AuthContextProvider } from '~/contexts';
+import { AuthContextProvider, AuthContextProvider2 } from '~/contexts';
 import { AppRoutes } from '~/routes';
 
 const queryClient = new QueryClient({
@@ -38,35 +38,37 @@ const onClickDismiss = (key: any) => () => {
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
-      <AuthContextProvider>
-        <CssBaseline />
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <HelmetProvider>
-            <Helmet
-              titleTemplate={`%s - ${APP_NAME}`}
-              defaultTitle={APP_NAME}
-            />
-            <SnackbarProvider
-              ref={notistackRef}
-              action={(key) => (
-                <IconButton
-                  onClick={onClickDismiss(key)}
-                  sx={{ color: 'white' }}
-                >
-                  <CloseIcon />
-                </IconButton>
-              )}
-            >
-              <QueryClientProvider client={queryClient}>
-                <BrowserRouter>
-                  <AppRoutes />
-                </BrowserRouter>
-                <ReactQueryDevtools />
-              </QueryClientProvider>
-            </SnackbarProvider>
-          </HelmetProvider>
-        </LocalizationProvider>
-      </AuthContextProvider>
+      <AuthContextProvider2>
+        <AuthContextProvider>
+          <CssBaseline />
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <HelmetProvider>
+              <Helmet
+                titleTemplate={`%s - ${APP_NAME}`}
+                defaultTitle={APP_NAME}
+              />
+              <SnackbarProvider
+                ref={notistackRef}
+                action={(key) => (
+                  <IconButton
+                    onClick={onClickDismiss(key)}
+                    sx={{ color: 'white' }}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                )}
+              >
+                <QueryClientProvider client={queryClient}>
+                  <BrowserRouter>
+                    <AppRoutes />
+                  </BrowserRouter>
+                  <ReactQueryDevtools />
+                </QueryClientProvider>
+              </SnackbarProvider>
+            </HelmetProvider>
+          </LocalizationProvider>
+        </AuthContextProvider>
+      </AuthContextProvider2>
     </ThemeProvider>
   );
 };

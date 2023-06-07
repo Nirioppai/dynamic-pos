@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signOut } from 'firebase/auth';
 import {
   addDoc,
   arrayUnion,
@@ -15,12 +15,12 @@ import {
   where,
 } from 'firebase/firestore';
 
-import { auth, db } from '~/configs';
+import { auth, auth2, db2 } from '~/configs';
 import { KEYS } from '~/constants';
 import { CashierSchema } from '~/schemas';
 import { createGenericService } from '~/utils';
 
-const cashierInstanceRef = collection(db, KEYS.cashiers);
+const cashierInstanceRef = collection(db2, KEYS.cashiers);
 const cashierInstanceKey = KEYS.cashiers;
 
 const storeInstanceKey = KEYS.storeInstances;
@@ -36,15 +36,18 @@ export const cashiersService2 = createGenericService<CashierSchema>(
   KEYS.cashiers
 );
 
-function getFirstWord(sentence: string) {
-  const index = sentence.indexOf(' '); // Find the index of the first space
-  if (index === -1) {
-    return sentence; // If there is no space, return the entire sentence
-  } else {
-    return sentence.substr(0, index); // Otherwise, return the substring before the first space
-  }
+// Utility functions
+function removeSpaces(sentence: string) {
+  return sentence.replace(/\s/g, '');
 }
 
+function generateFourRandomNumbers() {
+  return Array.from({ length: 4 }, () => Math.floor(Math.random() * 10)).join(
+    ''
+  );
+}
+
+// User creation logic
 const createUser = async (
   email: string,
   name: string,
@@ -52,58 +55,71 @@ const createUser = async (
   userType: string
 ) => {
   try {
-    const result = await createUserWithEmailAndPassword(auth, email, password);
-    const user = result.user;
+    const { user } = await createUserWithEmailAndPassword(
+      auth2,
+      email,
+      password
+    );
 
-    const docRef = doc(db, KEYS.users, user.uid);
-    const docSnap = await getDoc(docRef);
+    if (user) {
+      const docRef = doc(db2, KEYS.users, user.uid);
+      const docSnap = await getDoc(docRef);
 
-    if (!docSnap.exists()) {
-      await setDoc(docRef, {
-        name: name,
-        email: user.email,
-        userType: userType,
-        timestamp: serverTimestamp(),
-      });
+      if (!docSnap.exists()) {
+        await setDoc(docRef, {
+          name: name,
+          email: user.email,
+          userType: userType,
+          timestamp: serverTimestamp(),
+        });
+      }
+
+      return user;
     }
 
-    const userDetails = {
-      id: user,
-    };
-    return {
-      ...user,
-      userDetails,
-    };
-  } catch (err: any) {
-    throw new Error(err?.message || err);
+    throw new Error('User creation failed');
+  } catch (err) {
+    console.error(err);
+    throw new Error(err.message || 'Unknown error during user creation');
   }
 };
 
-async function createCashier(
+// Cashier creation logic
+const createCashier = async (
   storeId: string,
   cashierName: string,
-  cashierPassword: string
-) {
-  // @ts-ignore
+  cashierPassword: string,
+  randomNumber: string
+) => {
   try {
-    const docRef = doc(db, storeInstanceKey, storeId);
+    const docRef = doc(db2, storeInstanceKey, storeId);
     const docSnap = await getDoc(docRef);
     const docData = docSnap.data() || '';
 
-    await createUser(
-      // @ts-ignore
-      `${docData.name.split(' ').join('')}${getFirstWord(
-        cashierName
-      )}@gmail.com`,
+    // @ts-ignore
+    const email = `${removeSpaces(docData.name)}${removeSpaces(
+      cashierName
+    )}${randomNumber}@gmail.com`;
+
+    const user = await createUser(
+      email,
       cashierName,
       cashierPassword,
       'cashier'
     );
+
+    console.log('User created with ID: ', user.uid);
+
+    const newUser = {
+      id: user.uid,
+      ...user,
+    };
+    return newUser;
   } catch (e) {
     console.error(e);
-    throw new Error(e);
+    throw new Error(e.message || 'Unknown error during cashier creation');
   }
-}
+};
 
 export const cashiersService = {
   // GET STORES WHERE USERREF = CURRENTLY LOGGED IN USER
@@ -112,6 +128,17 @@ export const cashiersService = {
     const q = query(
       cashierInstanceRef,
       where('ownerId', '==', ownerId)
+      // orderBy('timestamp', 'desc')
+    );
+
+    const data = await getDocs(q);
+    return mapData(data);
+  },
+  getLoggedInCashier: async (): Promise<any> => {
+    const cashierId = auth.currentUser?.uid || '';
+    const q = query(
+      cashierInstanceRef,
+      where('cashierId', '==', cashierId)
       // orderBy('timestamp', 'desc')
     );
 
@@ -129,11 +156,19 @@ export const cashiersService = {
     return mapData(data);
   },
   postOne: async (cashier: CashierSchema): Promise<any> => {
-    // @ts-ignore
-    createCashier(cashier.storeId, cashier.name, cashier.password);
+    const storeId = cashier.storeId;
+    const randomNumber = generateFourRandomNumbers();
+
+    const newCashierUser = await createCashier(
+      // @ts-ignore
+      storeId,
+      cashier.name,
+      cashier.password,
+      randomNumber
+    );
 
     // @ts-ignore
-    const docRef = doc(db, storeInstanceKey, cashier.storeId);
+    const docRef = doc(db2, storeInstanceKey, cashier.storeId);
     const docSnap = await getDoc(docRef);
     const docData = docSnap.data() || '';
 
@@ -141,19 +176,35 @@ export const cashiersService = {
       name: cashier.name,
       ownerId: cashier.ownerId,
       // @ts-ignore
-      email: `${docData.name.split(' ').join('')}${getFirstWord(
+      email: `${docData.name.split(' ').join('')}${removeSpaces(
         cashier.name
-      )}@gmail.com`,
+      )}${randomNumber}@gmail.com`,
       password: cashier.password,
       storeId: cashier.storeId,
     };
 
+    console.log('newCashier', newCashierUser);
+
     const data = await addDoc(cashierInstanceRef, newCashier);
+
+    // @ts-ignore
+    const storeRef = doc(db2, storeInstanceKey, storeId);
+    const cashierRef = doc(db2, cashierInstanceKey, data.id);
+
+    // @ts-ignore
+    await updateDoc(storeRef, { cashiers: arrayUnion(newCashierUser.id) });
+    await updateDoc(cashierRef, {
+      // @ts-ignore
+      cashierId: newCashierUser.uid,
+      storesAssigned: arrayUnion(storeId),
+    });
+
+    await signOut(auth2);
 
     return {
       // @ts-ignore
       _id: data.id,
-      ...cashier,
+      ...newCashier,
     };
     // check if user has cashier instance credits available
     // check if cashier name is already taken
@@ -170,13 +221,15 @@ export const cashiersService = {
     const data = await addDoc(cashierInstanceRef, cashier);
 
     // @ts-ignore
-    const storeRef = doc(db, storeInstanceKey, storeId);
-    const cashierRef = doc(db, cashierInstanceKey, data.id);
+    const storeRef = doc(db2, storeInstanceKey, storeId);
+    const cashierRef = doc(db2, cashierInstanceKey, data.id);
     // Update cashier stores array and insert ID of newly created cashier
     await updateDoc(storeRef, { cashiers: arrayUnion(data.id) });
     await updateDoc(cashierRef, {
       storesAssigned: arrayUnion(storeId),
     });
+
+    await signOut(auth2);
 
     return {
       // @ts-ignore
@@ -184,42 +237,8 @@ export const cashiersService = {
       ...cashier,
     };
   },
-  postOneExistingCashierInsideStore: async (
-    cashier: CashierSchema
-  ): Promise<any> => {
-    console.log(cashier);
-    const storeId = cashier.storeId;
-
-    const docRef = doc(db, cashierInstanceKey, cashier.name);
-    const docSnap = await getDoc(docRef);
-    const docData = docSnap.data() || '';
-
-    console.log('docData: ', docData);
-
-    // @ts-ignore
-    const storeRef = doc(db, storeInstanceKey, storeId);
-    const cashierRef = doc(db, cashierInstanceKey, cashier.name);
-
-    await updateDoc(storeRef, { cashiers: arrayUnion(cashier.name) });
-    await updateDoc(cashierRef, { storesAssigned: arrayUnion(storeId) });
-
-    return {
-      // @ts-ignore
-      _id: cashier.name,
-      // @ts-ignore
-      category: docData.category,
-      // @ts-ignore
-      price: docData.price,
-      // @ts-ignore
-      name: docData.name,
-      // @ts-ignore
-      description: docData.description,
-      // @ts-ignore
-      ownerId: docData.ownerId,
-    };
-  },
   archiveOne: async (storeId: string): Promise<any> => {
-    const data = await deleteDoc(doc(db, KEYS.cashiers, storeId));
+    const data = await deleteDoc(doc(db2, KEYS.cashiers, storeId));
 
     // throw new Error('WEW');
 

@@ -19,6 +19,8 @@ const AddStoreModal: FC<DialogProps> = ({ onClose, ...rest }) => {
 
   const onSubmit = async (values: StoreSchema) => await mutateAsync(values);
 
+  console.log('auth: ', auth?.currentUser);
+
   return (
     <FormDialog
       title='Add Store'

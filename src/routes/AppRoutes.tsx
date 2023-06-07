@@ -9,7 +9,8 @@ import {
   // NotFound,
   // ResetPassword,
 } from '~/pages';
-import { BusinessOwnerRoutes } from '~/routes';
+import { BusinessOwnerRoutes, CashierRoutes } from '~/routes';
+
 function AppRoutes() {
   return (
     <>
@@ -27,6 +28,7 @@ function AppRoutes() {
         ))}
         {/* USER TYPES */}
         <Route path='/businessOwner/*' element={<BusinessOwnerRoutes />} />
+        <Route path='/cashier/*' element={<CashierRoutes />} />
       </Routes>
     </>
   );

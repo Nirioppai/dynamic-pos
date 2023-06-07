@@ -93,6 +93,7 @@ interface DynamicAgGridProps<T> extends AgGridReactProps {
   heightTemplate?: 'no-sub' | 'tab';
   // permissions
   // disableWrite?: boolean;
+  searchBarWidth?: number | string;
 }
 
 const DynamicAgGrid = <T extends { _id: string }>({
@@ -119,6 +120,7 @@ const DynamicAgGrid = <T extends { _id: string }>({
   onArchive,
   selectedItemNameGetter,
   dynamicHeight,
+  searchBarWidth = 400,
   // permissions
   // disableWrite,
   // AG Grid extras
@@ -259,6 +261,7 @@ const DynamicAgGrid = <T extends { _id: string }>({
         <Grid container spacing={2} style={{ marginBottom: '1rem' }}>
           <Grid xs item>
             <ContainedSearchbar
+              maxWidth={searchBarWidth}
               value={quickFilterText}
               onChange={updateQuickFilterText}
               onClear={() => setQuickFilterText('')}

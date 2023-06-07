@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react';
 
 import { useQueries } from 'react-query';
 
-import { AddExistingCashierModal, AddOwnerCashierModal } from './modals';
+import { AddOwnerCashierModal } from './modals';
 
 import { DynamicAgGrid } from '~/components';
 import { KEYS } from '~/constants';
@@ -49,20 +49,29 @@ const StoreCashierGrid: FC<StoreCashiersGridProps> = ({
             minWidth: 200,
             cellStyle: { fontWeight: 500 },
           },
+          {
+            field: 'email',
+            headerName: 'Email',
+            minWidth: 200,
+          },
+          {
+            field: 'password',
+            headerName: 'Password',
+            minWidth: 200,
+          },
         ]}
         isLoading={isLoading}
         isError={isError}
         actions={{
           add: !disableWrite,
-          addAnother: !disableWrite,
+          addAnother: disableWrite,
           edit: disableWrite,
           archive: disableWrite,
         }}
-        addText='Add New Cashier'
-        addAnotherText='Add From Existing Cashiers'
+        addText='Add'
+        // addAnotherText='Add From Existing Cashiers'
         // onArchive={async (row) => await archiveEntry(row._id)}
         AddModal={AddOwnerCashierModal}
-        AddAnotherModal={AddExistingCashierModal}
         // EditModal={EditOwnerCashierModal}
       />
     </>
