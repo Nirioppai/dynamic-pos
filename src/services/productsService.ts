@@ -85,14 +85,11 @@ export const productsService = {
   postOneExistingProductInsideStore: async (
     product: ProductSchema
   ): Promise<any> => {
-    console.log(product);
     const storeId = product.storeId;
 
     const docRef = doc(db, productInstanceKey, product.name);
     const docSnap = await getDoc(docRef);
     const docData = docSnap.data() || '';
-
-    console.log('docData: ', docData);
 
     // @ts-ignore
     const storeRef = doc(db, storeInstanceKey, storeId);

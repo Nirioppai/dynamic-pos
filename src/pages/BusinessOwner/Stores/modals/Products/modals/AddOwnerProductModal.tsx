@@ -27,32 +27,31 @@ const AddOwnerProductModal: FC<DialogProps> = ({ onClose, ...rest }) => {
     },
   ]);
 
-  const allProducts = queries[0].data || [];
-  const storeProducts = queries[1].data || [];
+  // const allProducts = queries[0].data || [];
+  // const storeProducts = queries[1].data || [];
 
   useEffect(() => {
     queries.forEach((q) => q.refetch());
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function getUnassignedProducts(
-    storeProducts: ProductSchema,
-    allProducts: ProductSchema
-  ) {
-    // @ts-ignore
-    const unassignedProducts = allProducts.filter((product: ProductSchema) => {
-      // @ts-ignore
-      return !storeProducts.some(
-        // @ts-ignore
-        (storeProduct) => storeProduct._id === product._id
-      );
-    });
-    return unassignedProducts;
-  }
+  // function getUnassignedProducts(
+  //   storeProducts: ProductSchema,
+  //   allProducts: ProductSchema
+  // ) {
+  //   // @ts-ignore
+  //   const unassignedProducts = allProducts.filter((product: ProductSchema) => {
+  //     // @ts-ignore
+  //     return !storeProducts.some(
+  //       // @ts-ignore
+  //       (storeProduct) => storeProduct._id === product._id
+  //     );
+  //   });
+  //   return unassignedProducts;
+  // }
 
-  const unassignedProducts = getUnassignedProducts(storeProducts, allProducts);
+  // const unassignedProducts = getUnassignedProducts(storeProducts, allProducts);
 
-  console.log('unassignedProducts: ', unassignedProducts);
   const { mutateAsync } = usePostMutation({
     queryKey: KEYS.products,
     mutationFn: productsService.postOneInsideStore,

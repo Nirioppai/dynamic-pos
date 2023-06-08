@@ -9,7 +9,12 @@ import {
 
 import { Box, Button, Grid, IconButton, Paper } from '@mui/material';
 import type { ButtonProps, IconButtonProps } from '@mui/material';
-import { ColDef, ColGroupDef, GridReadyEvent } from 'ag-grid-community';
+import {
+  ColDef,
+  ColGroupDef,
+  GridReadyEvent,
+  ICellRendererParams,
+} from 'ag-grid-community';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
@@ -18,6 +23,7 @@ import {
   Archive as ArchiveIcon,
   EyeArrowRight as EyeArrowRightIcon,
   Pencil as PencilIcon,
+  PlusBox as PlusBoxIcon,
   Plus as PlusIcon,
 } from 'mdi-material-ui';
 
@@ -94,6 +100,7 @@ interface DynamicAgGridProps<T> extends AgGridReactProps {
   // permissions
   // disableWrite?: boolean;
   searchBarWidth?: number | string;
+  onRowClicked?: (event: any) => void;
 }
 
 const DynamicAgGrid = <T extends { _id: string }>({
@@ -121,6 +128,7 @@ const DynamicAgGrid = <T extends { _id: string }>({
   selectedItemNameGetter,
   dynamicHeight,
   searchBarWidth = 400,
+  onRowClicked,
   // permissions
   // disableWrite,
   // AG Grid extras
@@ -158,6 +166,30 @@ const DynamicAgGrid = <T extends { _id: string }>({
   // AG Grid
   const [gridApi, setGridApi] = useState<GridReadyEvent['api'] | null>(null);
   const [quickFilterText, setQuickFilterText] = useState('');
+
+  interface ButtonRendererProps extends ICellRendererParams {
+    onClick: (rowData: any) => void;
+    data: any;
+  }
+
+  const ButtonRenderer: React.FC<ButtonRendererProps> = ({ data, onClick }) => {
+    return (
+      <span className='ag-custom-font-override'>
+        <IconButton
+          size='small'
+          edge='end'
+          aria-label='archive row'
+          onClick={() => onClick(data)}
+        >
+          <PlusBoxIcon fontSize='small' />
+        </IconButton>
+      </span>
+    );
+  };
+
+  const frameworkComponents = {
+    buttonRenderer: ButtonRenderer,
+  };
 
   const onGridReady = (params: GridReadyEvent) => {
     setGridApi(params.api);
@@ -303,6 +335,8 @@ const DynamicAgGrid = <T extends { _id: string }>({
               enterMovesDownAfterEdit
               undoRedoCellEditing
               undoRedoCellEditingLimit={50}
+              onRowClicked={onRowClicked}
+              frameworkComponents={frameworkComponents}
               defaultColDef={{
                 sortable: true,
                 flex: 1,

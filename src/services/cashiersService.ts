@@ -108,8 +108,6 @@ const createCashier = async (
       'cashier'
     );
 
-    console.log('User created with ID: ', user.uid);
-
     const newUser = {
       id: user.uid,
       ...user,
@@ -182,8 +180,6 @@ export const cashiersService = {
       password: cashier.password,
       storeId: cashier.storeId,
     };
-
-    console.log('newCashier', newCashierUser);
 
     const data = await addDoc(cashierInstanceRef, newCashier);
 
