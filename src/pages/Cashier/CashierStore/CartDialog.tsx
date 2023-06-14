@@ -32,18 +32,30 @@ const Transition = forwardRef(function Transition(
   return <Slide direction='up' ref={ref} {...props} />;
 });
 
-interface CartDialogProps {
-  selectedItems: any[];
-  //   setSelectedItems: (products: any[]) => void;
+interface SelectedItem {
+  _id: string;
+  price: number;
+  category: string;
+  availability: string;
+  storesAssigned: string[];
+  name: string;
+  description: string;
+  ownerId: string;
 }
 
-const CartDialog: FC<CartDialogProps> = ({
-  selectedItems,
-  //   setSelectedItems,
-}) => {
-  const [open, setOpen] = useState(false);
+interface SelectedItemsListProps {
+  selectedItems: SelectedItem[];
+}
 
-  console.log('selectedItems', selectedItems);
+interface CartDialogProps {
+  selectedItems: {
+    products: SelectedItem[];
+    services: SelectedItem[];
+  };
+}
+
+const CartDialog: FC<CartDialogProps> = ({ selectedItems }) => {
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -52,21 +64,6 @@ const CartDialog: FC<CartDialogProps> = ({
   const handleClose = () => {
     setOpen(false);
   };
-
-  interface SelectedItem {
-    _id: string;
-    price: number;
-    category: string;
-    availability: string;
-    storesAssigned: string[];
-    name: string;
-    description: string;
-    ownerId: string;
-  }
-
-  interface SelectedItemsListProps {
-    selectedItems: SelectedItem[];
-  }
 
   const SelectedItemsList: FC<SelectedItemsListProps> = ({ selectedItems }) => {
     // Calculate frequency of each item in selectedItems
@@ -117,14 +114,20 @@ const CartDialog: FC<CartDialogProps> = ({
     <>
       <Tooltip
         title={
-          selectedItems.length != 0
-            ? 'View ' + selectedItems.length + ' Items in Cart'
+          selectedItems.products.length + selectedItems.services.length != 0
+            ? 'View ' +
+              (selectedItems.products.length + selectedItems.services.length) +
+              ' Items in Cart'
             : 'View Cart'
         }
         placement='right-start'
       >
         <IconButton onClick={handleClickOpen}>
-          <CustomizedBadges cartItemCount={selectedItems.length}>
+          <CustomizedBadges
+            cartItemCount={
+              selectedItems.products.length + selectedItems.services.length
+            }
+          >
             <ShoppingCartIcon fontSize='large' />
           </CustomizedBadges>
         </IconButton>
@@ -170,10 +173,17 @@ const CartDialog: FC<CartDialogProps> = ({
         </AppBar>
 
         <Container maxWidth='lg' style={{ marginBottom: '1rem' }}>
-          {selectedItems.length != 0 ? (
+          {selectedItems.products.length != 0 ||
+          selectedItems.services.length != 0 ? (
             <>
               <Section gutterBottom>
-                <SelectedItemsList selectedItems={selectedItems} />
+                <Typography variant='h5'>Products</Typography>
+                <SelectedItemsList selectedItems={selectedItems.products} />
+
+                <Divider sx={{ mt: '16px', mb: '32px' }} />
+
+                <Typography variant='h5'>Services</Typography>
+                <SelectedItemsList selectedItems={selectedItems.services} />
               </Section>
 
               <Button variant='contained' fullWidth sx={{ mt: '6px' }}>

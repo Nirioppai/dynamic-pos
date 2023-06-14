@@ -14,7 +14,10 @@ import {
 } from '@mui/material';
 
 interface ClearCartDialogProps {
-  selectedItems: any[];
+  selectedItems: {
+    products: any[];
+    services: any[];
+  };
   onClearCart: () => void; // Added a callback function prop
 }
 
