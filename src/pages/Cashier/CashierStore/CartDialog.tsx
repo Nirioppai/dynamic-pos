@@ -1,6 +1,9 @@
-import { FC, ReactElement, Ref, forwardRef, useState } from 'react';
+import { FC, ReactElement, Ref, forwardRef, useEffect, useState } from 'react';
 
-import { ShoppingCart as ShoppingCartIcon } from '@mui/icons-material';
+import {
+  RemoveShoppingCart,
+  ShoppingCart as ShoppingCartIcon,
+} from '@mui/icons-material';
 import {
   AppBar,
   Button,
@@ -23,7 +26,9 @@ import { ArrowLeft as ArrowLeftIcon } from 'mdi-material-ui';
 import CustomizedBadges from './CustomizedBadges';
 
 import { Section } from '~/components';
+import { BaseItemSchema } from '~/schemas';
 import { formatNumber } from '~/utils';
+
 const Transition = forwardRef(function Transition(
   props: TransitionProps & { children?: ReactElement },
   ref: Ref<unknown>
@@ -32,29 +37,21 @@ const Transition = forwardRef(function Transition(
   return <Slide direction='up' ref={ref} {...props} />;
 });
 
-interface SelectedItem {
-  _id: string;
-  price: number;
-  category: string;
-  availability: string;
-  storesAssigned: string[];
-  name: string;
-  description: string;
-  ownerId: string;
-}
-
 interface SelectedItemsListProps {
-  selectedItems: SelectedItem[];
+  selectedItems: BaseItemSchema[];
+  itemType: 'products' | 'services';
+  onRemoveItem: (type: 'products' | 'services', id: string) => void;
 }
 
 interface CartDialogProps {
   selectedItems: {
-    products: SelectedItem[];
-    services: SelectedItem[];
+    products: BaseItemSchema[];
+    services: BaseItemSchema[];
   };
+  onRemoveItem: (type: 'products' | 'services', id: string) => void;
 }
 
-const CartDialog: FC<CartDialogProps> = ({ selectedItems }) => {
+const CartDialog: FC<CartDialogProps> = ({ selectedItems, onRemoveItem }) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -65,7 +62,20 @@ const CartDialog: FC<CartDialogProps> = ({ selectedItems }) => {
     setOpen(false);
   };
 
-  const SelectedItemsList: FC<SelectedItemsListProps> = ({ selectedItems }) => {
+  useEffect(() => {
+    if (
+      selectedItems.products.length === 0 &&
+      selectedItems.services.length === 0
+    ) {
+      setOpen(false);
+    }
+  }, [selectedItems]);
+
+  const SelectedItemsList: FC<SelectedItemsListProps> = ({
+    selectedItems,
+    itemType,
+    onRemoveItem,
+  }) => {
     // Calculate frequency of each item in selectedItems
     const itemCounts = selectedItems.reduce((counts, item) => {
       if (!counts[item._id]) {
@@ -73,7 +83,7 @@ const CartDialog: FC<CartDialogProps> = ({ selectedItems }) => {
       }
       counts[item._id].count++;
       return counts;
-    }, {} as { [key: string]: { count: number; item: SelectedItem } });
+    }, {} as { [key: string]: { count: number; item: BaseItemSchema } });
 
     console.log('itemCounts: ', itemCounts);
 
@@ -92,7 +102,7 @@ const CartDialog: FC<CartDialogProps> = ({ selectedItems }) => {
                   </ListItem>
                 </List>
               </Grid>
-              <Grid item xs={8}>
+              <Grid item xs={6}>
                 <List>
                   <ListItem>
                     <ListItemText
@@ -101,6 +111,16 @@ const CartDialog: FC<CartDialogProps> = ({ selectedItems }) => {
                     />
                   </ListItem>
                 </List>
+              </Grid>
+              <Grid item xs={2}>
+                <IconButton
+                  edge='end'
+                  aria-label='delete'
+                  sx={{ mt: '19px' }}
+                  onClick={() => onRemoveItem(itemType, item._id)}
+                >
+                  <RemoveShoppingCart />
+                </IconButton>
               </Grid>
             </Grid>
             {index < array.length - 1 && <Divider />}
@@ -177,13 +197,41 @@ const CartDialog: FC<CartDialogProps> = ({ selectedItems }) => {
           selectedItems.services.length != 0 ? (
             <>
               <Section gutterBottom>
-                <Typography variant='h5'>Products</Typography>
-                <SelectedItemsList selectedItems={selectedItems.products} />
+                {selectedItems.products.length != 0 ? (
+                  <>
+                    <Typography variant='h5'>Products</Typography>
+                    <SelectedItemsList
+                      selectedItems={selectedItems.products}
+                      itemType='products'
+                      onRemoveItem={onRemoveItem}
+                    />
+                  </>
+                ) : (
+                  ''
+                )}
 
-                <Divider sx={{ mt: '16px', mb: '32px' }} />
+                {selectedItems.products.length != 0 &&
+                selectedItems.services.length != 0 ? (
+                  <>
+                    {' '}
+                    <Divider sx={{ mt: '16px', mb: '32px' }} />
+                  </>
+                ) : (
+                  ''
+                )}
 
-                <Typography variant='h5'>Services</Typography>
-                <SelectedItemsList selectedItems={selectedItems.services} />
+                {selectedItems.services.length != 0 ? (
+                  <>
+                    <Typography variant='h5'>Services</Typography>
+                    <SelectedItemsList
+                      selectedItems={selectedItems.services}
+                      itemType='services'
+                      onRemoveItem={onRemoveItem}
+                    />
+                  </>
+                ) : (
+                  ''
+                )}
               </Section>
 
               <Button variant='contained' fullWidth sx={{ mt: '6px' }}>

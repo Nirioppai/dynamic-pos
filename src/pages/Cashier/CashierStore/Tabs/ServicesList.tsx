@@ -38,8 +38,7 @@ const ServicesList: FC<PropsWithChildren<ServicesListProps>> = ({
   const isLoading = queries.some((q) => q.isLoading);
   // @ts-ignore
   const isError = queries.some((q) => q.isError);
-  console.log(disableWrite);
-  console.log('service tab: ', services);
+
   return (
     <>
       <DynamicAgGrid

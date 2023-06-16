@@ -8,18 +8,21 @@ import ProductsList from './Tabs/ProductsList';
 import ServicesList from './Tabs/ServicesList';
 
 import { TabWithContent } from '~/components';
+import { BaseItemSchema } from '~/schemas';
 
 interface StoreItemsGridProps {
   disableWrite?: boolean;
 }
 
+const initialItemsState = {
+  products: [] as BaseItemSchema[],
+  services: [] as BaseItemSchema[],
+};
+
 const StoreItemsGrid: FC<PropsWithChildren<StoreItemsGridProps>> = ({
   disableWrite,
 }) => {
-  const [selectedItems, setSelectedItems] = useState({
-    products: [],
-    services: [],
-  });
+  const [selectedItems, setSelectedItems] = useState(initialItemsState);
 
   const handleProductClick = (event: any) => {
     // @ts-ignore
@@ -35,6 +38,13 @@ const StoreItemsGrid: FC<PropsWithChildren<StoreItemsGridProps>> = ({
     });
   };
 
+  const handleRemoveItem = (type: 'products' | 'services', id: string) => {
+    setSelectedItems((prevState) => ({
+      ...prevState,
+      [type]: prevState[type].filter((item) => item._id !== id),
+    }));
+  };
+
   const handleClearCart = () => {
     setSelectedItems({ products: [], services: [] });
   };
@@ -45,7 +55,10 @@ const StoreItemsGrid: FC<PropsWithChildren<StoreItemsGridProps>> = ({
     <>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         <Grid item xs={6}>
-          <CartDialog selectedItems={selectedItems} />
+          <CartDialog
+            selectedItems={selectedItems}
+            onRemoveItem={handleRemoveItem}
+          />
         </Grid>
         <Grid container item xs={6} justifyContent='flex-end'>
           <Grid>ADD CUSTOMER</Grid>

@@ -1,5 +1,6 @@
 // general
 export * from './baseSchema';
+export * from './baseItemSchema';
 export * from './userSchema';
 export * from './loginSchema';
 export * from './registerSchema';

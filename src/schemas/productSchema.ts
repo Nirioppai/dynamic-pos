@@ -1,14 +1,7 @@
-import { BaseSchema } from 'schemas';
+import { BaseItemSchema } from 'schemas';
 import { z } from 'zod';
 
 export const productSchema = z.object({
-  ownerId: z.string(),
-  name: z.string(),
-  price: z.number(),
-  description: z.string().optional(),
-  availability: z.enum(['Available', 'Unavailable']),
-  category: z.string().optional(),
-  storeId: z.string().optional(),
   // Inventory Levels
   // Manufacturer / Supplier
   // Dimensions
@@ -19,4 +12,4 @@ export const productSchema = z.object({
   // Tax
 });
 
-export type ProductSchema = BaseSchema & z.infer<typeof productSchema>;
+export type ProductSchema = BaseItemSchema & z.infer<typeof productSchema>;

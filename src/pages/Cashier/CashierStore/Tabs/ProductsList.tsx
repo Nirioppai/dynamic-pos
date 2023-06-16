@@ -39,9 +39,6 @@ const ProductsList: FC<PropsWithChildren<ProductsListProps>> = ({
   // @ts-ignore
   const isError = queries.some((q) => q.isError);
 
-  console.log(disableWrite);
-  console.log('product tab: ', products);
-
   return (
     <>
       <DynamicAgGrid
