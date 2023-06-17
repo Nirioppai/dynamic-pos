@@ -2,6 +2,7 @@ import { FC, PropsWithChildren, useState } from 'react';
 
 import { Grid } from '@mui/material';
 
+import AddCustomer from './AddCustomer';
 import CartDialog from './CartDialog';
 import ChargeItems from './ChargeItems';
 import ClearCartDialog from './ClearCartDialog';
@@ -18,6 +19,10 @@ interface StoreItemsGridProps {
 const initialItemsState = {
   products: [] as BaseItemSchema[],
   services: [] as BaseItemSchema[],
+  customerAddress: '',
+  customerContact: '',
+  customerName: '',
+  paymentType: '',
 };
 
 const StoreItemsGrid: FC<PropsWithChildren<StoreItemsGridProps>> = ({
@@ -47,7 +52,14 @@ const StoreItemsGrid: FC<PropsWithChildren<StoreItemsGridProps>> = ({
   };
 
   const handleClearCart = () => {
-    setSelectedItems({ products: [], services: [] });
+    setSelectedItems({
+      products: [],
+      services: [],
+      customerAddress: '',
+      customerContact: '',
+      customerName: '',
+      paymentType: '',
+    });
   };
 
   console.log('selectedItems: ', selectedItems);
@@ -62,7 +74,16 @@ const StoreItemsGrid: FC<PropsWithChildren<StoreItemsGridProps>> = ({
           />
         </Grid>
         <Grid container item xs={6} justifyContent='flex-end'>
-          <Grid>ADD CUSTOMER</Grid>
+          <Grid>
+            <AddCustomer
+              maxWidth={'md'}
+              title='Tite'
+              subtitle='Subtitle Tite'
+              setSelectedItems={(customerDetails) =>
+                setSelectedItems({ ...selectedItems, ...customerDetails })
+              }
+            />
+          </Grid>
           <Grid>
             <ClearCartDialog
               selectedItems={selectedItems}

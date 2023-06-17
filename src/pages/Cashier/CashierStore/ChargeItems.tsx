@@ -13,6 +13,10 @@ interface ChargeItemsProps {
   selectedItems: {
     products: BaseItemSchema[];
     services: BaseItemSchema[];
+    customerAddress: string;
+    customerContact: string;
+    customerName: string;
+    paymentType: string;
   };
   clearSelectedItems: () => void;
 }
@@ -48,10 +52,10 @@ const ChargeItems: FC<PropsWithChildren<ChargeItemsProps>> = ({
       // you need to replace these with actual IDs of products and services
       productSaleId: 'sample product sale id',
       serviceSaleId: 'sample service sale id',
-      customerName: 'sample customer name',
-      customerContact: 'sample customerContact',
-      customerAddress: 'sample customerAddress',
-      paymentType: 'Cash', //   ['Cash', 'GCash']
+      customerName: selectedItems.customerName,
+      customerContact: selectedItems.customerContact,
+      customerAddress: selectedItems.customerAddress,
+      paymentType: selectedItems.paymentType,
       totalAmount: totalAmount(),
       status: 'Successful', // ['Cancelled', 'Edited', 'Successful']
       iterationCount: 0, // initial iteration count
