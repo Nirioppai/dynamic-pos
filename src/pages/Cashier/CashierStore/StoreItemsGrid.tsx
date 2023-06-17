@@ -1,8 +1,9 @@
 import { FC, PropsWithChildren, useState } from 'react';
 
-import { Button, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 
 import CartDialog from './CartDialog';
+import ChargeItems from './ChargeItems';
 import ClearCartDialog from './ClearCartDialog';
 import ProductsList from './Tabs/ProductsList';
 import ServicesList from './Tabs/ServicesList';
@@ -70,11 +71,11 @@ const StoreItemsGrid: FC<PropsWithChildren<StoreItemsGridProps>> = ({
           </Grid>
         </Grid>
       </Grid>
-      <Button variant='contained' fullWidth sx={{ mb: '15px', mt: '15px' }}>
-        Charge Transaction
-        <br />
-        0.00
-      </Button>
+
+      <ChargeItems
+        selectedItems={selectedItems}
+        clearSelectedItems={handleClearCart}
+      />
 
       <TabWithContent
         tabItems={[

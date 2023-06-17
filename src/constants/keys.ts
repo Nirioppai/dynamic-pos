@@ -9,4 +9,6 @@ export const KEYS = {
   productCategories: 'productCategories',
   serviceCategories: 'serviceCategories',
   invoices: 'invoices',
+  productSales: 'productSales',
+  serviceSales: 'serviceSales',
 };
