@@ -5,6 +5,7 @@ import {
   doc,
   getDocs,
   query,
+  setDoc,
   where,
 } from 'firebase/firestore';
 
@@ -34,41 +35,67 @@ export const invoiceService = {
     return mapData(data);
   },
 
-  // postOne: async (invoice: InvoiceSchema): Promise<any> => {
-  // postOne: async (invoice: any): Promise<any> => {
-  //   // @ts-ignore
-  //   const { orderDetails, ...invoiceData } = invoice;
-  //   const data = await addDoc(invoiceInstanceRef, invoiceData);
-
-  //   console.log('invoice: ', invoice);
-
-  //   return {
-  //     // @ts-ignore
-  //     _id: data.id,
-  //     ...invoice,
-  //   };
-  // },
   postOne: async (invoice: any): Promise<any> => {
     const { orderDetails, ...invoiceData } = invoice;
 
-    // create serviceSale and productSale documents
-    const serviceSaleData = { services: orderDetails.services };
-    const productSaleData = { products: orderDetails.products };
+    // Initialize invoiceData's iterationCount to 1
+    invoiceData.iterationCount = 1;
+
+    // Create serviceSale and productSale documents
+    const serviceSaleData = {
+      storeId: invoiceData.storeId,
+      services: orderDetails.services,
+      subtotal: orderDetails.services.reduce(
+        (total: any, service: any) => total + service.price,
+        0
+      ),
+      status: 'Successful',
+      iterationCount: 1,
+    };
+
+    const productSaleData = {
+      storeId: invoiceData.storeId,
+      products: orderDetails.products,
+      subtotal: orderDetails.products.reduce(
+        (total: any, product: any) => total + product.price,
+        0
+      ),
+      status: 'Successful',
+      iterationCount: 1,
+    };
 
     const serviceSaleRef = await addDoc(
       collection(db, KEYS.serviceSales),
       serviceSaleData
     );
+
     const productSaleRef = await addDoc(
       collection(db, KEYS.productSales),
       productSaleData
     );
 
-    // include the IDs in the invoiceData
+    // Include the IDs in the invoiceData
     invoiceData.serviceSaleId = serviceSaleRef.id;
     invoiceData.productSaleId = productSaleRef.id;
 
     const invoiceRef = await addDoc(collection(db, KEYS.invoices), invoiceData);
+
+    // Update serviceSale and productSale documents with the invoiceId
+    await setDoc(
+      doc(db, KEYS.serviceSales, serviceSaleRef.id),
+      {
+        invoiceId: invoiceRef.id,
+      },
+      { merge: true }
+    );
+
+    await setDoc(
+      doc(db, KEYS.productSales, productSaleRef.id),
+      {
+        invoiceId: invoiceRef.id,
+      },
+      { merge: true }
+    );
 
     return {
       _id: invoiceRef.id,
