@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { CashierStore, NotFound } from '~/pages';
+import { CashierSales, CashierStore, NotFound } from '~/pages';
 import { ProtectedRoute } from '~/routes';
 
 const BusinessOwnerRoutes = () => (
@@ -8,6 +8,7 @@ const BusinessOwnerRoutes = () => (
     <Route element={<ProtectedRoute userType='cashier' />}>
       <Route path='' element={<Navigate replace to='/cashier/store' />} />
       <Route path='/store' element={<CashierStore />} />
+      <Route path='/sales' element={<CashierSales />} />
 
       <Route
         path='*'
