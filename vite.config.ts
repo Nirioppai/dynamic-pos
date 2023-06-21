@@ -7,7 +7,7 @@ import checker from 'vite-plugin-checker';
 
 export default defineConfig({
   build: {
-    outDir: './dist',
+    outDir: './build',
   },
   publicDir: './public',
   resolve: {
@@ -26,6 +26,7 @@ export default defineConfig({
       },
     }),
   ],
+  base:"/dynamic-pos/",
   server: {
     port: 3000,
   },
