@@ -34,6 +34,8 @@ const onClickDismiss = (key: any) => () => {
   notistackRef?.current?.closeSnackbar(key);
 };
 
+console.log('hello from app.tsx');
+
 // TODO: Add AppRoutes
 const App = () => {
   return (
