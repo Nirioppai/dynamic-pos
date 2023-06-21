@@ -7,7 +7,7 @@ import checker from 'vite-plugin-checker';
 
 export default defineConfig({
   build: {
-    outDir: './build',
+    outDir: './dist',
   },
   publicDir: './public',
   resolve: {
