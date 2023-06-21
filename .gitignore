@@ -24,3 +24,4 @@ vite.config
 *.njsproj
 *.sln
 *.sw?
+vite.config.ts
