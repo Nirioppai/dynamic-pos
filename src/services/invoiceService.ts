@@ -35,6 +35,28 @@ export const invoiceService = {
     return mapData(data);
   },
 
+  getServiceInvoices: async (storeId: string): Promise<any> => {
+    const q = query(
+      invoiceInstanceRef,
+      where('storeId', '==', storeId),
+      where('serviceSaleId', '!=', 'no-sale')
+    );
+
+    const data = await getDocs(q);
+    return mapData(data);
+  },
+
+  getProductInvoices: async (storeId: string): Promise<any> => {
+    const q = query(
+      invoiceInstanceRef,
+      where('storeId', '==', storeId),
+      where('productSaleId', '!=', 'no-sale')
+    );
+
+    const data = await getDocs(q);
+    return mapData(data);
+  },
+
   postOne: async (invoice: any): Promise<any> => {
     const { orderDetails, ...invoiceData } = invoice;
 
@@ -64,38 +86,48 @@ export const invoiceService = {
       iterationCount: 1,
     };
 
-    const serviceSaleRef = await addDoc(
-      collection(db, KEYS.serviceSales),
-      serviceSaleData
-    );
+    let serviceSaleRef, productSaleRef;
 
-    const productSaleRef = await addDoc(
-      collection(db, KEYS.productSales),
-      productSaleData
-    );
+    if (serviceSaleData.services.length > 0) {
+      serviceSaleRef = await addDoc(
+        collection(db, KEYS.serviceSales),
+        serviceSaleData
+      );
+      // Include the ID in the invoiceData
+      invoiceData.serviceSaleId = serviceSaleRef.id;
+    }
 
-    // Include the IDs in the invoiceData
-    invoiceData.serviceSaleId = serviceSaleRef.id;
-    invoiceData.productSaleId = productSaleRef.id;
+    if (productSaleData.products.length > 0) {
+      productSaleRef = await addDoc(
+        collection(db, KEYS.productSales),
+        productSaleData
+      );
+      // Include the ID in the invoiceData
+      invoiceData.productSaleId = productSaleRef.id;
+    }
 
     const invoiceRef = await addDoc(collection(db, KEYS.invoices), invoiceData);
 
     // Update serviceSale and productSale documents with the invoiceId
-    await setDoc(
-      doc(db, KEYS.serviceSales, serviceSaleRef.id),
-      {
-        invoiceId: invoiceRef.id,
-      },
-      { merge: true }
-    );
+    if (serviceSaleRef?.id) {
+      await setDoc(
+        doc(db, KEYS.serviceSales, serviceSaleRef?.id || 'failed'),
+        {
+          invoiceId: invoiceRef.id,
+        },
+        { merge: true }
+      );
+    }
 
-    await setDoc(
-      doc(db, KEYS.productSales, productSaleRef.id),
-      {
-        invoiceId: invoiceRef.id,
-      },
-      { merge: true }
-    );
+    if (productSaleRef?.id) {
+      await setDoc(
+        doc(db, KEYS.productSales, productSaleRef?.id || 'failed'),
+        {
+          invoiceId: invoiceRef.id,
+        },
+        { merge: true }
+      );
+    }
 
     return {
       _id: invoiceRef.id,

@@ -50,8 +50,8 @@ const ChargeItems: FC<PropsWithChildren<ChargeItemsProps>> = ({
     const invoiceData = {
       storeId, // store ID from recoil state
       // you need to replace these with actual IDs of products and services
-      productSaleId: 'sample product sale id',
-      serviceSaleId: 'sample service sale id',
+      productSaleId: 'no-sale',
+      serviceSaleId: 'no-sale',
       customerName: selectedItems.customerName,
       customerContact: selectedItems.customerContact,
       customerAddress: selectedItems.customerAddress,

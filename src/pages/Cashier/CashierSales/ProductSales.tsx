@@ -6,13 +6,13 @@ import { getRecoil } from 'recoil-nexus';
 import { DynamicAgGrid } from '~/components';
 import { cashierSelectedStore } from '~/configs';
 import { KEYS } from '~/constants';
-import { productsService } from '~/services';
+import { invoiceService } from '~/services';
 
-interface ProductSalesItemsGridProps {
+interface ProductSalesProps {
   disableWrite?: boolean;
 }
 
-const ProductSales: FC<PropsWithChildren<ProductSalesItemsGridProps>> = ({
+const ProductSales: FC<PropsWithChildren<ProductSalesProps>> = ({
   disableWrite,
 }) => {
   const storeId = getRecoil(cashierSelectedStore);
@@ -22,15 +22,15 @@ const ProductSales: FC<PropsWithChildren<ProductSalesItemsGridProps>> = ({
     storeId
       ? [
           {
-            queryKey: [KEYS.products, storeId],
-            queryFn: () => productsService.getProductsInStore(storeId),
+            queryKey: [KEYS.invoices, storeId, 'product'],
+            queryFn: () => invoiceService.getProductInvoices(storeId),
           },
         ]
       : []
   );
 
   // @ts-ignore
-  const products = queries[0]?.data || [];
+  const invoices = queries[0]?.data || [];
 
   // @ts-ignore
   const isLoading = queries.some((q) => q.isLoading);
@@ -42,33 +42,48 @@ const ProductSales: FC<PropsWithChildren<ProductSalesItemsGridProps>> = ({
     <>
       <DynamicAgGrid
         searchBarWidth={'100%'}
-        rowData={products}
+        rowData={invoices}
         columnDefs={[
           {
-            field: 'name',
-            headerName: 'Name',
+            field: 'customerName',
+            headerName: 'Customer Name',
             sort: 'asc',
             minWidth: 200,
             cellStyle: { fontWeight: 500 },
+            valueGetter: ({ data }) =>
+              data.customerName ? data.customerName : 'N/A',
           },
           {
-            field: 'price',
-            headerName: 'Price',
-
-            minWidth: 100,
-          },
-
-          {
-            field: 'description',
-            headerName: 'Description',
-
-            minWidth: 250,
+            field: 'customerContact',
+            headerName: 'Customer Contact Details',
+            valueGetter: ({ data }) =>
+              data.customerContact ? data.customerContact : 'N/A',
+            minWidth: 150,
           },
           {
-            field: 'availability',
-            headerName: 'Availability',
+            field: 'paymentType',
+            headerName: 'Payment Type',
+            valueGetter: ({ data }) =>
+              data.paymentType ? data.paymentType : 'N/A',
+            minWidth: 150,
+          },
+          {
+            field: 'productSaleId',
+            headerName: 'Transaction Type',
+            valueGetter: ({ data }) =>
+              data.productSaleId != 'no-sale' && data.serviceSaleId == 'no-sale'
+                ? 'Product Sale'
+                : data.serviceSaleId != 'no-sale' &&
+                  data.productSaleId == 'no-sale'
+                ? 'Service Sale'
+                : 'Product & Service Sale',
+            minWidth: 150,
+          },
+          {
+            field: 'status',
+            headerName: 'Status',
 
-            minWidth: 250,
+            minWidth: 150,
           },
         ]}
         isLoading={isLoading}
