@@ -7,7 +7,6 @@ import checker from 'vite-plugin-checker';
 
 export default defineConfig({
   publicDir: './public',
-  base: '/',
   resolve: {
     alias: {
       '~': resolve(__dirname, 'src'),
