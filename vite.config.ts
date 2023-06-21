@@ -7,7 +7,7 @@ import checker from 'vite-plugin-checker';
 
 export default defineConfig({
   publicDir: './public',
-  base: '/dynamic-pos/',
+  // base: '/dynamic-pos/',
   resolve: {
     alias: {
       '~': resolve(__dirname, 'src'),
