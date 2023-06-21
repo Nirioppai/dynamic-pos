@@ -56,7 +56,6 @@ export const productsService = {
   },
 
   postOne: async (product: ProductSchema): Promise<any> => {
-    console.log(product);
     const data = await addDoc(productInstanceRef, product);
 
     return {
