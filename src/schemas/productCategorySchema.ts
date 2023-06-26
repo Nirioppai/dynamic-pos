@@ -3,7 +3,9 @@ import { z } from 'zod';
 
 export const productCategorySchema = z.object({
   ownerId: z.string(),
-  name: z.string(),
+  name: z
+    .string()
+    .refine((value) => value.trim() !== '', 'Must not be empty or whitespace'),
   storeId: z.string().optional(),
 });
 

@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import type { DialogProps } from '@mui/material';
+import { useSnackbar } from 'notistack';
 
 import BusinessOwnerStoreModalForm from './BusinessOwnerStoreModalForm';
 
@@ -10,14 +11,18 @@ import { KEYS } from '~/constants';
 import { usePostMutation } from '~/hooks';
 import { StoreSchema, storeSchema } from '~/schemas';
 import { storesService } from '~/services';
-
+import { validateSubmit } from '~/utils';
 const AddStoreModal: FC<DialogProps> = ({ onClose, ...rest }) => {
   const { mutateAsync } = usePostMutation({
     queryKey: KEYS.storeInstances,
     mutationFn: storesService.postOne,
   });
 
-  const onSubmit = async (values: StoreSchema) => await mutateAsync(values);
+  const { enqueueSnackbar } = useSnackbar();
+
+  const onSubmit = (values: StoreSchema) =>
+    // @ts-ignore
+    validateSubmit(values, mutateAsync, enqueueSnackbar);
 
   return (
     <FormDialog

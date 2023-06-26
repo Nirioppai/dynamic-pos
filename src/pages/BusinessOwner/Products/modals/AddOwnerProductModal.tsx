@@ -25,6 +25,8 @@ const AddOwnerProductModal: FC<DialogProps> = ({ onClose, ...rest }) => {
       defaultValues={{
         ownerId: auth?.currentUser?.uid,
         category: '',
+        description: '',
+        stock: 0,
         availability: 'Available',
       }}
       schema={productSchema}

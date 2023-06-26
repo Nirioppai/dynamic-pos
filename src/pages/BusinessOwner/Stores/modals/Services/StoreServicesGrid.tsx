@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 
 import { useQueries } from 'react-query';
 
@@ -31,11 +31,6 @@ const StoreServicesGrid: FC<StoreServicesGridProps> = ({
 
   // @ts-ignore
   const isError = queries.some((q) => q.isError);
-
-  useEffect(() => {
-    queries.forEach((q) => q.refetch());
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <>
