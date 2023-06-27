@@ -2,6 +2,7 @@ import { FC } from 'react';
 
 import type { DialogProps } from '@mui/material';
 import { useSnackbar } from 'notistack';
+import { TextFieldElement } from 'react-hook-form-mui';
 
 import BusinessOwnerCashierModalForm from './BusinessOwnerCashierModalForm';
 
@@ -12,7 +13,6 @@ import { usePostMutation } from '~/hooks';
 import { CashierSchema, cashierSchema } from '~/schemas';
 import { cashiersService } from '~/services';
 import { validateSubmit } from '~/utils';
-
 const AddOwnerCashierModal: FC<DialogProps> = ({ onClose, ...rest }) => {
   const { enqueueSnackbar } = useSnackbar();
 
@@ -37,7 +37,9 @@ const AddOwnerCashierModal: FC<DialogProps> = ({ onClose, ...rest }) => {
       onClose={onClose}
       {...rest}
     >
-      <BusinessOwnerCashierModalForm />
+      <BusinessOwnerCashierModalForm>
+        <TextFieldElement name='password' label='Cashier Password' required />
+      </BusinessOwnerCashierModalForm>
     </FormDialog>
   );
 };

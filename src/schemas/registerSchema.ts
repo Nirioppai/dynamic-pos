@@ -18,14 +18,14 @@ export const registerSchema = z
       ),
     password: z
       .string()
-      .min(1)
+      .min(6)
       .refine(
         (value) => value.trim() !== '',
         'Must not be empty or whitespace'
       ),
     confirmPassword: z
       .string()
-      .min(1)
+      .min(6)
       .refine(
         (value) => value.trim() !== '',
         'Must not be empty or whitespace'
