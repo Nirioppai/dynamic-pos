@@ -1,35 +1,41 @@
-// validateSubmit.js or validateSubmit.ts if you're using TypeScript
+// validateSubmit.ts
+import { z } from 'zod';
 
 const validateValues = (
-  obj: Record<string, any>,
+  values: Record<string, any>,
+  schema: z.ZodObject<any>,
   enqueueSnackbar: (message: string, options: { variant: string }) => void
 ): Record<string, any> | null => {
-  const result = { ...obj };
-  for (const key in result) {
-    if (typeof result[key] === 'string') {
-      const trimmedValue = result[key].trim();
-      if (trimmedValue === '') {
+  const result = { ...values };
+
+  for (const field in schema.shape) {
+    if (
+      Object.prototype.hasOwnProperty.call(result, field) &&
+      typeof result[field] === 'string'
+    ) {
+      const trimmedValue = result[field].trim();
+      if (trimmedValue === '' && !schema.shape[field].isOptional()) {
         enqueueSnackbar(
-          `Something went wrong. The value for "${key}" should not be empty.`,
+          `Something went wrong. The value for "${field}" should not be empty.`,
           { variant: 'error' }
         );
         return null;
       }
-      result[key] = trimmedValue;
+      result[field] = trimmedValue;
     }
   }
+
   return result;
 };
 
 export const validateSubmit = async (
   values: Record<string, any>,
+  schema: z.ZodObject<any>,
   mutateAsync: (arg0: Record<string, any>) => void,
   enqueueSnackbar: (message: string, options: { variant: string }) => void
 ) => {
-  const validatedValues = validateValues(values, enqueueSnackbar);
+  const validatedValues = validateValues(values, schema, enqueueSnackbar);
   if (validatedValues !== null) {
-    console.log('values', validatedValues);
-    // @ts-ignore
     await mutateAsync(validatedValues);
   }
 };

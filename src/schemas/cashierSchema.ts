@@ -13,7 +13,7 @@ export const cashierSchema = z.object({
   password: z
     .string()
     .refine((value) => value.trim() !== '', 'Must not be empty or whitespace'),
-  storeId: z.string().optional(),
+  storeId: z.string(),
 });
 
 export type CashierSchema = BaseSchema & z.infer<typeof cashierSchema>;

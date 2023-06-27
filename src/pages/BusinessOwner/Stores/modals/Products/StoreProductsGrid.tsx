@@ -19,10 +19,12 @@ const StoreProductsGrid: FC<StoreProductsGridProps> = ({
 }) => {
   const queries = useQueries([
     {
-      queryKey: KEYS.products,
+      queryKey: [KEYS.products, 'Store Products'],
       queryFn: () => productsService.getProductsInStore(storeId || ''),
     },
   ]);
+
+  console.log('store ID: ', storeId);
 
   const products = queries[0].data || [];
 

@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 export const serviceSchema = z.object({
   price: z.number(),
-  category: z.string(),
+  category: z.string().optional(),
   availability: z
     .string()
     .refine((value) => value.trim() !== '', 'Must not be empty or whitespace'),
@@ -11,10 +11,7 @@ export const serviceSchema = z.object({
   name: z
     .string()
     .refine((value) => value.trim() !== '', 'Must not be empty or whitespace'),
-  description: z
-    .string()
-    .refine((value) => value.trim() !== '', 'Must not be empty or whitespace')
-    .optional(),
+  description: z.string().optional(),
   ownerId: z.string().optional(),
   storeId: z.string().optional(),
   // Duration

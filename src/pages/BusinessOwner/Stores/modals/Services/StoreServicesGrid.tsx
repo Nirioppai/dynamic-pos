@@ -19,7 +19,7 @@ const StoreServicesGrid: FC<StoreServicesGridProps> = ({
 }) => {
   const queries = useQueries([
     {
-      queryKey: KEYS.services,
+      queryKey: [KEYS.services, 'Store Services'],
       queryFn: () => servicesService.getServicesInStore(storeId || ''),
     },
   ]);

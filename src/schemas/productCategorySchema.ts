@@ -6,6 +6,7 @@ export const productCategorySchema = z.object({
   name: z
     .string()
     .refine((value) => value.trim() !== '', 'Must not be empty or whitespace'),
+  storesAssigned: z.array(z.string()).optional(),
   storeId: z.string().optional(),
 });
 

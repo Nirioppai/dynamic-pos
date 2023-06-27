@@ -22,13 +22,14 @@ const AddStoreModal: FC<DialogProps> = ({ onClose, ...rest }) => {
 
   const onSubmit = (values: StoreSchema) =>
     // @ts-ignore
-    validateSubmit(values, mutateAsync, enqueueSnackbar);
+    validateSubmit(values, storeSchema, mutateAsync, enqueueSnackbar);
 
   return (
     <FormDialog
       title='Add Store'
       defaultValues={{
         ownerId: auth?.currentUser?.uid,
+        address: '',
       }}
       schema={storeSchema}
       onFormSubmit={onSubmit}

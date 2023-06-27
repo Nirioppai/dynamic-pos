@@ -57,6 +57,11 @@ const OwnerCashiersGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
             field: 'password',
             headerName: 'Password',
             minWidth: 200,
+            valueFormatter: (params) => '*'.repeat(params.value.length),
+            headerTooltip:
+              'Password is hidden for security reasons. Click on Edit to view.',
+            tooltipValueGetter: () =>
+              'Password is hidden for security reasons. Click on Edit to view.',
           },
         ]}
         isLoading={isLoading}

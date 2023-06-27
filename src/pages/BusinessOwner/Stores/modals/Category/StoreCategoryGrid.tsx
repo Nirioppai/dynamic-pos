@@ -2,7 +2,10 @@ import { FC } from 'react';
 
 import { useQueries } from 'react-query';
 
-import { AddOwnerProductCategoryModal } from './modals';
+import {
+  AddExistingProductCategoryModal,
+  AddOwnerProductCategoryModal,
+} from './modals';
 
 import { DynamicAgGrid } from '~/components';
 import { KEYS } from '~/constants';
@@ -13,13 +16,13 @@ type StoreProductCategoriesGridProps = {
   storeId: string;
 };
 
-const StoreProductCategoriesGrid: FC<StoreProductCategoriesGridProps> = ({
+const StoreCategoryGrid: FC<StoreProductCategoriesGridProps> = ({
   disableWrite,
   storeId,
 }) => {
   const queries = useQueries([
     {
-      queryKey: KEYS.productCategories,
+      queryKey: [KEYS.productCategories, 'Store Product Categories'],
       queryFn: () =>
         categoriesService.getProductCategoriesInStore(storeId || ''),
     },
@@ -48,17 +51,20 @@ const StoreProductCategoriesGrid: FC<StoreProductCategoriesGridProps> = ({
         ]}
         isLoading={isLoading}
         isError={isError}
+        addAnotherText='Add From Existing Product Categories'
         actions={{
           add: !disableWrite,
+          addAnother: !disableWrite,
           edit: disableWrite,
           archive: disableWrite,
         }}
         // onArchive={async (row) => await archiveEntry(row._id)}
         AddModal={AddOwnerProductCategoryModal}
+        AddAnotherModal={AddExistingProductCategoryModal}
         // EditModal={EditOwnerProductCategoryModal}
       />
     </>
   );
 };
 
-export default StoreProductCategoriesGrid;
+export default StoreCategoryGrid;
