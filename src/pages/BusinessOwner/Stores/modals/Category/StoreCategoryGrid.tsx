@@ -44,6 +44,7 @@ const StoreCategoryGrid: FC<StoreProductCategoriesGridProps> = ({
           {
             field: 'name',
             headerName: 'Name',
+            headerTooltip: 'Name',
             sort: 'asc',
             minWidth: 200,
             cellStyle: { fontWeight: 500 },

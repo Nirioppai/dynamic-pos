@@ -31,7 +31,7 @@ export const invoiceService2 = createGenericService<InvoiceSchema>(
 );
 
 export const invoiceService = {
-  getInvoices: async (storeId: string): Promise<any> => {
+  getStoreInvoices: async (storeId: string): Promise<any> => {
     const q = query(invoiceInstanceRef, where('storeId', '==', storeId));
 
     const data = await getDocs(q);
