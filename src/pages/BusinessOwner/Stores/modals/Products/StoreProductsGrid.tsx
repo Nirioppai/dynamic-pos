@@ -145,6 +145,7 @@ const StoreProductsGrid: FC<StoreProductsGridProps> = ({
           addAnother: !disableWrite,
           edit: disableWrite,
           archive: disableWrite,
+          export: !disableWrite,
         }}
         addText='Add New Product'
         addAnotherText='Add From Existing Products'

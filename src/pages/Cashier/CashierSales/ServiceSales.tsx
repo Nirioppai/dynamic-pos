@@ -23,8 +23,8 @@ const ServiceSales: FC<PropsWithChildren<ServiceSalesProps>> = ({
 }) => {
   const queries = useQueries([
     {
-      queryKey: [KEYS.invoices, storeId, 'all'],
-      queryFn: () => invoiceService.getStoreInvoices(storeId),
+      queryKey: [KEYS.invoices, storeId, 'services'],
+      queryFn: () => invoiceService.getServiceInvoices(storeId),
     },
   ]);
 
@@ -127,6 +127,7 @@ const ServiceSales: FC<PropsWithChildren<ServiceSalesProps>> = ({
           add: disableWrite,
           edit: disableWrite,
           archive: disableWrite,
+          export: !disableWrite,
         }}
       />
     </>

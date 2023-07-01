@@ -8,6 +8,8 @@ import {
 } from 'mdi-material-ui';
 import { useQueries } from 'react-query';
 
+import ViewSaleModal from './ViewSaleModal';
+
 import { DynamicAgGrid } from '~/components';
 import { KEYS } from '~/constants';
 import { invoiceService } from '~/services';
@@ -61,7 +63,7 @@ const AllSales: FC<PropsWithChildren<AllSalesItemsGridProps>> = ({
             field: 'totalAmount',
             headerName: 'Total Amount',
             headerTooltip: 'Total Amount',
-            valueGetter: ({ data }) => 'PHP ' + data.totalAmount,
+            valueGetter: ({ data }) => '₱ ' + data.totalAmount,
             maxWidth: 150,
           },
           {
@@ -140,7 +142,9 @@ const AllSales: FC<PropsWithChildren<AllSalesItemsGridProps>> = ({
           edit: disableWrite,
           archive: disableWrite,
           view: !disableWrite,
+          export: !disableWrite,
         }}
+        ViewModal={ViewSaleModal}
       />
     </>
   );

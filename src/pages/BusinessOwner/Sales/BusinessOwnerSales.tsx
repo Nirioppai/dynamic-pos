@@ -5,6 +5,7 @@ import { useQueries } from 'react-query';
 
 import BarGraph from './BarGraph';
 import MultiLineGraph from './MultiLineGraph';
+import PieChart from './PieChart';
 
 import { PageContentWrapper } from '~/components';
 import { KEYS } from '~/constants';
@@ -32,7 +33,7 @@ const BusinessOwnerSales: FC = () => {
           <BarGraph invoices={invoices} isLoading={isLoading} />
         </Grid>
         <Grid item xs={8}>
-          Another Graph Here
+          <PieChart invoices={invoices} isLoading={isLoading} />
         </Grid>
       </Grid>
     </PageContentWrapper>

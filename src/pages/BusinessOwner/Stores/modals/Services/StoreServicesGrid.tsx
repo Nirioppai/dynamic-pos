@@ -100,6 +100,7 @@ const StoreServicesGrid: FC<StoreServicesGridProps> = ({
           addAnother: !disableWrite,
           edit: disableWrite,
           archive: disableWrite,
+          export: !disableWrite,
         }}
         addText='Add New Service'
         addAnotherText='Add From Existing Services'

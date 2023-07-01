@@ -70,6 +70,7 @@ const StoreCashierGrid: FC<StoreCashiersGridProps> = ({
           addAnother: disableWrite,
           edit: disableWrite,
           archive: disableWrite,
+          export: !disableWrite,
         }}
         addText='Add'
         // addAnotherText='Add From Existing Cashiers'

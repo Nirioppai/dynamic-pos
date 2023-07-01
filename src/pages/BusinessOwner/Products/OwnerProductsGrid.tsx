@@ -148,6 +148,7 @@ const OwnerProductsGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
           add: !disableWrite,
           edit: !disableWrite,
           archive: !disableWrite,
+          export: !disableWrite,
         }}
         onArchive={async (row) => await archiveEntry(row._id)}
         AddModal={AddOwnerProductModal}

@@ -58,6 +58,7 @@ const StoreCategoryGrid: FC<StoreProductCategoriesGridProps> = ({
           addAnother: !disableWrite,
           edit: disableWrite,
           archive: disableWrite,
+          export: !disableWrite,
         }}
         // onArchive={async (row) => await archiveEntry(row._id)}
         AddModal={AddOwnerProductCategoryModal}
