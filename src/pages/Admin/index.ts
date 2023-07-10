@@ -1,4 +1,4 @@
-export { default as Products } from './Products';
-export { default as SalesReports } from './SalesReports';
-export { default as Services } from './Services';
+export { default as AdminProducts } from './Products';
+export { default as AdminCashiers } from './Cashiers';
+export { default as AdminServices } from './Services';
 export { default as AdminStores } from './Stores';

@@ -34,6 +34,34 @@ export const productsService2 = createGenericService<ProductSchema>(
 
 export const productsService = {
   // GET STORES WHERE USERREF = CURRENTLY LOGGED IN USER
+  getAllProducts: async (): Promise<any> => {
+    const q = query(productInstanceRef, where('ownerId', '!=', ''));
+
+    const data = await getDocs(q);
+
+    const productData = mapData(data);
+
+    // Create a category map
+    const categoryMap: { [key: string]: any } = {};
+    const categoryInstanceRef = collection(db, KEYS.productCategories);
+    const categoryData = await getDocs(categoryInstanceRef);
+
+    categoryData.docs.forEach((doc) => {
+      const category = { ...doc.data(), _id: doc.id };
+      categoryMap[category._id] = category;
+    });
+
+    // Map product data
+    productData.forEach((product: any) => {
+      // Replace category id with category name
+      const category = categoryMap[product.category];
+      if (category) {
+        product.category = category.name;
+      }
+    });
+
+    return productData;
+  },
   getProducts: async (ownerId: string): Promise<any> => {
     const q = query(productInstanceRef, where('ownerId', '==', ownerId));
 

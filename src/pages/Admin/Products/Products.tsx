@@ -1,7 +1,20 @@
-import React from 'react';
+import { FC, PropsWithChildren } from 'react';
 
-function Products() {
-  return <div>Products</div>;
-}
+import AdminProductsGrid from './AdminProductsGrid';
 
-export default Products;
+import {
+  PageContentWrapper,
+  // TabWithContent
+} from '~/components';
+
+const AdminProducts: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
+  disableWrite,
+}) => {
+  return (
+    <PageContentWrapper title='Products'>
+      <AdminProductsGrid disableWrite={disableWrite} />
+    </PageContentWrapper>
+  );
+};
+
+export default AdminProducts;

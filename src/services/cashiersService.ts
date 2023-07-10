@@ -121,7 +121,16 @@ const createCashier = async (
 
 export const cashiersService = {
   // GET STORES WHERE USERREF = CURRENTLY LOGGED IN USER
+  getAllCashiers: async (): Promise<any> => {
+    const q = query(
+      cashierInstanceRef,
+      where('ownerId', '!=', '')
+      // orderBy('timestamp', 'desc')
+    );
 
+    const data = await getDocs(q);
+    return mapData(data);
+  },
   getCashiers: async (ownerId: string): Promise<any> => {
     const q = query(
       cashierInstanceRef,

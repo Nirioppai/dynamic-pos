@@ -34,6 +34,16 @@ export const serviceService2 = createGenericService<ServiceSchema>(
 
 export const servicesService = {
   // GET STORES WHERE USERREF = CURRENTLY LOGGED IN USER
+  getAllServices: async (): Promise<any> => {
+    const q = query(
+      serviceInstanceRef,
+      where('ownerId', '!=', '')
+      // orderBy('timestamp', 'desc')
+    );
+
+    const data = await getDocs(q);
+    return mapData(data);
+  },
   getServices: async (ownerId: string): Promise<any> => {
     const q = query(
       serviceInstanceRef,

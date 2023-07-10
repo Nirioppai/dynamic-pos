@@ -1,7 +1,20 @@
-import React from 'react';
+import { FC, PropsWithChildren } from 'react';
 
-function Services() {
-  return <div>Services</div>;
-}
+import AdminServicesGrid from './AdminServicesGrid';
 
-export default Services;
+import {
+  PageContentWrapper,
+  // TabWithContent
+} from '~/components';
+
+const AdminServices: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
+  disableWrite,
+}) => {
+  return (
+    <PageContentWrapper title='Services'>
+      <AdminServicesGrid disableWrite={disableWrite} />
+    </PageContentWrapper>
+  );
+};
+
+export default AdminServices;
