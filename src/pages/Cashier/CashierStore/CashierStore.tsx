@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from 'react';
+import { FC, PropsWithChildren, useEffect } from 'react';
 
 import { useQueries } from 'react-query';
 import { setRecoil } from 'recoil-nexus';
@@ -27,6 +27,11 @@ const CashierStore: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
   const cashier = queries[0].data || [];
 
   cashier[0]?.storeId && setRecoil(cashierSelectedStore, cashier[0]?.storeId);
+
+  useEffect(() => {
+    queries.forEach((q) => q.refetch());
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <PageContentWrapper title='Store Sales'>
