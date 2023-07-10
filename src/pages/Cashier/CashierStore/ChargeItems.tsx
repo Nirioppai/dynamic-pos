@@ -1,6 +1,7 @@
 import { FC, PropsWithChildren, useCallback } from 'react';
 
 import { Button } from '@mui/material';
+import axios from 'axios';
 import { getRecoil } from 'recoil-nexus';
 
 import { auth, cashierSelectedStore } from '~/configs';
@@ -64,8 +65,34 @@ const ChargeItems: FC<PropsWithChildren<ChargeItemsProps>> = ({
     // submit invoice
     await createInvoice(invoiceData);
 
+    console.log(invoiceData);
+
     // clear selected items and customer data
     clearSelectedItems();
+
+    // Send invoice email via backend server
+
+    const email = selectedItems.customerContact; // use the customer's email address
+
+    axios
+      .post(
+        'http://localhost:5000/send-invoice',
+        {
+          email,
+          invoice: invoiceData,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      .then((response) => {
+        console.log('Email sent successfully!', response);
+      })
+      .catch((error) => {
+        console.error('Failed to send email:', error);
+      });
   }, [selectedItems, clearSelectedItems, storeId, createInvoice, totalAmount]);
 
   return (

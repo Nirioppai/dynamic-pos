@@ -241,6 +241,18 @@ export const invoiceService = {
   postOne: async (invoice: any): Promise<any> => {
     const { orderDetails, ...invoiceData } = invoice;
 
+    invoiceData.customerName =
+      invoice.customerName == '' ? 'Anonymous' : invoice.customerName;
+
+    invoiceData.customerContact =
+      invoice.customerContact == '' ? 'N/A' : invoice.customerContact;
+
+    invoiceData.customerAddress =
+      invoice.customerAddress == '' ? 'N/A' : invoice.customerAddress;
+
+    invoiceData.paymentType =
+      invoice.paymentType == '' ? 'Cash' : invoice.paymentType;
+
     // Calculate product quantities in the invoice
     const invoiceProductQuantities = orderDetails.products.reduce(
       (acc: any, product: any) => {

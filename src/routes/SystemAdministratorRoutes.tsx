@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { BusinessOwnerStores, NotFound } from '~/pages';
+import { AdminStores, NotFound } from '~/pages';
 import { ProtectedRoute } from '~/routes';
 
 const SystemAdministratorRoutes = () => (
@@ -10,7 +10,7 @@ const SystemAdministratorRoutes = () => (
         path=''
         element={<Navigate replace to='/systemAdministrator/stores' />}
       />
-      <Route path='stores' element={<BusinessOwnerStores />} />
+      <Route path='/stores' element={<AdminStores />} />
 
       <Route
         path='*'
