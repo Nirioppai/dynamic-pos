@@ -74,7 +74,7 @@ const PieChart: FC<{ invoices: any; isLoading: any }> = ({
           <Grid container spacing={2} columns={16}>
             <Grid item xs={16}>
               <Typography variant='h3' sx={{ marginTop: '10.5px' }}>
-                Category Sales Report
+                Frequent Customers Report
               </Typography>
             </Grid>
           </Grid>
