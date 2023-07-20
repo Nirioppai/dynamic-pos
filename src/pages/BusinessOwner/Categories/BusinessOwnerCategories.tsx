@@ -1,7 +1,7 @@
 import { FC, PropsWithChildren } from 'react';
 
+import ImportProductCategories from './ImportProductCategories';
 import OwnerProductCategoriesGrid from './OwnerProductCategoriesGrid';
-// import EquipmentImport from './EquipmentImport';
 
 import { PageContentWrapper, TabWithContent } from '~/components';
 
@@ -13,8 +13,12 @@ const BusinessOwnerCategorys: FC<
       <TabWithContent
         tabItems={[
           {
-            name: 'Product Categories',
+            name: 'Product Categories Overview',
             content: <OwnerProductCategoriesGrid disableWrite={disableWrite} />,
+          },
+          {
+            name: 'Product Categories Import',
+            content: <ImportProductCategories />,
           },
         ]}
       />

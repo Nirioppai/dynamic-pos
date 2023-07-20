@@ -122,6 +122,20 @@ const ServiceSales: FC<PropsWithChildren<ServiceSalesProps>> = ({
             minWidth: 250,
             maxWidth: 200,
           },
+          {
+            field: 'timestamp',
+            headerName: 'Timestamp',
+            headerTooltip: 'Timestamp',
+            minWidth: 190,
+            valueFormatter: (params) => {
+              const date = new Date(params.value); // Convert the timestamp to a JavaScript Date object
+              return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: '2-digit',
+              });
+            },
+          },
         ]}
         isLoading={isLoading}
         isError={isError}

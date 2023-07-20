@@ -6,10 +6,12 @@ import {
   doc,
   getDoc,
   getDocs,
+  getFirestore,
   // orderBy,
   query,
   updateDoc,
   where,
+  writeBatch,
 } from 'firebase/firestore';
 
 import { db } from '~/configs';
@@ -162,6 +164,50 @@ export const productsService = {
       ...product,
     };
   },
+  postMany: async (products: ProductSchema[]): Promise<any> => {
+    const productCategoryInstanceRef = collection(db, KEYS.productCategories);
+    const firestore = getFirestore();
+    const batch = writeBatch(firestore);
+
+    // Get categories
+    const q = query(
+      productCategoryInstanceRef,
+      where('ownerId', '==', products[0].ownerId)
+    );
+    const categoryData = await getDocs(q);
+    const categories = mapData(categoryData);
+    const categoriesMap = new Map(
+      categories.map((cat: any) => [cat.name, cat._id])
+    );
+
+    // Map over products and replace category name with category ID
+    const modifiedProducts = products.map((product) => {
+      // Replace the category name with its _id from categoriesMap
+      const categoryId = categoriesMap.get(product.category);
+      if (!categoryId) {
+        throw new Error(
+          `No category ID found for category name ${product.category}`
+        );
+      }
+      return { ...product, category: categoryId };
+    });
+
+    // Create documents with the modified products
+    const productRefs = modifiedProducts.map((product) => {
+      const newDocRef = doc(productInstanceRef);
+      batch.set(newDocRef, product);
+      return newDocRef;
+    });
+
+    await batch.commit();
+
+    return productRefs.map((ref, idx) => ({
+      // @ts-ignore
+      _id: ref.id,
+      ...modifiedProducts[idx],
+    }));
+  },
+
   postOneInsideStore: async (product: ProductSchema): Promise<any> => {
     const data = await addDoc(productInstanceRef, product);
     const storeId = product.storeId;

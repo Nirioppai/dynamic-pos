@@ -18,7 +18,10 @@ export * from './Chart';
 export { default as DatePickerElement } from './DatePickerElement';
 export { default as NumberFieldElement } from './NumberFieldElement';
 export { default as TimePickerElement } from './TimePickerElement';
+export { default as Attachment } from './Attachment';
+export * from './Attachment';
 
 export * from './TabWithContent';
+export * from './FileDropzone';
 export * from './Dialogs';
 export * from './FormContainerComponent';

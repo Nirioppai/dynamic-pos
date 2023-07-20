@@ -1,19 +1,27 @@
 import { FC, PropsWithChildren } from 'react';
 
+import ImportProducts from './ImportProducts';
 import OwnerProductsGrid from './OwnerProductsGrid';
-// import EquipmentImport from './EquipmentImport';
 
-import {
-  PageContentWrapper,
-  // TabWithContent
-} from '~/components';
+import { PageContentWrapper, TabWithContent } from '~/components';
 
 const BusinessOwnerProducts: FC<
   PropsWithChildren<{ disableWrite?: boolean }>
 > = ({ disableWrite }) => {
   return (
     <PageContentWrapper title='Products'>
-      <OwnerProductsGrid disableWrite={disableWrite} />
+      <TabWithContent
+        tabItems={[
+          {
+            name: 'Overview',
+            content: <OwnerProductsGrid disableWrite={disableWrite} />,
+          },
+          {
+            name: 'Import',
+            content: <ImportProducts />,
+          },
+        ]}
+      />
     </PageContentWrapper>
   );
 };

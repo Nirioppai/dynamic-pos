@@ -3,3 +3,4 @@ export * from './useMutationBase';
 export * from './usePostManyMutation';
 export * from './usePostMutation';
 export * from './usePutMutation';
+export * from './useShowError';

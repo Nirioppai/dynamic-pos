@@ -1,27 +1,27 @@
 import { FC, PropsWithChildren } from 'react';
 
+import ImportServices from './ImportServices';
 import OwnerServicesGrid from './OwnerServicesGrid';
-// import EquipmentImport from './EquipmentImport';
 
-import {
-  PageContentWrapper,
-  // TabWithContent
-} from '~/components';
+import { PageContentWrapper, TabWithContent } from '~/components';
 
 const BusinessOwnerServices: FC<
   PropsWithChildren<{ disableWrite?: boolean }>
 > = ({ disableWrite }) => {
   return (
     <PageContentWrapper title='Services'>
-      {/* <TabWithContent
+      <TabWithContent
         tabItems={[
           {
             name: 'Overview',
             content: <OwnerServicesGrid disableWrite={disableWrite} />,
           },
+          {
+            name: 'Import',
+            content: <ImportServices />,
+          },
         ]}
-      /> */}
-      <OwnerServicesGrid disableWrite={disableWrite} />
+      />
     </PageContentWrapper>
   );
 };

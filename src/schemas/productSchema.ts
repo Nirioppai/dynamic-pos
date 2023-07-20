@@ -4,9 +4,7 @@ import { z } from 'zod';
 export const productSchema = z.object({
   price: z.number(),
   category: z.string().optional(),
-  availability: z
-    .string()
-    .refine((value) => value.trim() !== '', 'Must not be empty or whitespace'),
+  availability: z.enum(['Available', 'Unavailable']),
   storesAssigned: z.array(z.string()).optional(),
   stock: z.number().optional(),
   name: z

@@ -38,6 +38,8 @@ const AllSales: FC<PropsWithChildren<AllSalesItemsGridProps>> = ({
   // @ts-ignore
   const isError = queries.some((q) => q.isError);
 
+  console.log(invoices);
+
   useEffect(() => {
     queries.forEach((q) => q.refetch());
     //eslint-disable-next-line react-hooks/exhaustive-deps
@@ -133,6 +135,20 @@ const AllSales: FC<PropsWithChildren<AllSalesItemsGridProps>> = ({
 
             minWidth: 250,
             maxWidth: 200,
+          },
+          {
+            field: 'timestamp',
+            headerName: 'Timestamp',
+            headerTooltip: 'Timestamp',
+            maxWidth: 220,
+            valueFormatter: (params) => {
+              const date = new Date(params.value); // Convert the timestamp to a JavaScript Date object
+              return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: '2-digit',
+              });
+            },
           },
         ]}
         isLoading={isLoading}
