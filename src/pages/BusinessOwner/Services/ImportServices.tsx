@@ -28,10 +28,6 @@ const ImportServices: FC = () => {
           auth?.currentUser?.uid || ''
         );
 
-        //const categories = await categoriesService.getServiceCategories(
-        //  auth?.currentUser?.uid || ''
-        //);
-        //const categoriesMap = createHashMap(categories, 'name');
         const namesMap = createHashMap(services, 'name');
 
         //console.log('categoriesMap: ');
@@ -59,12 +55,6 @@ const ImportServices: FC = () => {
             validationFn: (value: any) => !namesMap.has(value),
             errorText: 'Service with name already exists.',
           });
-          //validateCsvRow({
-          //  index,
-          //  value: row.category,
-          //  validationFn: (value: any) => categoriesMap.has(value),
-          //  errorText: 'Service Category does not exist.',
-          //});
         });
 
         return mergedContent;

@@ -6,12 +6,12 @@ import {
   doc,
   getDoc,
   getDocs,
-  //getFirestore,
+  getFirestore,
   // orderBy,
   query,
   updateDoc,
   where,
-  //writeBatch,
+  writeBatch,
 } from 'firebase/firestore';
 
 import { db } from '~/configs';
@@ -92,8 +92,24 @@ export const servicesService = {
     // initializee
   },
 
-  postMany: async (service: ServiceSchema[]): Promise<any> => {
-    console.log(service);
+  postMany: async (services: ServiceSchema[]): Promise<any> => {
+    const firestore = getFirestore();
+    const batch = writeBatch(firestore);
+
+    // Create documents with the modified services
+    const serviceRefs = services.map((service) => {
+      const newDocRef = doc(serviceInstanceRef);
+      batch.set(newDocRef, service);
+      return newDocRef;
+    });
+
+    await batch.commit();
+
+    return serviceRefs.map((ref, idx) => ({
+      // @ts-ignore
+      _id: ref.id,
+      ...services[idx],
+    }));
   },
 
   postOneInsideStore: async (service: ServiceSchema): Promise<any> => {
