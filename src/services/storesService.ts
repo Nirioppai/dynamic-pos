@@ -35,7 +35,7 @@ export const storesService = {
   getAllPendingStores: async (): Promise<any> => {
     const q = query(
       storeInstanceRef,
-      where('status', '==', 'Pending')
+      where('status', '==', false)
       // orderBy('timestamp', 'desc')
     );
 
