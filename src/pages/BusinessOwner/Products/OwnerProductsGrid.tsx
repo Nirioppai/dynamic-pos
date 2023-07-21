@@ -139,6 +139,36 @@ const OwnerProductsGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
 
             minWidth: 150,
           },
+          {
+            field: 'productId',
+            headerName: 'Product ID',
+            headerTooltip: 'Product ID',
+            minWidth: 150,
+          },
+          {
+            field: 'quantityPerUnit',
+            headerName: 'Quantity per Unit',
+            headerTooltip: 'Quantity per Unit',
+            minWidth: 100,
+          },
+          {
+            field: 'unit',
+            headerName: 'Unit',
+            headerTooltip: 'Unit',
+            minWidth: 100,
+          },
+          {
+            field: 'batchNumber',
+            headerName: 'Batch Number',
+            headerTooltip: 'Batch Number',
+            minWidth: 150,
+          },
+          {
+            field: 'productCode',
+            headerName: 'Product Code',
+            headerTooltip: 'Product Code',
+            minWidth: 150,
+          },
         ]}
         isLoading={isLoading}
         isError={isError}
