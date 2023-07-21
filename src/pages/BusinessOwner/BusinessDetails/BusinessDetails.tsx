@@ -210,6 +210,7 @@ function BusinessDetails() {
             documentMayorsPermit: '',
             documentBIRPermit: '',
             status: false,
+            remarks: '',
           }}
           schema={storeSchema}
           onFormSubmit={onSubmit}

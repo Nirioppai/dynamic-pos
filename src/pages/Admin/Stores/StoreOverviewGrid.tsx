@@ -1,5 +1,5 @@
 import { Typography } from '@mui/material';
-import { CheckboxElement } from 'react-hook-form-mui';
+import { CheckboxElement, TextFieldElement } from 'react-hook-form-mui';
 
 import BusinessOwnerStoreModalForm from '../../BusinessOwner/Stores/modals/BusinessOwnerStoreModalForm';
 
@@ -15,6 +15,7 @@ const StoreOverviewGrid = ({
   schema: typeof storeSchema;
   onSubmit: any;
 }) => {
+  console.log(defaultValues);
   return (
     <div>
       <FormContainerComponent
@@ -27,10 +28,15 @@ const StoreOverviewGrid = ({
           <BusinessOwnerStoreModalForm />
 
           <Typography variant='h2' gutterBottom sx={{ mb: '20px' }}>
-            Provide Remarks to Business Owner
+            Provide Feedback to Business Owner
           </Typography>
 
-          <CheckboxElement label='Approval Status' name='status' />
+          <TextFieldElement label='Remarks' name='remarks' />
+
+          <CheckboxElement
+            label='Approval Business (You can only approve once, check the requirements carefully.)'
+            name='status'
+          />
         </Section>
       </FormContainerComponent>
     </div>
