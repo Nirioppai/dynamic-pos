@@ -44,6 +44,8 @@ export const AuthContextProvider = ({ children }) => {
           email: user.email,
           userType: userType,
           timestamp: serverTimestamp(),
+          status: 'Pending',
+          ownerId: user.uid,
         });
       }
 
@@ -91,15 +93,17 @@ export const AuthContextProvider = ({ children }) => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      const docRef = doc(db, KEYS.users, user.uid);
-      const docSnap = await getDoc(docRef);
+      const docUserRef = doc(db, KEYS.users, user.uid);
+      const docUserSnap = await getDoc(docUserRef);
 
-      if (!docSnap.exists()) {
-        await setDoc(docRef, {
+      if (!docUserSnap.exists()) {
+        await setDoc(docUserRef, {
           name: user.displayName,
           email: user.email,
           userType: userType,
           timestamp: serverTimestamp(),
+          status: 'Pending',
+          ownerId: user.uid,
         });
       }
 

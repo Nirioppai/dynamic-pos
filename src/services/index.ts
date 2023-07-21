@@ -4,3 +4,4 @@ export * from './servicesService';
 export * from './categoriesService';
 export * from './cashiersService';
 export * from './invoiceService';
+export * from './usersService';

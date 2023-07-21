@@ -2,6 +2,7 @@ export const KEYS = {
   users: 'users',
   systemAdministrators: 'systemAdministrators',
   businessOwners: 'businessOwners',
+  businessOwnerDetails: 'businessOwnerDetails',
   cashiers: 'cashiers',
   storeInstances: 'storeInstances',
   products: 'ownerProducts',

@@ -19,6 +19,7 @@ import { FormContainer } from '~/components';
 
 export interface FormContainerComponentInterface<S, Z> {
   useFormProps?: UseFormProps;
+  enabledEditing?: boolean;
   defaultValues: DefaultValues<S>;
   schema: Z;
   // @ts-ignore
@@ -32,7 +33,7 @@ export const FormContainerComponent = <S, Z extends ZodSchema<any, any>>({
   schema,
   onFormSubmit,
   submitText = 'Submit',
-
+  enabledEditing = true,
   children,
 }: PropsWithChildren<FormContainerComponentInterface<S, Z>>) => {
   const formContext = useForm({
@@ -64,18 +65,22 @@ export const FormContainerComponent = <S, Z extends ZodSchema<any, any>>({
       )}
     >
       {children}
-      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-        <Grid item xs={6}></Grid>
-        <Grid container item xs={6} justifyContent='flex-end'>
-          <LoadingButton
-            variant='contained'
-            type='submit'
-            loading={isSubmitting}
-          >
-            {submitText}
-          </LoadingButton>
+      {enabledEditing === true ? (
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+          <Grid item xs={6}></Grid>
+          <Grid container item xs={6} justifyContent='flex-end'>
+            <LoadingButton
+              variant='contained'
+              type='submit'
+              loading={isSubmitting}
+            >
+              {submitText}
+            </LoadingButton>
+          </Grid>
         </Grid>
-      </Grid>
+      ) : (
+        ''
+      )}
     </FormContainer>
   );
 };

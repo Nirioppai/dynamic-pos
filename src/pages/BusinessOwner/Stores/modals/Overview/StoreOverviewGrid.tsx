@@ -20,6 +20,7 @@ const StoreOverviewGrid = ({
         defaultValues={defaultValues}
         schema={schema}
         onFormSubmit={onSubmit}
+        enabledEditing={false}
       >
         <Section gutterBottom>
           <BusinessOwnerStoreModalForm />

@@ -5,3 +5,4 @@ export { default as BusinessOwnerSales } from './Sales/BusinessOwnerSales';
 export { default as BusinessOwnerServices } from './Services/BusinessOwnerServices';
 export { default as BusinessOwnerCategories } from './Categories/BusinessOwnerCategories';
 export { default as BusinessOwnerCashiers } from './Cashiers/BusinessOwnerCashiers';
+export { default as BusinessDetails } from './BusinessDetails/BusinessDetails';

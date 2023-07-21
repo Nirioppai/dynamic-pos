@@ -86,14 +86,15 @@ const StoresGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
         isLoading={isLoading}
         isError={isError}
         actions={{
-          add: !disableWrite,
-          edit: !disableWrite,
-          archive: !disableWrite,
+          add: disableWrite,
+          edit: disableWrite,
+          archive: disableWrite,
           export: !disableWrite,
+          view: !disableWrite,
         }}
         onArchive={async (row) => await archiveEntry(row._id)}
         AddModal={AddStoreModal}
-        EditModal={EditStoreModal}
+        ViewModal={EditStoreModal}
       />
     </>
   );
