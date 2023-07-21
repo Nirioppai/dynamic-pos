@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import { CheckboxElement, TextFieldElement } from 'react-hook-form-mui';
 
-import BusinessOwnerStoreModalForm from '../../BusinessOwner/Stores/modals/BusinessOwnerStoreModalForm';
+import AdminStoreOverviewForms from './AdminStoreOverviewForms';
 
 import { FormContainerComponent, Section } from '~/components';
 import { storeSchema } from '~/schemas';
@@ -25,7 +25,7 @@ const StoreOverviewGrid = ({
         enabledEditing={true}
       >
         <Section gutterBottom>
-          <BusinessOwnerStoreModalForm />
+          <AdminStoreOverviewForms />
 
           <Typography variant='h2' gutterBottom sx={{ mb: '20px' }}>
             Provide Feedback to Business Owner

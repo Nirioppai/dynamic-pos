@@ -57,15 +57,7 @@ const EditStoreModal: FC<CombinedProps> = ({
         <StoreServicesGrid storeId={data._id} disableWrite={disableWrite} />
       ),
     },
-    // {
-    //   name: 'Categories',
-    //   content: (
-    //     <StoreCategoryGrid
-    //       storeId={data._id}
-    //       disableWrite={disableWrite}
-    //     />
-    //   ),
-    // },
+
     {
       name: 'Cashiers',
       content: (

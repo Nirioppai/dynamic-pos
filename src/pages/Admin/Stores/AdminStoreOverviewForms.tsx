@@ -1,10 +1,10 @@
 import { Typography } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
-import { CheckboxElement, TextFieldElement } from 'react-hook-form-mui';
+import { TextFieldElement } from 'react-hook-form-mui';
 
 import { Attachment } from '~/components';
 
-const BusinessOwnerStoreModalForm = () => {
+const AdminStoreOverviewForms = () => {
   // Get the form data using useFormContext
   const { watch } = useFormContext();
 
@@ -18,22 +18,30 @@ const BusinessOwnerStoreModalForm = () => {
       <Typography variant='h2' gutterBottom sx={{ mb: '20px' }}>
         Business Details
       </Typography>
-      <TextFieldElement name='ownerName' label='Owner Name' required />
-      <TextFieldElement name='businessName' label='Name of Business' required />
+      <TextFieldElement name='ownerName' label='Owner Name' required disabled />
+      <TextFieldElement
+        name='businessName'
+        label='Name of Business'
+        required
+        disabled
+      />
       <TextFieldElement
         name='businessAddress'
         label='Business Address'
         required
+        disabled
       />
       <TextFieldElement
         name='businessTIN'
         label='Business TIN Number'
         required
+        disabled
       />
       <TextFieldElement
         name='businessNature'
         label='Nature of Business'
         required
+        disabled
       />
       <Typography variant='h2' gutterBottom sx={{ mb: '20px' }}>
         Business Documents
@@ -71,20 +79,8 @@ const BusinessOwnerStoreModalForm = () => {
         color='primary'
         onClick={() => window.open(documentBIRPermit, '_blank')}
       />
-
-      <Typography variant='h2' gutterBottom sx={{ mb: '20px' }}>
-        Provide Feedback to Business Owner
-      </Typography>
-
-      <CheckboxElement label='Business Approved' name='status' disabled />
-
-      <TextFieldElement
-        label='System Administrator Remarks'
-        name='remarks'
-        disabled
-      />
     </>
   );
 };
 
-export default BusinessOwnerStoreModalForm;
+export default AdminStoreOverviewForms;
