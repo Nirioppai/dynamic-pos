@@ -7,22 +7,14 @@ import StoreSalesGrid from './StoreSalesGrid';
 
 import {
   StoreCashierGrid,
-  // StoreCategoryGrid,
   StoreOverviewGrid,
   StoreProductsGrid,
   StoreServicesGrid,
 } from './index';
 
-import {
-  // FormDialog,
-  FullScreenDialog,
-  TabWithContent,
-} from '~/components';
+import { FullScreenDialog, TabWithContent } from '~/components';
 import { selectedStore } from '~/configs';
-import { KEYS } from '~/constants';
-import { usePutMutation } from '~/hooks';
 import { BaseSchema, StoreSchema, storeSchema } from '~/schemas';
-import { storesService2 } from '~/services';
 
 type CombinedProps = DialogProps & {
   data: BaseSchema & StoreSchema;
@@ -37,16 +29,7 @@ const EditStoreModal: FC<CombinedProps> = ({
   disableWrite,
   ...rest
 }) => {
-  const { mutateAsync } = usePutMutation({
-    queryKey: KEYS.storeInstances,
-    mutationFn: storesService2.putOne,
-  });
-
   const { _id, ...defaultValues } = data;
-
-  const onSubmit = async (values: StoreSchema) =>
-    await mutateAsync({ id: _id, item: { ...defaultValues, ...values } });
-
   setRecoil(selectedStore, data._id);
 
   console.log('defaultValues: ', defaultValues);
@@ -58,7 +41,7 @@ const EditStoreModal: FC<CombinedProps> = ({
         <StoreOverviewGrid
           defaultValues={defaultValues}
           schema={storeSchema}
-          onSubmit={onSubmit}
+          storeId={data._id}
         />
       ),
     },
@@ -104,7 +87,7 @@ const EditStoreModal: FC<CombinedProps> = ({
         <StoreOverviewGrid
           defaultValues={defaultValues}
           schema={storeSchema}
-          onSubmit={onSubmit}
+          storeId={data._id}
         />
       ),
     },
