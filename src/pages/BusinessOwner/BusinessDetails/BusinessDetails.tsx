@@ -209,7 +209,7 @@ function BusinessDetails() {
             documentDTIBusinessName: '',
             documentMayorsPermit: '',
             documentBIRPermit: '',
-            status: 'Pending',
+            status: false,
           }}
           schema={storeSchema}
           onFormSubmit={onSubmit}
