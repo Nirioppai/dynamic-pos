@@ -41,10 +41,10 @@ const StoresGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
         rowData={stores}
         columnDefs={[
           {
-            field: 'name',
-            headerName: 'Name',
+            field: 'businessName',
+            headerName: 'Business Name',
             sort: 'asc',
-            headerTooltip: 'Name',
+            headerTooltip: 'Business Name',
             minWidth: 200,
             cellStyle: { fontWeight: 500 },
           },
@@ -86,7 +86,7 @@ const StoresGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
         isLoading={isLoading}
         isError={isError}
         actions={{
-          add: !disableWrite,
+          add: disableWrite,
           edit: disableWrite,
           archive: disableWrite,
           export: !disableWrite,

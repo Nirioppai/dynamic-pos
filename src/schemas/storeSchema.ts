@@ -13,6 +13,10 @@ export const storeSchema = z.object({
   businessAddress: z.string(),
   businessTIN: z.string(),
   businessNature: z.string(),
+  documentDTIBusinessName: z.string(),
+  documentMayorsPermit: z.string(),
+  documentBIRPermit: z.string(),
+  status: z.string().optional(),
   // Array of IDs
   products: z.string().array().optional(),
   services: z.string().array().optional(),

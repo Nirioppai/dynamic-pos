@@ -53,7 +53,7 @@ const EditEquipmentModal: FC<CombinedProps> = ({
     <>
       <FullScreenDialog
         onClose={onClose}
-        title={'Viewing Store ' + data.name}
+        title={'Viewing Store ' + data.businessName}
         {...rest}
       >
         <TabWithContent

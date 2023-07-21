@@ -10,7 +10,7 @@ import {
 import { Dropzone } from '~/components';
 import { auth } from '~/configs';
 
-function ImportProductCategories() {
+const ImportProductCategories = () => {
   async function storePDF(pdf: any) {
     return new Promise((resolve, reject) => {
       const storage = getStorage();
@@ -72,6 +72,6 @@ function ImportProductCategories() {
       />
     </div>
   );
-}
+};
 
 export default ImportProductCategories;
