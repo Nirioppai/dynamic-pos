@@ -30,7 +30,7 @@ type CombinedProps = DialogProps & {
   disableWrite?: boolean;
 };
 
-const EditEquipmentModal: FC<CombinedProps> = ({
+const EditStoreModal: FC<CombinedProps> = ({
   data,
   setData,
   onClose,
@@ -119,7 +119,7 @@ const EditEquipmentModal: FC<CombinedProps> = ({
       >
         <TabWithContent
           tabItems={
-            defaultValues.status === 'Pending' ? pendingItems : acceptedItems
+            defaultValues.status === true ? pendingItems : acceptedItems
           }
         />
       </FullScreenDialog>
@@ -127,4 +127,4 @@ const EditEquipmentModal: FC<CombinedProps> = ({
   );
 };
 
-export default EditEquipmentModal;
+export default EditStoreModal;

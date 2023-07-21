@@ -16,7 +16,7 @@ export const storeSchema = z.object({
   documentDTIBusinessName: z.string(),
   documentMayorsPermit: z.string(),
   documentBIRPermit: z.string(),
-  status: z.string().optional(),
+  status: z.boolean(),
   // Array of IDs
   products: z.string().array().optional(),
   services: z.string().array().optional(),

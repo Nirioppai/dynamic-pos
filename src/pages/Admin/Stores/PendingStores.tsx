@@ -2,6 +2,8 @@ import { FC, PropsWithChildren, useEffect } from 'react';
 
 import { useQueries } from 'react-query';
 
+import ViewStoreModal from './ViewStoreModal';
+
 import { DynamicAgGrid } from '~/components';
 // eslint-disable-next-line import/order
 import { KEYS } from '~/constants';
@@ -60,6 +62,7 @@ const AdminStoresGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
           export: disableWrite,
           view: !disableWrite,
         }}
+        ViewModal={ViewStoreModal}
       />
     </>
   );

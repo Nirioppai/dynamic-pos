@@ -48,7 +48,7 @@ const BusinessOwnerSales: FC = () => {
     setSelectedInvoice(event.target.value);
   };
 
-  if (!isLoading && stores[0].status !== 'Pending') {
+  if (!isLoading && stores[0].status !== false) {
     return (
       <PageContentWrapper title='Sales'>
         <FormControl size='small'>

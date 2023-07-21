@@ -25,7 +25,7 @@ const BusinessOwnerCategorys: FC<
 
   const isLoading = queries.some((q) => q.isLoading);
 
-  if (!isLoading && users[0].status !== 'Pending') {
+  if (!isLoading && users[0].status !== false) {
     return (
       <PageContentWrapper title='Categories'>
         <TabWithContent
