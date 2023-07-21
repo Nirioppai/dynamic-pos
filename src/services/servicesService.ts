@@ -6,10 +6,12 @@ import {
   doc,
   getDoc,
   getDocs,
+  //getFirestore,
   // orderBy,
   query,
   updateDoc,
   where,
+  //writeBatch,
 } from 'firebase/firestore';
 
 import { db } from '~/configs';
@@ -89,6 +91,11 @@ export const servicesService = {
     // return stor service
     // initializee
   },
+
+  postMany: async (service: ServiceSchema[]): Promise<any> => {
+    console.log(service);
+  },
+
   postOneInsideStore: async (service: ServiceSchema): Promise<any> => {
     const data = await addDoc(serviceInstanceRef, service);
     const storeId = service.storeId;
@@ -104,6 +111,7 @@ export const servicesService = {
       ...service,
     };
   },
+
   postOneExistingServiceInsideStore: async (
     service: ServiceSchema
   ): Promise<any> => {
