@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import type { DialogProps } from '@mui/material';
+import { doc, updateDoc } from 'firebase/firestore';
 import { setRecoil } from 'recoil-nexus';
 
 import StoreOverviewGrid from './StoreOverviewGrid';
@@ -9,7 +10,7 @@ import {
   // FormDialog,
   FullScreenDialog,
 } from '~/components';
-import { selectedStore } from '~/configs';
+import { db, selectedStore } from '~/configs';
 import { KEYS } from '~/constants';
 import { usePutMutation } from '~/hooks';
 import { BaseSchema, StoreSchema, storeSchema } from '~/schemas';
@@ -35,8 +36,28 @@ const ViewStoreModal: FC<CombinedProps> = ({
 
   const { _id, ...defaultValues } = data;
 
-  const onSubmit = async (values: StoreSchema) =>
+  const onSubmit = async (values: StoreSchema) => {
+    console.log('values: ', values);
+
+    // Updating the user's status
+    if (values.status === true) {
+      try {
+        // Get the user's document reference
+        const userDocRef = doc(db, KEYS.users, values.ownerId);
+
+        // Update the status field in the user's document
+        await updateDoc(userDocRef, {
+          status: 'Accepted',
+        });
+
+        console.log("User's status updated to 'Accepted'");
+      } catch (error) {
+        console.error('Failed to update user status:', error);
+      }
+    }
+
     await mutateAsync({ id: _id, item: { ...defaultValues, ...values } });
+  };
 
   setRecoil(selectedStore, data._id);
 

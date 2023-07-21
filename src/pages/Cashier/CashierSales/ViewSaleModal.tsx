@@ -10,8 +10,6 @@ interface ViewSaleModalProps extends DialogProps {
 }
 
 const ViewSaleModal: FC<ViewSaleModalProps> = ({ data, onClose, ...rest }) => {
-  console.log('data: ', data);
-
   const displayProductDetails = (invoice: any) => {
     const productCounts = invoice.products.reduce(
       (counts: any, product: any) => {

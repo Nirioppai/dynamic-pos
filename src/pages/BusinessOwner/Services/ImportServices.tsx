@@ -39,8 +39,6 @@ const ImportServices: FC = () => {
           storeId: '',
         }));
 
-        console.log(modifiedContent);
-
         // content validation moved here
         // this is to reduce the number of requests to the server
         const mergedContent = content.map((row, idx) => ({

@@ -38,8 +38,6 @@ const AllSales: FC<PropsWithChildren<AllSalesItemsGridProps>> = ({
   // @ts-ignore
   const isError = queries.some((q) => q.isError);
 
-  console.log(invoices);
-
   useEffect(() => {
     queries.forEach((q) => q.refetch());
     //eslint-disable-next-line react-hooks/exhaustive-deps

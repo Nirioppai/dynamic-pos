@@ -121,8 +121,6 @@ function BusinessDetails() {
       return false;
     }
 
-    console.log(data);
-
     const files = [...filesFirst, ...filesSecond, ...filesThird];
     for (const file of files) {
       try {

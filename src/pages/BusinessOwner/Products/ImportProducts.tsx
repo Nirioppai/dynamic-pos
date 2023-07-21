@@ -41,16 +41,12 @@ const ImportProducts: FC = () => {
         const categoriesMap = createHashMap(categories, 'name');
         const namesMap = createHashMap(products, 'name');
 
-        console.log('categoriesMap: ');
-
         // ** This is to replace the modified content above
         const modifiedContent = content.map((row) => ({
           ...row,
           ownerId: auth?.currentUser?.uid,
           storeId: '',
         }));
-
-        console.log(modifiedContent);
 
         // content validation moved here
         // this is to reduce the number of requests to the server

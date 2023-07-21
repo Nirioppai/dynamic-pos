@@ -32,8 +32,6 @@ const EditStoreModal: FC<CombinedProps> = ({
   const { _id, ...defaultValues } = data;
   setRecoil(selectedStore, data._id);
 
-  console.log('defaultValues: ', defaultValues);
-
   const acceptedItems = [
     {
       name: 'Overview',

@@ -28,8 +28,6 @@ const OwnerProductsGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
 
   const products = queries[0].data || [];
 
-  console.log(products);
-
   const isLoading = queries.some((q) => q.isLoading);
   // const isSuccess = queries.every((q) => q.isSuccess);
   const isError = queries.some((q) => q.isError);

@@ -36,9 +36,6 @@ const BarGraph: FC<{ invoices: any; isLoading: any }> = ({
   const categories = Object.keys(categoryCounts);
   const counts = Object.values(categoryCounts);
 
-  console.log('categories', categories);
-  console.log('counts', counts);
-
   const option = {
     tooltip: {
       trigger: 'axis',

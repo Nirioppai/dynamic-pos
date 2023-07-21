@@ -28,8 +28,6 @@ const OwnerProductCategoriesGrid: FC<
 
   const productCategories = queries[0].data || [];
 
-  console.log(productCategories);
-
   const isLoading = queries.some((q) => q.isLoading);
   // const isSuccess = queries.every((q) => q.isSuccess);
   const isError = queries.some((q) => q.isError);

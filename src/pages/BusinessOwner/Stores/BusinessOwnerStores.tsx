@@ -22,10 +22,6 @@ const BusinessOwnerStores: FC<
 
   const stores = queries[0].data || [];
 
-  console.log(stores.length);
-
-  console.log(stores);
-
   const isLoading = queries.some((q) => q.isLoading);
 
   if (!isLoading && stores.length !== 0) {

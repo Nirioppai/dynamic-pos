@@ -192,8 +192,6 @@ const MultiLineGraph: FC<{ invoices: any; isLoading: any }> = ({
     setSelectedFilter(currentFilter);
   };
 
-  console.log(invoices);
-
   const hourlyProductSubtotal = new Array(24).fill(0);
   const hourlyServiceSubtotal = new Array(24).fill(0);
 

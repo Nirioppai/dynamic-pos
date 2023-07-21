@@ -58,14 +58,12 @@ const ChargeItems: FC<PropsWithChildren<ChargeItemsProps>> = ({
       paymentType: selectedItems.paymentType,
       totalAmount: totalAmount(),
       status: 'Successful', // ['Cancelled', 'Edited', 'Successful']
-      iterationCount: 0, // initial iteration count
+      iterationCount: 0, // initial iteration countww
       orderDetails: selectedItems,
     };
 
     // submit invoice
     await createInvoice(invoiceData);
-
-    console.log(invoiceData);
 
     // clear selected items and customer data
     clearSelectedItems();
