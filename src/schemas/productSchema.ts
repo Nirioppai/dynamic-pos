@@ -14,7 +14,7 @@ export const productSchema = z.object({
   ownerId: z.string().optional(),
   storeId: z.string().optional(),
   productId: z.string(),
-  unit: z.string().optional(),
+  unit: z.enum(['g', 'Pcs', 'kg', 'L', 'mL']),
   quantityPerUnit: z.number().optional(),
   batchNumber: z.string(),
   productCode: z.string(),

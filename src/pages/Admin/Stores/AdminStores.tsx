@@ -11,7 +11,7 @@ const AdminStores: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
   disableWrite,
 }) => {
   return (
-    <PageContentWrapper title='Business Approvals'>
+    <PageContentWrapper title='Businesses'>
       <AdminStoresGrid disableWrite={disableWrite} />
     </PageContentWrapper>
   );

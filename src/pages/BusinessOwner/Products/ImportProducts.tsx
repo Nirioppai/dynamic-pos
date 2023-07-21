@@ -18,8 +18,13 @@ const ImportProducts: FC = () => {
         'name',
         'price',
         'description',
+        'productId',
+        'productCode',
+        'quantityPerUnit',
+        'unit',
         'stock',
         'category',
+        'batchNumber',
         'availability',
       ]}
       queryKey={KEYS.products}
@@ -28,6 +33,7 @@ const ImportProducts: FC = () => {
       nonStringAssignments={{
         price: parseFloat,
         stock: parseInt,
+        quantityPerUnit: parseInt,
       }}
       //  @ts-ignore
       dynamicAssignments={async (content) => {
@@ -80,6 +86,14 @@ const ImportProducts: FC = () => {
         <Typography component='ul'>
           <li>name</li>
           <li>price</li>
+          <li>productId</li>
+          <li>productCode</li>
+          <li>
+            unit: &apos;g&apos; or &apos;Pcs&apos; or &apos;kg&apos; or
+            &apos;L&apos;or &apos;mL&apos;
+          </li>
+
+          <li>batchNumber</li>
           <li>
             availability: &apos;Available&apos; or &apos;Unavailable&apos;
           </li>
