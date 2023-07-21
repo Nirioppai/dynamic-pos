@@ -47,13 +47,17 @@ interface UserWrapperProps {
   userType: string;
 }
 
-import { businessOwnerDrawerItems } from './businessOwnerDrawerItems';
+import {
+  businessOwnerAcceptedDrawerItems,
+  businessOwnerPendingDrawerItems,
+} from './businessOwnerDrawerItems';
 import { cashierDrawerItems } from './cashierDrawerItems';
 import { systemAdministratorDrawerItems } from './systemAdministratorDrawerItems';
 
 import { auth } from '~/configs';
 import { APP_NAME, KEYS } from '~/constants';
 import { UserAuth } from '~/contexts';
+import { UserSchema } from '~/schemas';
 import { usersService } from '~/services';
 
 const drawerWidth = 240;
@@ -169,7 +173,7 @@ const UserWrapper: FC<PropsWithChildren<UserWrapperProps>> = ({
   ]);
 
   // @ ts-ignore
-  const users = useMemo(() => queries[0].data || [], [queries]);
+  const users: UserSchema[] = useMemo(() => queries[0].data || [], [queries]);
 
   useEffect(() => {
     setCurrentUserName(users[0]?.name || '');
@@ -190,7 +194,10 @@ const UserWrapper: FC<PropsWithChildren<UserWrapperProps>> = ({
     {
       systemAdministrator: systemAdministratorDrawerItems,
       cashier: cashierDrawerItems,
-      businessOwner: businessOwnerDrawerItems,
+      businessOwner:
+        users[0]?.status === 'Pending'
+          ? businessOwnerPendingDrawerItems
+          : businessOwnerAcceptedDrawerItems,
     }[userType] || [];
 
   const drawer = (

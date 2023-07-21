@@ -97,7 +97,7 @@ const createCashier = async (
     const docData = docSnap.data() || '';
 
     // @ts-ignore
-    const email = `${removeSpaces(docData.name)}${removeSpaces(
+    const email = `${removeSpaces(docData.businessName)}${removeSpaces(
       cashierName
     )}${randomNumber}@gmail.com`;
 
@@ -183,7 +183,7 @@ export const cashiersService = {
       name: cashier.name,
       ownerId: cashier.ownerId,
       // @ts-ignore
-      email: `${docData.name.split(' ').join('')}${removeSpaces(
+      email: `${docData.businessName.split(' ').join('')}${removeSpaces(
         cashier.name
       )}${randomNumber}@gmail.com`,
       password: cashier.password,
@@ -240,7 +240,7 @@ export const cashiersService = {
       name: cashier.name,
       ownerId: cashier.ownerId,
       // @ts-ignore
-      email: `${docData.name.split(' ').join('')}${removeSpaces(
+      email: `${docData.businessName.split(' ').join('')}${removeSpaces(
         cashier.name
       )}${randomNumber}@gmail.com`,
       password: cashier.password,

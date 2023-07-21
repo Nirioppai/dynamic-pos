@@ -21,11 +21,11 @@ const BusinessOwnerServices: FC<
     },
   ]);
 
-  const stores = queries[0].data || [];
+  const users = queries[0].data || [];
 
   const isLoading = queries.some((q) => q.isLoading);
 
-  if (!isLoading && stores[0].status !== 'Pending') {
+  if (!isLoading && users[0].status !== 'Pending') {
     return (
       <PageContentWrapper title='Services'>
         <TabWithContent

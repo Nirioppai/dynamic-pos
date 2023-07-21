@@ -9,7 +9,7 @@ import {
 
 // https://pictogrammers.com/library/mdi/?welcome
 
-export const businessOwnerDrawerItems = [
+export const businessOwnerAcceptedDrawerItems = [
   {
     label: 'Stores',
     Icon: StoreIcon,
@@ -44,6 +44,15 @@ export const businessOwnerDrawerItems = [
     label: 'Overall Sales',
     Icon: SalesIcon,
     path: 'sales',
+    hasDivider: false,
+  },
+];
+
+export const businessOwnerPendingDrawerItems = [
+  {
+    label: 'Stores',
+    Icon: StoreIcon,
+    path: 'stores',
     hasDivider: false,
   },
 ];

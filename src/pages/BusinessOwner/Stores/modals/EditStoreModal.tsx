@@ -49,6 +49,67 @@ const EditEquipmentModal: FC<CombinedProps> = ({
 
   setRecoil(selectedStore, data._id);
 
+  console.log('defaultValues: ', defaultValues);
+
+  const acceptedItems = [
+    {
+      name: 'Overview',
+      content: (
+        <StoreOverviewGrid
+          defaultValues={defaultValues}
+          schema={storeSchema}
+          onSubmit={onSubmit}
+        />
+      ),
+    },
+    {
+      name: 'Products',
+      content: (
+        <StoreProductsGrid storeId={data._id} disableWrite={disableWrite} />
+      ),
+    },
+    {
+      name: 'Services',
+      content: (
+        <StoreServicesGrid storeId={data._id} disableWrite={disableWrite} />
+      ),
+    },
+    // {
+    //   name: 'Categories',
+    //   content: (
+    //     <StoreCategoryGrid
+    //       storeId={data._id}
+    //       disableWrite={disableWrite}
+    //     />
+    //   ),
+    // },
+    {
+      name: 'Cashiers',
+      content: (
+        <StoreCashierGrid storeId={data._id} disableWrite={disableWrite} />
+      ),
+    },
+    {
+      name: 'Sales',
+      content: (
+        <StoreSalesGrid storeId={data._id} disableWrite={disableWrite} />
+      ),
+    },
+  ];
+
+  const pendingItems = [
+    {
+      name: 'Overview',
+      content: (
+        <StoreOverviewGrid
+          defaultValues={defaultValues}
+          schema={storeSchema}
+          onSubmit={onSubmit}
+        />
+      ),
+    },
+  ];
+
   return (
     <>
       <FullScreenDialog
@@ -57,63 +118,9 @@ const EditEquipmentModal: FC<CombinedProps> = ({
         {...rest}
       >
         <TabWithContent
-          tabItems={[
-            {
-              name: 'Overview',
-              content: (
-                <StoreOverviewGrid
-                  defaultValues={defaultValues}
-                  schema={storeSchema}
-                  onSubmit={onSubmit}
-                />
-              ),
-            },
-            {
-              name: 'Products',
-              content: (
-                <StoreProductsGrid
-                  storeId={data._id}
-                  disableWrite={disableWrite}
-                />
-              ),
-            },
-            {
-              name: 'Services',
-              content: (
-                <StoreServicesGrid
-                  storeId={data._id}
-                  disableWrite={disableWrite}
-                />
-              ),
-            },
-            // {
-            //   name: 'Categories',
-            //   content: (
-            //     <StoreCategoryGrid
-            //       storeId={data._id}
-            //       disableWrite={disableWrite}
-            //     />
-            //   ),
-            // },
-            {
-              name: 'Cashiers',
-              content: (
-                <StoreCashierGrid
-                  storeId={data._id}
-                  disableWrite={disableWrite}
-                />
-              ),
-            },
-            {
-              name: 'Sales',
-              content: (
-                <StoreSalesGrid
-                  storeId={data._id}
-                  disableWrite={disableWrite}
-                />
-              ),
-            },
-          ]}
+          tabItems={
+            defaultValues.status === 'Pending' ? pendingItems : acceptedItems
+          }
         />
       </FullScreenDialog>
     </>
