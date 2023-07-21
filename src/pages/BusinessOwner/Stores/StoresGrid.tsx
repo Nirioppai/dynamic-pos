@@ -69,7 +69,7 @@ const StoresGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
               let color = 'success';
               let IconComponent = CheckBoldIcon;
 
-              if (statusValue === 'Pending') {
+              if (statusValue === false) {
                 color = 'warning';
                 IconComponent = InformationIcon;
               }
@@ -82,7 +82,7 @@ const StoresGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
                     color={color}
                     size='small'
                     variant='filled'
-                    label={statusValue}
+                    label={statusValue === false ? 'Pending' : 'Approved'}
                   />
                 </div>
               );
