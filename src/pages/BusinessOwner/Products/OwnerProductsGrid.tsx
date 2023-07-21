@@ -48,7 +48,7 @@ const OwnerProductsGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
             field: 'name',
             headerName: 'Name',
             sort: 'asc',
-            minWidth: 200,
+            minWidth: 150,
             cellStyle: { fontWeight: 500 },
             headerTooltip: 'Name',
           },
@@ -62,7 +62,7 @@ const OwnerProductsGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
             field: 'category',
             headerName: 'Category',
             headerTooltip: 'Category',
-            minWidth: 150,
+            minWidth: 100,
           },
           {
             headerTooltip: 'Stock',
@@ -107,7 +107,7 @@ const OwnerProductsGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
             field: 'description',
             headerName: 'Description',
             headerTooltip: 'Description',
-            minWidth: 250,
+            minWidth: 150,
           },
           {
             field: 'availability',
@@ -137,6 +137,36 @@ const OwnerProductsGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
               );
             },
 
+            minWidth: 150,
+          },
+          {
+            field: 'productId',
+            headerName: 'Product ID',
+            headerTooltip: 'Product ID',
+            minWidth: 150,
+          },
+          {
+            field: 'quantityPerUnit',
+            headerName: 'Quantity per Unit',
+            headerTooltip: 'Quantity per Unit',
+            minWidth: 150,
+          },
+          {
+            field: 'unit',
+            headerName: 'Unit',
+            headerTooltip: 'Unit',
+            minWidth: 150,
+          },
+          {
+            field: 'batchNumber',
+            headerName: 'Batch Number',
+            headerTooltip: 'Batch Number',
+            minWidth: 150,
+          },
+          {
+            field: 'productCode',
+            headerName: 'Product Code',
+            headerTooltip: 'Product Code',
             minWidth: 150,
           },
         ]}
