@@ -7,6 +7,7 @@ import {
   ref,
   uploadBytesResumable,
 } from 'firebase/storage';
+import { useSnackbar } from 'notistack';
 import { TextFieldElement } from 'react-hook-form-mui';
 import { useQueries } from 'react-query';
 
@@ -78,8 +79,48 @@ function BusinessDetails() {
     queryKey: KEYS.storeInstances,
     mutationFn: storesService.postOne,
   });
+  const { enqueueSnackbar } = useSnackbar();
 
   const onSubmit = async (data: any) => {
+    const fields = {
+      name: 'Name',
+      ownerName: 'Owner Name',
+      businessName: 'Name of Business',
+      businessAddress: 'Business Address',
+      businessTIN: 'Business TIN Number',
+      businessNature: 'Nature of Business',
+    };
+
+    const documentFields = {
+      filesFirst: 'Document DTI Business Name',
+      filesSecond: "Document Mayor's Permit",
+      filesThird: 'Document BIR Permit',
+    };
+
+    const emptyFields = [];
+
+    for (const field in fields) {
+      if (!data[field].trim()) {
+        // @ts-ignore
+        emptyFields.push(fields[field]);
+      }
+    }
+
+    for (const field in documentFields) {
+      if (!eval(field).length) {
+        // Evaluates the string `field` to get the array variable
+        // @ts-ignore
+        emptyFields.push(documentFields[field]);
+      }
+    }
+
+    if (emptyFields.length) {
+      enqueueSnackbar(`${emptyFields.join(', ')} cannot be empty.`, {
+        variant: 'error',
+      });
+      return false;
+    }
+
     console.log(data);
 
     const files = [...filesFirst, ...filesSecond, ...filesThird];
@@ -103,7 +144,6 @@ function BusinessDetails() {
         : '',
       documentBIRPermit: filesThird.length ? await storePDF(filesThird[0]) : '',
     };
-
     try {
       // Attempt to create the store in the database
       const response = await mutateAsync(store);
@@ -210,18 +250,27 @@ function BusinessDetails() {
             maxFiles={1} // Limit the file upload to one file at a time
             accept='application/pdf'
           />
+          <Typography variant='h4' gutterBottom sx={{ mb: '20px', mt: '20px' }}>
+            DTI business name registration
+          </Typography>
 
           <Dropzone
             onChangeStatus={handleChangeStatusSecond}
             maxFiles={1} // Limit the file upload to one file at a time
             accept='application/pdf'
           />
+          <Typography variant='h4' gutterBottom sx={{ mb: '20px', mt: '20px' }}>
+            Baranggay Permit/Mayor&apos;s permit
+          </Typography>
 
           <Dropzone
             onChangeStatus={handleChangeStatusThird}
             maxFiles={1} // Limit the file upload to one file at a time
             accept='application/pdf'
           />
+          <Typography variant='h4' gutterBottom sx={{ mt: '20px' }}>
+            BIR Permit
+          </Typography>
         </FormContainerComponent>
       </Section>
     </PageContentWrapper>

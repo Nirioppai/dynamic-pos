@@ -1,5 +1,10 @@
 import { FC, PropsWithChildren } from 'react';
 
+import { Chip } from '@mui/material';
+import {
+  CheckBold as CheckBoldIcon,
+  Information as InformationIcon,
+} from 'mdi-material-ui';
 import { useQueries } from 'react-query';
 
 // eslint-disable-next-line import/order
@@ -55,19 +60,48 @@ const StoresGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
             minWidth: 200,
           },
           {
-            field: 'name',
-            headerName: 'Products',
-            headerTooltip: 'Products',
-            valueGetter: ({ data }) => data?.products?.length || '0',
-            minWidth: 100,
+            field: 'status',
+            headerName: 'Status',
+            headerTooltip: 'Status',
+            minWidth: 200,
+            cellRenderer: (params: any) => {
+              const statusValue = params.data.status;
+              let color = 'success';
+              let IconComponent = CheckBoldIcon;
+
+              if (statusValue === 'Pending') {
+                color = 'warning';
+                IconComponent = InformationIcon;
+              }
+
+              return (
+                <div>
+                  <Chip
+                    icon={<IconComponent />}
+                    // @ts-ignore
+                    color={color}
+                    size='small'
+                    variant='filled'
+                    label={statusValue}
+                  />
+                </div>
+              );
+            },
           },
-          {
-            field: 'name',
-            headerName: 'Services',
-            headerTooltip: 'Services',
-            valueGetter: ({ data }) => data?.services?.length || '0',
-            minWidth: 100,
-          },
+          // {
+          //   field: 'name',
+          //   headerName: 'Products',
+          //   headerTooltip: 'Products',
+          //   valueGetter: ({ data }) => data?.products?.length || '0',
+          //   minWidth: 100,
+          // },
+          // {
+          //   field: 'name',
+          //   headerName: 'Services',
+          //   headerTooltip: 'Services',
+          //   valueGetter: ({ data }) => data?.services?.length || '0',
+          //   minWidth: 100,
+          // },
           // {
           //   field: 'name',
           //   headerName: 'Product Categories',
@@ -75,13 +109,13 @@ const StoresGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
           //   valueGetter: ({ data }) => data?.productCategories?.length || '0',
           //   minWidth: 100,
           // },
-          {
-            field: 'name',
-            headerName: 'Cashiers',
-            headerTooltip: 'Cashiers',
-            valueGetter: ({ data }) => data?.cashiers?.length || '0',
-            minWidth: 100,
-          },
+          // {
+          //   field: 'name',
+          //   headerName: 'Cashiers',
+          //   headerTooltip: 'Cashiers',
+          //   valueGetter: ({ data }) => data?.cashiers?.length || '0',
+          //   minWidth: 100,
+          // },
         ]}
         isLoading={isLoading}
         isError={isError}
