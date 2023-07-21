@@ -119,7 +119,7 @@ const EditStoreModal: FC<CombinedProps> = ({
       >
         <TabWithContent
           tabItems={
-            defaultValues.status === true ? pendingItems : acceptedItems
+            defaultValues.status === false ? pendingItems : acceptedItems
           }
         />
       </FullScreenDialog>
