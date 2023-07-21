@@ -41,7 +41,7 @@ const AdminStoresGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
           },
 
           {
-            field: 'address',
+            field: 'businessAddress',
             headerName: 'Address',
             headerTooltip: 'Address',
             minWidth: 250,

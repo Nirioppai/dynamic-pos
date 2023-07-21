@@ -1,4 +1,11 @@
-import { FC, MouseEvent, PropsWithChildren, useState } from 'react';
+import {
+  FC,
+  MouseEvent,
+  PropsWithChildren,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 import {
   Box,
@@ -20,6 +27,7 @@ import MuiDrawer from '@mui/material/Drawer';
 import { styled, useTheme } from '@mui/material/styles';
 import {
   AccountCircle as AccountCircleIcon,
+  AccountOutline as AccountOutlineIcon,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
   LockReset as LockResetIcon,
@@ -27,6 +35,7 @@ import {
   Menu as MenuIcon,
 } from 'mdi-material-ui';
 import { useSnackbar } from 'notistack';
+import { useQueries } from 'react-query';
 import {
   NavLink,
   useMatch,
@@ -42,8 +51,10 @@ import { businessOwnerDrawerItems } from './businessOwnerDrawerItems';
 import { cashierDrawerItems } from './cashierDrawerItems';
 import { systemAdministratorDrawerItems } from './systemAdministratorDrawerItems';
 
-import { APP_NAME } from '~/constants';
+import { auth } from '~/configs';
+import { APP_NAME, KEYS } from '~/constants';
 import { UserAuth } from '~/contexts';
+import { usersService } from '~/services';
 
 const drawerWidth = 240;
 
@@ -148,6 +159,22 @@ const UserWrapper: FC<PropsWithChildren<UserWrapperProps>> = ({
     }
   };
 
+  const [currentUserName, setCurrentUserName] = useState('');
+
+  const queries = useQueries([
+    {
+      queryKey: KEYS.users,
+      queryFn: () => usersService.getUser(auth?.currentUser?.uid || ''),
+    },
+  ]);
+
+  // @ ts-ignore
+  const users = useMemo(() => queries[0].data || [], [queries]);
+
+  useEffect(() => {
+    setCurrentUserName(users[0]?.name || '');
+  }, [users]);
+
   const [mobileOpen, setMobileOpen] = useState(false);
   // TODO: PASSWORD RESET MODAL
   // const [resetModalOpen, setResetModalOpen] = useState(false);
@@ -245,6 +272,15 @@ const UserWrapper: FC<PropsWithChildren<UserWrapperProps>> = ({
             }}
           >
             {/* TODO: RESET PASSWORD MODAL */}
+            <ListItem sx={{ py: 1 }}>
+              <AccountOutlineIcon
+                sx={{
+                  color: 'text.secondary',
+                  mr: 1.5,
+                }}
+              />
+              <Typography>{currentUserName}</Typography>
+            </ListItem>
             <MenuItem
               onClick={() => console.log('RESET PASSWORD')}
               sx={{ py: 1 }}

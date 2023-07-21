@@ -24,7 +24,7 @@ const BusinessOwnerStores: FC<
 
   const isLoading = queries.some((q) => q.isLoading);
 
-  if (!isLoading && stores[0].status !== 'Pending') {
+  if (!isLoading && stores[0].status === 'Pending') {
     return (
       <PageContentWrapper title='Stores'>
         <StoresGrid disableWrite={disableWrite} />

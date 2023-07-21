@@ -49,7 +49,7 @@ const StoresGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
             cellStyle: { fontWeight: 500 },
           },
           {
-            field: 'address',
+            field: 'businessAddress',
             headerName: 'Address',
             headerTooltip: 'Address',
             minWidth: 200,
@@ -86,7 +86,7 @@ const StoresGrid: FC<PropsWithChildren<{ disableWrite?: boolean }>> = ({
         isLoading={isLoading}
         isError={isError}
         actions={{
-          add: disableWrite,
+          add: !disableWrite,
           edit: disableWrite,
           archive: disableWrite,
           export: !disableWrite,

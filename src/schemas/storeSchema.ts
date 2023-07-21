@@ -8,7 +8,11 @@ export const storeSchema = z.object({
     .min(1)
     .refine((value) => value !== '', 'Must not be empty')
     .refine((value) => value.trim() !== '', 'Must not contain only whitespace'),
-  address: z.string().optional(),
+  ownerName: z.string(),
+  businessName: z.string(),
+  businessAddress: z.string(),
+  businessTIN: z.string(),
+  businessNature: z.string(),
   // Array of IDs
   products: z.string().array().optional(),
   services: z.string().array().optional(),

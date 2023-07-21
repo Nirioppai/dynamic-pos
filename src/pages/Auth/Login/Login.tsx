@@ -22,6 +22,7 @@ import { TextFieldElement } from 'react-hook-form-mui';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { AuthBase, FormContainer } from '~/components';
+import { auth } from '~/configs';
 import { UserAuth } from '~/contexts';
 import { LoginSchema, loginSchema } from '~/schemas';
 
@@ -33,6 +34,7 @@ interface LoginProps {
 }
 
 const Login: FC<LoginProps> = ({ userType }) => {
+  console.log(auth?.currentUser?.uid);
   // @ts-ignore
   const { googleSignIn, signIn } = UserAuth();
 
