@@ -42,6 +42,28 @@ const BusinessOwnerProductModalForm = () => {
         options={[{ id: 'Available' }, { id: 'Unavailable' }]}
         required
       />
+      <TextFieldElement name='productId' label='Product ID' />
+      <SelectDropdownElement
+        name='unit'
+        label='Unit'
+        labelKey='id'
+        options={[
+          { id: 'g' },
+          { id: 'Pcs' },
+          { id: 'kg' },
+          { id: 'L' },
+          { id: 'mL' },
+        ]}
+        required
+      />
+      <NumberFieldElement
+        name='quantityPerUnit'
+        label='Quantity per unit'
+        fieldType='integer'
+        required
+      />
+      <TextFieldElement name='batchNumber' label='Batch Number' required />
+      <TextFieldElement name='productCode' label='Product Code' required />
     </>
   );
 };

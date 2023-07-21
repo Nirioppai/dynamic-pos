@@ -13,6 +13,11 @@ export const productSchema = z.object({
   description: z.string().optional(),
   ownerId: z.string().optional(),
   storeId: z.string().optional(),
+  productId: z.string(),
+  unit: z.string().optional(),
+  quantityPerUnit: z.number().optional(),
+  batchNumber: z.string(),
+  productCode: z.string(),
   // Inventory Levels
   // Manufacturer / Supplier
   // Dimensions
