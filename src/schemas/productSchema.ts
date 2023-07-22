@@ -18,6 +18,7 @@ export const productSchema = z.object({
   quantityPerUnit: z.number().optional(),
   batchNumber: z.string(),
   productCode: z.string(),
+  // dynamicFields: z.string().optional(),
   // Inventory Levels
   // Manufacturer / Supplier
   // Dimensions

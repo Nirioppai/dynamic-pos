@@ -88,6 +88,15 @@ const BusinessOwnerProductModalForm = () => {
             required
           />
         </Grid>
+        {/* <Grid item xs={6}>
+          <TextFieldElement name='key' label='Key Name' />
+        </Grid>
+        <Grid item xs={4}>
+          <TextFieldElement name='value' label='Value Name' />
+        </Grid>
+        <Grid item xs={2}>
+      
+        </Grid> */}
       </Grid>
     </>
   );
