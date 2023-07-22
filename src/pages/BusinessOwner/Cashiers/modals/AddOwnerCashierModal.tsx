@@ -36,7 +36,7 @@ const AddOwnerCashierModal: FC<DialogProps> = ({ onClose, ...rest }) => {
       onClose={onClose}
       {...rest}
     >
-      <BusinessOwnerCashierModalForm />
+      <BusinessOwnerCashierModalForm action='Add' />
     </FormDialog>
   );
 };

@@ -4,7 +4,13 @@ import { CheckboxElement, TextFieldElement } from 'react-hook-form-mui';
 
 import { Attachment } from '~/components';
 
-const BusinessOwnerStoreModalForm = () => {
+interface BusinessOwnerStoreModalFormProps {
+  enabledEditing: boolean;
+}
+
+const BusinessOwnerStoreModalForm: React.FC<
+  BusinessOwnerStoreModalFormProps
+> = ({ enabledEditing }) => {
   // Get the form data using useFormContext
   const { watch } = useFormContext();
 
@@ -18,22 +24,35 @@ const BusinessOwnerStoreModalForm = () => {
       <Typography variant='h2' gutterBottom sx={{ mb: '20px' }}>
         Business Details
       </Typography>
-      <TextFieldElement name='ownerName' label='Owner Name' required />
-      <TextFieldElement name='businessName' label='Name of Business' required />
+      <TextFieldElement
+        name='ownerName'
+        label='Owner Name'
+        required
+        disabled={enabledEditing === true ? false : true}
+      />
+      <TextFieldElement
+        name='businessName'
+        label='Name of Business'
+        required
+        disabled={enabledEditing === true ? false : true}
+      />
       <TextFieldElement
         name='businessAddress'
         label='Business Address'
         required
+        disabled={enabledEditing === true ? false : true}
       />
       <TextFieldElement
         name='businessTIN'
         label='Business TIN Number'
         required
+        disabled={enabledEditing === true ? false : true}
       />
       <TextFieldElement
         name='businessNature'
         label='Nature of Business'
         required
+        disabled={enabledEditing === true ? false : true}
       />
       <Typography variant='h2' gutterBottom sx={{ mb: '20px' }}>
         Business Documents

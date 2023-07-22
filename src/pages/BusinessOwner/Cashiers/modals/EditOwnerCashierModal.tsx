@@ -37,7 +37,7 @@ const EditOwnerCashierModal: FC<
       onClose={onClose}
       {...rest}
     >
-      <BusinessOwnerCashierModalForm />
+      <BusinessOwnerCashierModalForm action='Edit' />
     </FormDialog>
   );
 };

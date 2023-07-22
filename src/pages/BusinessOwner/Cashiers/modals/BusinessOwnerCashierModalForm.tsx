@@ -10,15 +10,17 @@ import { storesService } from '~/services';
 
 interface BusinessOwnerCashierModalFormProps {
   children?: ReactNode;
+  action: string;
 }
 
-const BusinessOwnerCashierModalForm: FC<
-  BusinessOwnerCashierModalFormProps
-> = () => {
+const BusinessOwnerCashierModalForm: FC<BusinessOwnerCashierModalFormProps> = ({
+  action,
+}) => {
   const queries = useQueries([
     {
       queryKey: KEYS.storeInstances,
-      queryFn: () => storesService.getStores(auth?.currentUser?.uid || ''),
+      queryFn: () =>
+        storesService.getApprovedStores(auth?.currentUser?.uid || ''),
     },
   ]);
 
@@ -34,14 +36,14 @@ const BusinessOwnerCashierModalForm: FC<
       <TextFieldElement
         name='password'
         label='Cashier Password'
-        disabled
         required
+        disabled={action === 'Edit' ? true : false}
       />
       <SelectDropdownElement
         name='storeId'
         label='Store Name'
         valueKey='_id'
-        labelKey='name'
+        labelKey='businessName'
         options={stores}
         required
       />

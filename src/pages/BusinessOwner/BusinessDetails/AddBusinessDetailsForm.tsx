@@ -39,7 +39,7 @@ const AddBusinessDetailsForm = () => {
   async function storePDF(pdf: any) {
     return new Promise((resolve, reject) => {
       const storage = getStorage();
-      const filename = `${auth.currentUser?.uid || ''}-${pdf.name}`;
+      const filename = `${Date.now()}-${pdf.name}`;
       const storageRef = ref(storage, filename);
       const uploadTask = uploadBytesResumable(storageRef, pdf);
 

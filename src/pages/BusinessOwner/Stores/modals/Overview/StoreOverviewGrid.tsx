@@ -12,7 +12,6 @@ import { useSnackbar } from 'notistack';
 import BusinessOwnerStoreModalForm from '../BusinessOwnerStoreModalForm';
 
 import { Dropzone, FormContainerComponent, Section } from '~/components';
-import { auth } from '~/configs';
 import { KEYS } from '~/constants';
 import { usePutMutation } from '~/hooks';
 import { StoreSchema, storeSchema } from '~/schemas';
@@ -34,7 +33,7 @@ const StoreOverviewGrid = ({
   async function storePDF(pdf: any) {
     return new Promise((resolve, reject) => {
       const storage = getStorage();
-      const filename = `${auth.currentUser?.uid || ''}-${pdf.name}`;
+      const filename = `${Date.now()}-${pdf.name}`;
       const storageRef = ref(storage, filename);
       const uploadTask = uploadBytesResumable(storageRef, pdf);
 
@@ -178,37 +177,51 @@ const StoreOverviewGrid = ({
         enabledEditing={defaultValues.status === false ? true : false}
       >
         <Section gutterBottom>
-          <BusinessOwnerStoreModalForm />
-          <Typography variant='h2' gutterBottom sx={{ mb: '20px' }}>
-            Business Documents
-          </Typography>
-
-          <Dropzone
-            onChangeStatus={handleChangeStatusFirst}
-            maxFiles={1} // Limit the file upload to one file at a time
-            accept='application/pdf'
+          <BusinessOwnerStoreModalForm
+            enabledEditing={defaultValues.status === false ? true : false}
           />
-          <Typography variant='h4' gutterBottom sx={{ mb: '20px', mt: '20px' }}>
-            DTI business name registration
-          </Typography>
-
-          <Dropzone
-            onChangeStatus={handleChangeStatusSecond}
-            maxFiles={1} // Limit the file upload to one file at a time
-            accept='application/pdf'
-          />
-          <Typography variant='h4' gutterBottom sx={{ mb: '20px', mt: '20px' }}>
-            Baranggay Permit/Mayor&apos;s permit
-          </Typography>
-
-          <Dropzone
-            onChangeStatus={handleChangeStatusThird}
-            maxFiles={1} // Limit the file upload to one file at a time
-            accept='application/pdf'
-          />
-          <Typography variant='h4' gutterBottom sx={{ mt: '20px' }}>
-            BIR Permit
-          </Typography>
+          {defaultValues.status === false ? (
+            <>
+              {' '}
+              <Typography variant='h2' gutterBottom sx={{ mb: '20px' }}>
+                Business Documents
+              </Typography>
+              <Dropzone
+                onChangeStatus={handleChangeStatusFirst}
+                maxFiles={1} // Limit the file upload to one file at a time
+                accept='application/pdf'
+              />
+              <Typography
+                variant='h4'
+                gutterBottom
+                sx={{ mb: '20px', mt: '20px' }}
+              >
+                DTI business name registration
+              </Typography>
+              <Dropzone
+                onChangeStatus={handleChangeStatusSecond}
+                maxFiles={1} // Limit the file upload to one file at a time
+                accept='application/pdf'
+              />
+              <Typography
+                variant='h4'
+                gutterBottom
+                sx={{ mb: '20px', mt: '20px' }}
+              >
+                Baranggay Permit/Mayor&apos;s permit
+              </Typography>
+              <Dropzone
+                onChangeStatus={handleChangeStatusThird}
+                maxFiles={1} // Limit the file upload to one file at a time
+                accept='application/pdf'
+              />
+              <Typography variant='h4' gutterBottom sx={{ mt: '20px' }}>
+                BIR Permit
+              </Typography>
+            </>
+          ) : (
+            ''
+          )}
         </Section>
       </FormContainerComponent>
     </div>

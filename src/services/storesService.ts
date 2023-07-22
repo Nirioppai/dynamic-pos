@@ -62,6 +62,17 @@ export const storesService = {
     const data = await getDocs(q);
     return mapData(data);
   },
+  getApprovedStores: async (ownerId: string): Promise<any> => {
+    const q = query(
+      storeInstanceRef,
+      where('ownerId', '==', ownerId),
+      where('status', '==', true)
+      // orderBy('timestamp', 'desc')
+    );
+
+    const data = await getDocs(q);
+    return mapData(data);
+  },
   getEntitiesInsideStore: async (storeId: string): Promise<any> => {
     const docRef = doc(db, storeInstanceKey, storeId);
     const docSnap = await getDoc(docRef);

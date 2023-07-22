@@ -36,7 +36,7 @@ const BusinessOwnerSales: FC = () => {
       return invoices;
     } else {
       return invoices.filter(
-        (invoice: any) => invoice.name === selectedInvoice
+        (invoice: any) => invoice.businessName === selectedInvoice
       );
       // Assuming invoices have a 'name' property. Adjust as needed.
     }
@@ -64,8 +64,8 @@ const BusinessOwnerSales: FC = () => {
             Replace 'invoiceName' with the actual property you want to display.
           */}
             {invoices.map((invoice: any) => (
-              <MenuItem key={invoice._id} value={invoice.name}>
-                {invoice.name}
+              <MenuItem key={invoice._id} value={invoice.businessName}>
+                {invoice.businessName}
               </MenuItem>
             ))}
           </Select>
