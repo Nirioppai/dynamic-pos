@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { Box, CircularProgress, Typography } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import {
   getDownloadURL,
   getStorage,
@@ -244,32 +245,45 @@ function BusinessDetails() {
             Business Documents
           </Typography>
 
-          <Dropzone
-            onChangeStatus={handleChangeStatusFirst}
-            maxFiles={1} // Limit the file upload to one file at a time
-            accept='application/pdf'
-          />
-          <Typography variant='h4' gutterBottom sx={{ mb: '20px', mt: '20px' }}>
-            DTI business name registration
-          </Typography>
-
-          <Dropzone
-            onChangeStatus={handleChangeStatusSecond}
-            maxFiles={1} // Limit the file upload to one file at a time
-            accept='application/pdf'
-          />
-          <Typography variant='h4' gutterBottom sx={{ mb: '20px', mt: '20px' }}>
-            Baranggay Permit/Mayor&apos;s permit
-          </Typography>
-
-          <Dropzone
-            onChangeStatus={handleChangeStatusThird}
-            maxFiles={1} // Limit the file upload to one file at a time
-            accept='application/pdf'
-          />
-          <Typography variant='h4' gutterBottom sx={{ mt: '20px' }}>
-            BIR Permit
-          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={4}>
+              <Typography variant='h4' gutterBottom sx={{ mt: '20px' }}>
+                DTI business name registration:
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant='h4' gutterBottom sx={{ mt: '20px' }}>
+                Baranggay Permit/Mayor&apos;s permit:
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant='h4' gutterBottom sx={{ mt: '20px' }}>
+                BIR Permit:
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Dropzone
+                onChangeStatus={handleChangeStatusFirst}
+                maxFiles={1} // Limit the file upload to one file at a time
+                accept='application/pdf'
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <Dropzone
+                onChangeStatus={handleChangeStatusSecond}
+                maxFiles={1} // Limit the file upload to one file at a time
+                accept='application/pdf'
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <Dropzone
+                onChangeStatus={handleChangeStatusThird}
+                maxFiles={1} // Limit the file upload to one file at a time
+                accept='application/pdf'
+              />
+            </Grid>
+            <Grid item xs={12}></Grid>
+          </Grid>
         </FormContainerComponent>
       </Section>
     </PageContentWrapper>

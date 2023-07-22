@@ -32,10 +32,10 @@ const BusinessOwnerProductModalForm = () => {
         <Grid item xs={12}>
           <TextFieldElement name='description' label='Description' />
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={4}>
           <NumberFieldElement name='price' label='Price' required />
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={4}>
           <NumberFieldElement name='stock' label='Stock' fieldType='integer' />
         </Grid>
         <Grid item xs={4}>
@@ -73,7 +73,7 @@ const BusinessOwnerProductModalForm = () => {
             required
           />
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={4}>
           <SelectDropdownElement
             name='unit'
             label='Unit'
