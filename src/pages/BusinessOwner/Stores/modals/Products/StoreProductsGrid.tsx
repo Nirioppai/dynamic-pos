@@ -46,10 +46,10 @@ const StoreProductsGrid: FC<StoreProductsGridProps> = ({
           {
             field: 'name',
             headerName: 'Name',
-            headerTooltip: 'Name',
             sort: 'asc',
-            minWidth: 200,
+            minWidth: 150,
             cellStyle: { fontWeight: 500 },
+            headerTooltip: 'Name',
           },
           {
             field: 'price',
@@ -61,12 +61,12 @@ const StoreProductsGrid: FC<StoreProductsGridProps> = ({
             field: 'category',
             headerName: 'Category',
             headerTooltip: 'Category',
-            minWidth: 150,
+            minWidth: 100,
           },
           {
+            headerTooltip: 'Stock',
             field: 'stock',
             headerName: 'Stock',
-            headerTooltip: 'Stock',
             cellRenderer: (params: any) => {
               const stockValue = params.data.stock;
               let color = 'success';
@@ -101,16 +101,17 @@ const StoreProductsGrid: FC<StoreProductsGridProps> = ({
                 : 'Acceptable Stock Levels.',
             minWidth: 100,
           },
+
           {
             field: 'description',
             headerName: 'Description',
             headerTooltip: 'Description',
-            minWidth: 250,
+            minWidth: 150,
           },
           {
             field: 'availability',
-            headerTooltip: 'Availability',
             headerName: 'Availability',
+            headerTooltip: 'Availability',
             cellRenderer: (params: any) => {
               const availability = params.data.availability;
 
@@ -135,6 +136,36 @@ const StoreProductsGrid: FC<StoreProductsGridProps> = ({
               );
             },
 
+            minWidth: 150,
+          },
+          {
+            field: 'productId',
+            headerName: 'Product ID',
+            headerTooltip: 'Product ID',
+            minWidth: 150,
+          },
+          {
+            field: 'quantityPerUnit',
+            headerName: 'Quantity per Unit',
+            headerTooltip: 'Quantity per Unit',
+            minWidth: 150,
+          },
+          {
+            field: 'unit',
+            headerName: 'Unit',
+            headerTooltip: 'Unit',
+            minWidth: 150,
+          },
+          {
+            field: 'batchNumber',
+            headerName: 'Batch Number',
+            headerTooltip: 'Batch Number',
+            minWidth: 150,
+          },
+          {
+            field: 'productCode',
+            headerName: 'Product Code',
+            headerTooltip: 'Product Code',
             minWidth: 150,
           },
         ]}
