@@ -1,4 +1,5 @@
 import {
+  ApplicationEdit,
   CashRegister as CashierIcon,
   Shape as CategoryIcon,
   FormatListBulleted as ProductIcon,
@@ -11,9 +12,15 @@ import {
 
 export const businessOwnerAcceptedDrawerItems = [
   {
-    label: 'Stores',
+    label: 'Businesses',
     Icon: StoreIcon,
     path: 'stores',
+    hasDivider: false,
+  },
+  {
+    label: 'Business Application',
+    Icon: ApplicationEdit,
+    path: 'storeApplication',
     hasDivider: true,
   },
   {

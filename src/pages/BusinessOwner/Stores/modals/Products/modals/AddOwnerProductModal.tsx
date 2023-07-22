@@ -47,6 +47,7 @@ const AddOwnerProductModal: FC<DialogProps> = ({ onClose, ...rest }) => {
 
   return (
     <FormDialog
+      maxWidth={'md'}
       title='Add New Product'
       defaultValues={{
         ownerId: auth?.currentUser?.uid,

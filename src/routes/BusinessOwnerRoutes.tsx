@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import {
+  BusinessDetails,
   BusinessOwnerCashiers,
   BusinessOwnerCategories,
   BusinessOwnerProducts,
@@ -19,6 +20,7 @@ const BusinessOwnerRoutes = () => (
         element={<Navigate replace to='/businessOwner/stores' />}
       />
       <Route path='/stores' element={<BusinessOwnerStores />} />
+      <Route path='/storeApplication' element={<BusinessDetails />} />
 
       <Route path='/products' element={<BusinessOwnerProducts />} />
       <Route path='/services' element={<BusinessOwnerServices />} />

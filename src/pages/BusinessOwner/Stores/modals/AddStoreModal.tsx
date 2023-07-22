@@ -3,7 +3,7 @@ import { FC } from 'react';
 import type { DialogProps } from '@mui/material';
 import { useSnackbar } from 'notistack';
 
-import BusinessOwnerStoreModalForm from './BusinessOwnerStoreModalForm';
+import AddBusinessDetailsForm from '../../BusinessDetails/AddBusinessDetailsForm';
 
 import { FormDialog } from '~/components';
 import { auth } from '~/configs';
@@ -26,6 +26,7 @@ const AddStoreModal: FC<DialogProps> = ({ onClose, ...rest }) => {
 
   return (
     <FormDialog
+      maxWidth={'md'}
       title='Add Store'
       defaultValues={{
         ownerId: auth?.currentUser?.uid,
@@ -37,7 +38,7 @@ const AddStoreModal: FC<DialogProps> = ({ onClose, ...rest }) => {
       onClose={onClose}
       {...rest}
     >
-      <BusinessOwnerStoreModalForm />
+      <AddBusinessDetailsForm />
     </FormDialog>
   );
 };
