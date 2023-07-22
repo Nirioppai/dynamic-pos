@@ -6,10 +6,12 @@ import {
   doc,
   getDoc,
   getDocs,
+  getFirestore,
   // orderBy,
   query,
   updateDoc,
   where,
+  writeBatch,
 } from 'firebase/firestore';
 
 import { db } from '~/configs';
@@ -111,6 +113,29 @@ export const categoriesService = {
       _id: data.id,
       ...productCategory,
     };
+  },
+
+  postManyProductCategories: async (
+    productCategories: ProductCategorySchema[]
+  ): Promise<any> => {
+    const productCategoryInstanceRef = collection(db, KEYS.productCategories);
+    const firestore = getFirestore();
+    const batch = writeBatch(firestore);
+
+    // Create documents with the modified productCategories
+    const productCategoryRefs = productCategories.map((productCategory) => {
+      const newDocRef = doc(productCategoryInstanceRef);
+      batch.set(newDocRef, productCategory);
+      return newDocRef;
+    });
+
+    await batch.commit();
+
+    return productCategoryRefs.map((ref, idx) => ({
+      // @ts-ignore
+      _id: ref.id,
+      ...productCategories[idx],
+    }));
   },
 
   postOneExistingProductCategoryInsideStore: async (
