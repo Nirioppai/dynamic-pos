@@ -72,8 +72,12 @@ const AddExistingProductModal: FC<DialogProps> = ({ onClose, ...rest }) => {
         price: 0,
         description: '',
         availability: 'Available',
-        category: 'helow',
+        category: '',
         stock: 0,
+        batchNumber: 'Test',
+        productCode: 'Test',
+        productId: 'Test',
+        unit: 'g',
         // @ts-ignore
         storeId: storeId,
       }}

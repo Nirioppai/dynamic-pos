@@ -1,13 +1,13 @@
 import { FC, useMemo, useState } from 'react';
 
-import { FormControl, Grid, MenuItem, Select } from '@mui/material';
+import { FormControl, MenuItem, Select } from '@mui/material';
 import { useQueries } from 'react-query';
 
-import BarGraph from './BarGraph';
-import MultiLineGraph from './MultiLineGraph';
-import PieChart from './PieChart';
+import Graphs from './Graphs';
+import ProductSales from './ProductSales';
+import ServiceSales from './ServiceSales';
 
-import { PageContentWrapper } from '~/components';
+import { PageContentWrapper, TabWithContent } from '~/components';
 import { auth } from '~/configs';
 import { KEYS } from '~/constants';
 import { BusinessDetails } from '~/pages';
@@ -43,6 +43,7 @@ const BusinessOwnerSales: FC = () => {
   }, [selectedInvoice, invoices]);
 
   const isLoading = queries.some((q) => q.isLoading);
+  const isError = queries.some((q) => q.isError);
 
   const handleInvoiceChange = (event: any) => {
     setSelectedInvoice(event.target.value);
@@ -71,16 +72,36 @@ const BusinessOwnerSales: FC = () => {
           </Select>
         </FormControl>
 
-        <MultiLineGraph invoices={filteredInvoices} isLoading={isLoading} />
-
-        <Grid container spacing={2} columns={16}>
-          <Grid item xs={8}>
-            <BarGraph invoices={filteredInvoices} isLoading={isLoading} />
-          </Grid>
-          <Grid item xs={8}>
-            <PieChart invoices={filteredInvoices} isLoading={isLoading} />
-          </Grid>
-        </Grid>
+        <TabWithContent
+          tabItems={[
+            {
+              name: 'Sales Graphs',
+              content: (
+                <Graphs invoices={filteredInvoices} isLoading={isLoading} />
+              ),
+            },
+            {
+              name: 'Product Sales',
+              content: (
+                <ProductSales
+                  stores={filteredInvoices}
+                  isLoading={isLoading}
+                  isError={isError}
+                />
+              ),
+            },
+            {
+              name: 'Service Sales',
+              content: (
+                <ServiceSales
+                  stores={filteredInvoices}
+                  isLoading={isLoading}
+                  isError={isError}
+                />
+              ),
+            },
+          ]}
+        />
       </PageContentWrapper>
     );
   } else {
